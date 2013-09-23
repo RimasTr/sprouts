@@ -2,7 +2,6 @@ package uk.ac.ed.inf.sprouts;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,8 +14,7 @@ public class Move {
   private final Integer createdVertex;
   private final Integer regionVertex;
   private final List<Integer> boundariesVertices;
-
-  private final Boolean invertedBoundaries;
+  private Boolean invertedBoundaries;
 
   public Move(Integer from, Boolean invertedFrom, Integer to, Boolean invertedTo,
       Integer createdVertex, Integer regionVertex, List<Integer> boundariesVertices,
@@ -37,9 +35,9 @@ public class Move {
     Matcher matcher = pattern.matcher(moveString);
 
     if (matcher.matches()) {
-//      System.out.println("Matches: ");
-//      for (int i = 1; i <= matcher.groupCount(); i++)
-//        System.out.println(i + ": " + matcher.group(i));
+      // System.out.println("Matches: ");
+      // for (int i = 1; i <= matcher.groupCount(); i++)
+      // System.out.println(i + ": " + matcher.group(i));
 
       Integer from = Integer.parseInt(matcher.group(1));
       Boolean invertedFrom = matcher.group(2) != null;
@@ -48,13 +46,7 @@ public class Move {
       Integer createdVertex = Integer.parseInt(matcher.group(3));
       Integer regionVertex = matcher.group(4) != null ? Integer.parseInt(matcher.group(5)) : null;
 
-      List<Integer> boundariesVertices = new ArrayList<Integer>();
-      if (matcher.group(10) != null) {
-        StringTokenizer tokenizer = new StringTokenizer(matcher.group(10), ",");
-        while (tokenizer.hasMoreTokens()) {
-          boundariesVertices.add(Integer.parseInt(tokenizer.nextToken()));
-        }
-      }
+      List<Integer> boundariesVertices = parseBoundariesVertices(matcher.group(10));
       Boolean invertedBoundaries = matcher.group(8) != null;
 
       return new Move(from, invertedFrom, to, invertedTo, createdVertex, regionVertex,
@@ -63,6 +55,10 @@ public class Move {
       System.out.println("Fail");
       return null;
     }
+  }
+
+  public void invertBoundaries() {
+    invertedBoundaries = !invertedBoundaries;
   }
 
   public Integer getFrom() {
@@ -103,5 +99,30 @@ public class Move {
         + invertedTo + ", createdVertex=" + createdVertex + ", regionVertex=" + regionVertex
         + ", boundariesVertices=" + boundariesVertices + ", invertedBoundaries="
         + invertedBoundaries + "]";
+  }
+
+  private static List<Integer> parseBoundariesVertices(String verticesString) {
+    List<Integer> vertices = new ArrayList<Integer>();
+    if (verticesString != null) {
+      System.out.println(verticesString);
+      Pattern pattern = Pattern.compile("(((\\d+)|((\\d+)-(\\d+)))(,|$))");
+      Matcher matcher = pattern.matcher(verticesString);
+      while (matcher.find()) {
+        if (matcher.group(3) != null) {
+          vertices.add(Integer.parseInt(matcher.group(3)));
+        } else {
+          int from = Integer.parseInt(matcher.group(5));
+          int to = Integer.parseInt(matcher.group(6));
+          for (int i = from; i <= to; i++) {
+            vertices.add(i);
+          }
+        }
+
+//        System.out.println("Matches: ");
+//        for (int i = 1; i <= matcher.groupCount(); i++)
+//          System.out.println(i + ": " + matcher.group(i));
+      }
+    };
+    return vertices;
   }
 }

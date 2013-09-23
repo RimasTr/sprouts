@@ -15,11 +15,17 @@ public class Sprouts {
     System.out.println("Enter your move:");
     //String moveString = scanner.nextLine();
 
-    makeMove("2(7)3", game);
-    makeMove("4(8)7", game);
-    makeMove("1(9)5", game);
-    makeMove("5(10)6", game);
-    makeMove("8!(11)!9", game);
+    // 1
+//    makeMove("2(7)3", game);
+//    makeMove("4(8)7", game);
+//    makeMove("1(9)5", game);
+//    makeMove("5(10)6", game);
+//    makeMove("8!(11)!9", game);
+
+    makeMove("2(7)2[3,4]", game);
+    makeMove("1(8)5", game);
+    makeMove("6(9)8", game);
+    makeMove("5(10)6![2]", game);
   }
 
   private static void makeMove(String moveString, Game game) {

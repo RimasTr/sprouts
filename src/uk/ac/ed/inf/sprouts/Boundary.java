@@ -1,6 +1,7 @@
 package uk.ac.ed.inf.sprouts;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 import com.google.common.base.Joiner;
@@ -9,10 +10,18 @@ public class Boundary extends ArrayList<Integer> {
 
   private static final long serialVersionUID = 3388951717137457680L;
 
-  public Boundary() {}
+  public Boundary() {
+    super();
+  }
 
   public Boundary(int i) {
+    super();
     add(i);
+  }
+
+  public Boundary(Collection<Integer> vertices) {
+    super();
+    addAll(vertices);
   }
 
   @Override
@@ -38,7 +47,7 @@ public class Boundary extends ArrayList<Integer> {
     return newBoundary;
   }
 
-  private static int findVertexId(Boundary boundary, int vertex, boolean inverted) {
+  public static int findVertexId(Boundary boundary, int vertex, boolean inverted) {
     int firstOccurence = boundary.indexOf(vertex);
     if (Collections.frequency(boundary, vertex) == 1) {
       // Only one point, cool
@@ -54,7 +63,7 @@ public class Boundary extends ArrayList<Integer> {
   }
 
   private static boolean meetsClockwiseExpectations(Boundary boundary, int index) {
-    return boundary.get((index - 1) % boundary.size()) > boundary
+    return boundary.get((index - 1) % boundary.size()) < boundary
         .get((index + 1) % boundary.size());
   }
 }

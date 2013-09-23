@@ -24,6 +24,15 @@ public class Position {
     regions.add(initialRegion);
   }
 
+  public boolean isLost() {
+    for (Region region : regions) {
+      if (region.hasMoves(lives)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   public void makeMove(Move move) {
     adjustLives(move);
 
@@ -35,6 +44,49 @@ public class Position {
 
     if (fromBoundary.equals(toBoundary)) {
       System.out.println("Move in the same boundary: " + fromBoundary);
+      region.remove(fromBoundary);
+      // TODO: handle inversion
+      Region firstRegion = region.getRegionWithVertices(move.getBoundariesVertices());
+
+      Region secondRegion = new Region();
+      secondRegion.addAll(region);
+      secondRegion.removeAll(firstRegion);
+
+      int fromId = Boundary.findVertexId(fromBoundary, move.getFrom(), move.getInvertedFrom());
+      int toId = Boundary.findVertexId(fromBoundary, move.getTo(), move.getInvertedTo());
+
+      if (fromId > toId) {
+        int temp = fromId;
+        fromId = toId;
+        toId = temp;
+        move.invertBoundaries();
+      }
+
+      Boundary firstBoundary = new Boundary();
+      firstBoundary.addAll(fromBoundary.subList(0, fromId + 1));
+      firstBoundary.add(move.getCreatedVertex());
+      if (fromBoundary.size() > 1) {
+        firstBoundary.addAll(fromBoundary.subList(toId, fromBoundary.size()));
+      }
+
+      Boundary secondBoundary = new Boundary();
+      secondBoundary.addAll(fromBoundary.subList(fromId, toId + 1));
+      secondBoundary.add(move.getCreatedVertex());
+
+      if (!move.getInvertedBoundaries()) {
+        firstRegion.add(firstBoundary);
+        secondRegion.add(secondBoundary);
+      } else {
+        firstRegion.add(secondBoundary);
+        secondRegion.add(firstBoundary);
+      }
+
+      regions.remove(region);
+      regions.add(firstRegion);
+      regions.add(secondRegion);
+
+      System.out.println("Boundaries in the first region: " + firstRegion);
+      System.out.println("Boundaries in the second region: " + secondRegion);
     } else {
       System.out.println("Move in different boundaries:\n" + fromBoundary + "\n" + toBoundary);
       Boundary newBoundary = Boundary.joinTwoBoundaries(fromBoundary, toBoundary, move);
