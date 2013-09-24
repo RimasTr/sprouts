@@ -63,7 +63,7 @@ public class Boundary extends ArrayList<Integer> {
   }
 
   private static boolean meetsClockwiseExpectations(Boundary boundary, int index) {
-    return boundary.get((index - 1) % boundary.size()) < boundary
-        .get((index + 1) % boundary.size());
+    return boundary.get((index + boundary.size() - 1) % boundary.size()) < boundary.get((index + 1)
+        % boundary.size());
   }
 }

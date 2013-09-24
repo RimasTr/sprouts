@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.base.Joiner;
+
 public class Move {
 
   private final Integer from;
@@ -101,6 +103,16 @@ public class Move {
         + invertedBoundaries + "]";
   }
 
+  public String toNotation() {
+    String notation =
+        "" + from + (invertedFrom ? "!" : "") + "(" + createdVertex + ")" + (invertedTo ? "!" : "")
+            + to + (invertedBoundaries ? "!" : "");
+    if (boundariesVertices.size() > 0) {
+      notation += "[" + Joiner.on(",").join(boundariesVertices) + "]";
+    }
+    return notation;
+  }
+
   private static List<Integer> parseBoundariesVertices(String verticesString) {
     List<Integer> vertices = new ArrayList<Integer>();
     if (verticesString != null) {
@@ -118,9 +130,9 @@ public class Move {
           }
         }
 
-//        System.out.println("Matches: ");
-//        for (int i = 1; i <= matcher.groupCount(); i++)
-//          System.out.println(i + ": " + matcher.group(i));
+        // System.out.println("Matches: ");
+        // for (int i = 1; i <= matcher.groupCount(); i++)
+        // System.out.println(i + ": " + matcher.group(i));
       }
     };
     return vertices;

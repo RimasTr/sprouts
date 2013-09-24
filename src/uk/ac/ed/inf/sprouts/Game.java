@@ -43,4 +43,12 @@ public class Game {
   public Position getPosition() {
     return position;
   }
+
+  public boolean isOver() {
+    return position.isLost();
+  }
+
+  public void makeMove(Move move) {
+    position.makeMove(move);
+  }
 }

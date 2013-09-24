@@ -34,7 +34,11 @@ public class Position {
   }
 
   public void makeMove(Move move) {
+    System.out.println("Making move: " + move);
+
     adjustLives(move);
+
+    numberOfVertices++;
 
     Region region = findRegion(move);
     System.out.println("Move in the region: " + region);
@@ -85,8 +89,8 @@ public class Position {
       regions.add(firstRegion);
       regions.add(secondRegion);
 
-      System.out.println("Boundaries in the first region: " + firstRegion);
-      System.out.println("Boundaries in the second region: " + secondRegion);
+//      System.out.println("Boundaries in the first region: " + firstRegion);
+//      System.out.println("Boundaries in the second region: " + secondRegion);
     } else {
       System.out.println("Move in different boundaries:\n" + fromBoundary + "\n" + toBoundary);
       Boundary newBoundary = Boundary.joinTwoBoundaries(fromBoundary, toBoundary, move);
@@ -103,6 +107,10 @@ public class Position {
 
   public int getNumberOfVertices() {
     return numberOfVertices;
+  }
+
+  public HashMap<Integer, Integer> getLives() {
+    return lives;
   }
 
   @Override
@@ -133,10 +141,14 @@ public class Position {
     // Regions with "from" vertex:
     List<Region> possibleRegions = findRegionsWithVertex(move.getFrom());
     // Vertex "to" must be in the same region:
-    possibleRegions.retainAll(findRegionsWithVertex(move.getFrom()));
+    possibleRegions.retainAll(findRegionsWithVertex(move.getTo()));
     if (possibleRegions.size() > 1) {
-      // Region vertex must also be in the same region:
-      possibleRegions.retainAll(findRegionsWithVertex(move.getRegionVertex()));
+      if (move.getRegionVertex() != null) {
+        // Region vertex must also be in the same region:
+        possibleRegions.retainAll(findRegionsWithVertex(move.getRegionVertex()));
+      } else {
+        System.out.println("Warning, might be ambiguos");
+      }
     }
     // TODO: assert one and only one
     // Only one possible combination:

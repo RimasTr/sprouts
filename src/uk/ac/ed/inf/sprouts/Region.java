@@ -54,7 +54,7 @@ public class Region extends ArrayList<Boundary> {
         totalLives += lives.get(vertex);
       }
     }
-    return (totalLives > 2);
+    return (totalLives > 1);
   }
 
   @Override
