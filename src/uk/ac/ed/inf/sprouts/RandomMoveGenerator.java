@@ -31,7 +31,7 @@ public class RandomMoveGenerator {
     Integer from = vertices.get(0);
     Integer to = vertices.get(1);
     Integer createdVertex = position.getNumberOfVertices() + 1;
-    Integer regionVertex = null;
+    Integer regionVertex = null; // TODO: implement
     List<Integer> boundariesVertices = new ArrayList<Integer>();
     boolean invertedFrom = (position.getLives().get(from).equals(1)) ? random.nextBoolean() : false;
     boolean invertedTo = (position.getLives().get(to).equals(1)) ? random.nextBoolean() : false;

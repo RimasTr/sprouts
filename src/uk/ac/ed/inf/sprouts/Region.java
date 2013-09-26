@@ -30,6 +30,16 @@ public class Region extends ArrayList<Boundary> {
     return false;
   }
 
+  public boolean containsSeveralInstancesOfVertex(int vertex) {
+    int count = 0;
+    for (Boundary boundary : this) {
+      if (boundary.contains(vertex)) {
+        count++;
+      }
+    }
+    return count > 1;
+  }
+
   public Boundary getBoundary(int vertex) {
     for (Boundary boundary : this) {
       if (boundary.contains(vertex)) {
