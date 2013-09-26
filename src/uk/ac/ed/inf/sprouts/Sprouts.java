@@ -4,9 +4,10 @@ import java.util.Scanner;
 
 public class Sprouts {
 
+  private static final boolean MANUAL = false;
+
   public static void main(String[] args) {
-    boolean manual = false;
-    if (manual) {
+    if (MANUAL) {
       runManualGame();
     } else {
       runAutoGame();
@@ -18,7 +19,6 @@ public class Sprouts {
     Scanner scanner = new Scanner(System.in);
     System.out.print("Enter game type:\n");
     String gameTypeString = scanner.nextLine();
-    //String gameTypeString = "3+";
     Game game = Game.fromString(gameTypeString);
     System.out.println("Game type is: " + game.getInitialSprouts() + " " + game.getGameType());
     System.out.println("Position is: \n" + game.getPosition());
