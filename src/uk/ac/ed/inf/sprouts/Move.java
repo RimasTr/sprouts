@@ -104,9 +104,11 @@ public class Move {
   }
 
   public String toNotation() {
-    String notation =
-        "" + from + (invertedFrom ? "!" : "") + "(" + createdVertex + ")" + (invertedTo ? "!" : "")
-            + to + (invertedBoundaries ? "!" : "");
+    String notation = "" + from + (invertedFrom ? "!" : "") + "(" + createdVertex;
+    if (regionVertex != null) {
+      notation += "@" + regionVertex;
+    }
+    notation += ")" + (invertedTo ? "!" : "") + to + (invertedBoundaries ? "!" : "");
     if (boundariesVertices.size() > 0) {
       notation += "[" + Joiner.on(",").join(boundariesVertices) + "]";
     }

@@ -50,7 +50,7 @@ public class Sprouts {
   }
 
   private static void runAutoGame() {
-    String gameTypeString = "6+";
+    String gameTypeString = "2+";
     Game game = Game.fromString(gameTypeString);
     System.out.println("Game type is: " + game.getInitialSprouts() + " " + game.getGameType());
     System.out.println("Position is: \n" + game.getPosition());

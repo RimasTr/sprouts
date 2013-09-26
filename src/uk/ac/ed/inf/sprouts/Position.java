@@ -27,6 +27,7 @@ public class Position {
   public boolean isLost() {
     for (Region region : regions) {
       if (region.hasMoves(lives)) {
+        System.out.println("Region " + region + " still has moves");
         return false;
       }
     }
@@ -89,8 +90,8 @@ public class Position {
       regions.add(firstRegion);
       regions.add(secondRegion);
 
-//      System.out.println("Boundaries in the first region: " + firstRegion);
-//      System.out.println("Boundaries in the second region: " + secondRegion);
+      // System.out.println("Boundaries in the first region: " + firstRegion);
+      // System.out.println("Boundaries in the second region: " + secondRegion);
     } else {
       System.out.println("Move in different boundaries:\n" + fromBoundary + "\n" + toBoundary);
       Boundary newBoundary = Boundary.joinTwoBoundaries(fromBoundary, toBoundary, move);
@@ -147,6 +148,8 @@ public class Position {
         // Region vertex must also be in the same region:
         possibleRegions.retainAll(findRegionsWithVertex(move.getRegionVertex()));
       } else {
+        // TODO: empty also means that there are no alive vertices in that region, should check it
+        // as well
         System.out.println("Warning, might be ambiguos");
       }
     }

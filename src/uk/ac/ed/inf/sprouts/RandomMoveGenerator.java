@@ -2,10 +2,58 @@ package uk.ac.ed.inf.sprouts;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 public class RandomMoveGenerator {
+
+  class Vertex {
+
+    private final int number;
+    private final Boundary boundary;
+    private final int idInBoundary;
+
+    public Vertex(int number, Boundary boundary, int idInBoundary) {
+      super();
+      this.number = number;
+      this.boundary = boundary;
+      this.idInBoundary = idInBoundary;
+    }
+
+    public int getNumber() {
+      return number;
+    }
+
+    public Boundary getBoundary() {
+      return boundary;
+    }
+
+    public int getIdInBoundary() {
+      return idInBoundary;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if ((obj == null) || (obj.getClass() != this.getClass())) {
+        return false;
+      }
+      Vertex other = (Vertex) obj;
+      if (other.number != number) {
+        return false;
+      }
+      if (!other.boundary.equals(boundary)) {
+        return false;
+      }
+      if (other.idInBoundary != idInBoundary) {
+        return false;
+      }
+      return true;
+    }
+  }
 
   private final long seed;
   private final Random random;
@@ -25,26 +73,43 @@ public class RandomMoveGenerator {
   }
 
   public Move generateRandomMove(Position position) {
-
     Region region = getRandomRegionWithMoves(position);
-    List<Integer> vertices = getTwoAliveVertices(position, region);
-    Integer from = vertices.get(0);
-    Integer to = vertices.get(1);
+    List<Vertex> vertices = getTwoAliveVertices(position, region);
+    Vertex from = vertices.get(0);
+    Vertex to = vertices.get(1);
     Integer createdVertex = position.getNumberOfVertices() + 1;
-    Integer regionVertex = null; // TODO: implement
+    Integer regionVertex = null;
+    if (from.getBoundary().equals(to.getBoundary()) && from.getBoundary().size() == 2) {
+      // Need to use @ to specify region.
+      regionVertex = getRegionVertex(to, from, position, region);
+    }
     List<Integer> boundariesVertices = new ArrayList<Integer>();
-    boolean invertedFrom = (position.getLives().get(from).equals(1)) ? random.nextBoolean() : false;
-    boolean invertedTo = (position.getLives().get(to).equals(1)) ? random.nextBoolean() : false;
+    boolean invertedFrom =
+        (position.getLives().get(from.getNumber()).equals(1)) ? !Boundary
+            .meetsClockwiseExpectations(from.getBoundary(), from.getIdInBoundary()) : false;
+    boolean invertedTo =
+        (position.getLives().get(to.getNumber()).equals(1)) ? !Boundary.meetsClockwiseExpectations(
+            to.getBoundary(), to.getIdInBoundary()) : false;
     boolean invertedBoundaries = false;
 
-    return new Move(from, invertedFrom, to, invertedTo, createdVertex, regionVertex,
-        boundariesVertices, invertedBoundaries);
+    return new Move(from.getNumber(), invertedFrom, to.getNumber(), invertedTo, createdVertex,
+        regionVertex, boundariesVertices, invertedBoundaries);
+  }
+
+  private Integer getRegionVertex(Vertex to, Vertex from, Position position, Region region) {
+    System.out.println("Checking @");
+    for (Vertex vertex : getAliveVertices(position, region)) {
+      if (!vertex.equals(from) && !vertex.equals(to)) {
+        System.out.println("Got @@");
+        return vertex.getNumber();
+      }
+    }
+    return null;
   }
 
   private Region getRandomRegionWithMoves(Position position) {
     List<Region> regionsWithMoves = getRegionsWithMoves(position);
-    Random generator = new Random(System.currentTimeMillis());
-    return regionsWithMoves.get(generator.nextInt(regionsWithMoves.size()));
+    return regionsWithMoves.get(random.nextInt(regionsWithMoves.size()));
   }
 
   private List<Region> getRegionsWithMoves(Position position) {
@@ -57,20 +122,24 @@ public class RandomMoveGenerator {
     return regionsWithMoves;
   }
 
-  private List<Integer> getAliveVertices(Position position, Region region) {
-    List<Integer> result = new ArrayList<Integer>();
-    for (Integer vertex : position.getLives().keySet()) {
-      if (region.containsVertex(vertex)) {
-        for (int i = 0; i < position.getLives().get(vertex); i++) {
-          result.add(vertex);
+  private List<Vertex> getAliveVertices(Position position, Region region) {
+    HashMap<Integer, Integer> lives = new HashMap<Integer, Integer>(position.getLives());
+    List<Vertex> result = new ArrayList<Vertex>();
+    for (Boundary boundary : region) {
+      for (int i = 0; i < boundary.size(); i++) {
+        int vertex = boundary.get(i);
+        int livesOfVertex = lives.get(vertex);
+        for (int livesLeft = livesOfVertex; livesLeft > 0; livesLeft--) {
+          result.add(new Vertex(vertex, boundary, i));
+          lives.put(vertex, --livesOfVertex);
         }
       }
     }
     return result;
   }
 
-  private List<Integer> getTwoAliveVertices(Position position, Region region) {
-    List<Integer> result = getAliveVertices(position, region);
+  private List<Vertex> getTwoAliveVertices(Position position, Region region) {
+    List<Vertex> result = getAliveVertices(position, region);
     Collections.shuffle(result, random);
     return result.subList(0, 2);
   }
