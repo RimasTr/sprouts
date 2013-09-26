@@ -27,7 +27,6 @@ public class Position {
   public boolean isLost() {
     for (Region region : regions) {
       if (region.hasMoves(lives)) {
-        System.out.println("Region " + region + " still has moves");
         return false;
       }
     }

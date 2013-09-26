@@ -97,10 +97,8 @@ public class RandomMoveGenerator {
   }
 
   private Integer getRegionVertex(Vertex to, Vertex from, Position position, Region region) {
-    System.out.println("Checking @");
     for (Vertex vertex : getAliveVertices(position, region)) {
       if (!vertex.equals(from) && !vertex.equals(to)) {
-        System.out.println("Got @@");
         return vertex.getNumber();
       }
     }
