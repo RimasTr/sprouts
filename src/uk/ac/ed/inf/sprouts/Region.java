@@ -67,8 +67,19 @@ public class Region extends ArrayList<Boundary> {
     return (totalLives > 1);
   }
 
+  public boolean hasAliveVerticesExcept(HashMap<Integer, Integer> lives, Integer from, Integer to) {
+    int totalLives = 0;
+    for (int vertex : lives.keySet()) {
+      if (!from.equals(vertex) && !to.equals(vertex) && this.containsVertex(vertex)) {
+        totalLives += lives.get(vertex);
+      }
+    }
+    return (totalLives > 0);
+  }
+
   @Override
   public String toString() {
     return Joiner.on(";").join(this);
   }
+
 }

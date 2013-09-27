@@ -3,6 +3,7 @@ package uk.ac.ed.inf.sprouts;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -79,11 +80,16 @@ public class RandomMoveGenerator {
     Vertex to = vertices.get(1);
     Integer createdVertex = position.getNumberOfVertices() + 1;
     Integer regionVertex = null;
-    if (from.getBoundary().equals(to.getBoundary()) && from.getBoundary().size() == 2) {
-      // Need to use @ to specify region.
-      regionVertex = getRegionVertex(to, from, position, region);
-    }
     List<Integer> boundariesVertices = new ArrayList<Integer>();
+    if (from.getBoundary().equals(to.getBoundary())) {
+      // To the same boundary
+      if (from.getBoundary().size() == 2) {
+        // Need to use @ to specify region.
+        regionVertex = getRegionVertex(to, from, position, region);
+      }
+      boundariesVertices = getBoundariesVertices(from, region);
+    }
+
     boolean invertedFrom =
         (position.getLives().get(from.getNumber()).equals(1)) ? !Boundary
             .meetsClockwiseExpectations(from.getBoundary(), from.getIdInBoundary()) : false;
@@ -94,6 +100,18 @@ public class RandomMoveGenerator {
 
     return new Move(from.getNumber(), invertedFrom, to.getNumber(), invertedTo, createdVertex,
         regionVertex, boundariesVertices, invertedBoundaries);
+  }
+
+  private List<Integer> getBoundariesVertices(Vertex vertex, Region region) {
+    HashSet<Integer> result = new HashSet<Integer>();
+    for (Boundary boundary : region) {
+      if (!boundary.equals(vertex.getBoundary())) {
+        if (random.nextBoolean()) {
+          result.addAll(boundary);
+        }
+      }
+    }
+    return new ArrayList<Integer>(result);
   }
 
   private Integer getRegionVertex(Vertex to, Vertex from, Position position, Region region) {

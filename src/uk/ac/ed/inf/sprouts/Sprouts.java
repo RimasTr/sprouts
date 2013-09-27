@@ -5,14 +5,18 @@ import java.util.Scanner;
 public class Sprouts {
 
   private static final boolean MANUAL = false;
+  private static final String AUTO_GAME_TYPE = "4+";
+  private static final Long SEED = null;
+
+  private static RandomMoveGenerator moveGenerator;
 
   public static void main(String[] args) {
+    init();
     if (MANUAL) {
       runManualGame();
     } else {
       runAutoGame();
     }
-
   }
 
   private static void runManualGame() {
@@ -23,14 +27,13 @@ public class Sprouts {
     System.out.println("Game type is: " + game.getInitialSprouts() + " " + game.getGameType());
     System.out.println("Position is: \n" + game.getPosition());
 
-    //String seedString = scanner.nextLine();
-    //Long.parseLong(seedString)
+    // String seedString = scanner.nextLine();
+    // Long.parseLong(seedString)
 
     System.out.println("Do you want to start first (Y/N):");
     String startString = scanner.nextLine();
     boolean computerStarts = startString.toLowerCase().equals("n");
 
-    RandomMoveGenerator moveGenerator = new RandomMoveGenerator();
     if (computerStarts) {
       makeMove(moveGenerator.generateRandomMove(game.getPosition()), game);
     }
@@ -50,14 +53,21 @@ public class Sprouts {
   }
 
   private static void runAutoGame() {
-    String gameTypeString = "2+";
+    String gameTypeString = AUTO_GAME_TYPE ;
     Game game = Game.fromString(gameTypeString);
     System.out.println("Game type is: " + game.getInitialSprouts() + " " + game.getGameType());
     System.out.println("Position is: \n" + game.getPosition());
 
-    RandomMoveGenerator moveGenerator = new RandomMoveGenerator();
     while (!game.isOver()) {
       makeMove(moveGenerator.generateRandomMove(game.getPosition()), game);
+    }
+  }
+
+  public static void init() {
+    if (SEED != null) {
+      moveGenerator = new RandomMoveGenerator(SEED);
+    } else {
+      moveGenerator = new RandomMoveGenerator();
     }
   }
 

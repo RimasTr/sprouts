@@ -143,13 +143,36 @@ public class Position {
     // Vertex "to" must be in the same region:
     possibleRegions.retainAll(findRegionsWithVertex(move.getTo()));
     if (possibleRegions.size() > 1) {
+      // TODO: better if structure
       if (move.getRegionVertex() != null) {
         // Region vertex must also be in the same region:
         possibleRegions.retainAll(findRegionsWithVertex(move.getRegionVertex()));
       } else {
+        // Check if some points in the boundaries list are in only one of the regions:
+        for (int vertex : move.getBoundariesVertices()) {
+          possibleRegions.retainAll(findRegionsWithVertex(vertex));
+        }
         // TODO: empty also means that there are no alive vertices in that region, should check it
         // as well
-        System.out.println("Warning, might be ambiguos");
+        if (possibleRegions.size() > 1) {
+          // Still not clear, try ! symbols:
+          Boundary possibleBoundary = possibleRegions.get(0).getBoundary(move.getFrom());
+          int vertexId =
+              Boundary.findVertexId(possibleBoundary, move.getFrom(), move.getInvertedFrom());
+          if (possibleBoundary.size() != 2) {
+            if (Boundary.meetsClockwiseExpectations(possibleBoundary, vertexId)) {
+              return possibleRegions.get(1);
+            } else {
+              return possibleRegions.get(0);
+            }
+          } else {
+            // Take into account that the region vertex was empty
+            if (possibleRegions.get(0).hasAliveVerticesExcept(lives, move.getFrom(), move.getTo())) {
+              return possibleRegions.get(1);
+            }
+            System.out.println("Warning, might be ambiguos");
+          }
+        }
       }
     }
     // TODO: assert one and only one
