@@ -46,13 +46,24 @@ public class Region extends ArrayList<Boundary> {
         return boundary;
       }
     }
-    throw new IllegalArgumentException("The region doesn't have given vertex");
+    // The region doesn't have given vertex
+    return null;
   }
 
-  public Region getRegionWithVertices(List<Integer> vertices) {
+  public Region getRegionWithVertices(Move move) {
+    List<Integer> vertices = move.getBoundariesVertices();
     HashSet<Boundary> set = new HashSet<Boundary>();
+    boolean containsSelf = false;
     for (int vertex : vertices) {
-      set.add(getBoundary(vertex));
+      Boundary boundary = getBoundary(vertex);
+      if (boundary != null) {
+        set.add(boundary);
+      } else {
+        containsSelf = true;
+      }
+    }
+    if (!containsSelf) {
+      move.containsSelf();
     }
     return new Region(set);
   }

@@ -4,7 +4,11 @@ import java.util.Scanner;
 
 public class Sprouts {
 
-  private static final boolean MANUAL = false;
+  enum GamePlayingType {
+    HUMAN_VS_HUMAN, HUMAN_VS_PC, PC_VS_PC
+  }
+
+  private static final GamePlayingType GAME_TYPE = GamePlayingType.PC_VS_PC;
   private static final String AUTO_GAME_TYPE = "4+";
   private static final Long SEED = null;
 
@@ -12,14 +16,17 @@ public class Sprouts {
 
   public static void main(String[] args) {
     init();
-    if (MANUAL) {
-      runManualGame();
-    } else {
-      runAutoGame();
+    switch (GAME_TYPE) {
+      case PC_VS_PC:
+        runAutoGame();
+        break;
+      default:
+        runGameVsPc(GAME_TYPE);
+        break;
     }
   }
 
-  private static void runManualGame() {
+  private static void runGameVsPc(GamePlayingType gamePlayingType) {
     Scanner scanner = new Scanner(System.in);
     System.out.print("Enter game type:\n");
     String gameTypeString = scanner.nextLine();
@@ -30,13 +37,16 @@ public class Sprouts {
     // String seedString = scanner.nextLine();
     // Long.parseLong(seedString)
 
-    System.out.println("Do you want to start first (Y/N):");
-    String startString = scanner.nextLine();
-    boolean computerStarts = startString.toLowerCase().equals("n");
+    if (gamePlayingType == GamePlayingType.HUMAN_VS_PC) {
+      System.out.println("Do you want to start first (Y/N):");
+      String startString = scanner.nextLine();
+      boolean computerStarts = startString.toLowerCase().equals("n");
 
-    if (computerStarts) {
-      makeMove(moveGenerator.generateRandomMove(game.getPosition()), game);
+      if (computerStarts) {
+        makeMove(moveGenerator.generateRandomMove(game.getPosition()), game);
+      }
     }
+
     while (!game.isOver()) {
       System.out.println("Enter your move:");
       String moveString = scanner.nextLine();
@@ -45,15 +55,17 @@ public class Sprouts {
         System.out.println("Human wins");
         break;
       }
-      makeMove(moveGenerator.generateRandomMove(game.getPosition()), game);
-      if (game.isOver()) {
-        System.out.println("Computer wins");
+      if (gamePlayingType == GamePlayingType.HUMAN_VS_PC) {
+        makeMove(moveGenerator.generateRandomMove(game.getPosition()), game);
+        if (game.isOver()) {
+          System.out.println("Computer wins");
+        }
       }
     }
   }
 
   private static void runAutoGame() {
-    String gameTypeString = AUTO_GAME_TYPE ;
+    String gameTypeString = AUTO_GAME_TYPE;
     Game game = Game.fromString(gameTypeString);
     System.out.println("Game type is: " + game.getInitialSprouts() + " " + game.getGameType());
     System.out.println("Position is: \n" + game.getPosition());

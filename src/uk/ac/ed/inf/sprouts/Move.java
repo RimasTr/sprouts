@@ -17,6 +17,7 @@ public class Move {
   private final Integer regionVertex;
   private final List<Integer> boundariesVertices;
   private Boolean invertedBoundaries;
+  private Boolean containsSelf;
 
   public Move(Integer from, Boolean invertedFrom, Integer to, Boolean invertedTo,
       Integer createdVertex, Integer regionVertex, List<Integer> boundariesVertices,
@@ -29,6 +30,7 @@ public class Move {
     this.regionVertex = regionVertex;
     this.boundariesVertices = boundariesVertices;
     this.invertedBoundaries = invertedBoundaries;
+    this.containsSelf = false;
   }
 
   public static Move fromString(String moveString) {
@@ -95,6 +97,10 @@ public class Move {
     return invertedBoundaries;
   }
 
+  public Boolean getContainsSelf() {
+    return containsSelf;
+  }
+
   @Override
   public String toString() {
     return "Move [from=" + from + ", invertedFrom=" + invertedFrom + ", to=" + to + ", invertedTo="
@@ -138,5 +144,9 @@ public class Move {
       }
     };
     return vertices;
+  }
+
+  public void containsSelf() {
+    containsSelf = true;
   }
 }

@@ -50,7 +50,7 @@ public class Position {
       System.out.println("Move in the same boundary: " + fromBoundary);
       region.remove(fromBoundary);
       // TODO: handle inversion
-      Region firstRegion = region.getRegionWithVertices(move.getBoundariesVertices());
+      Region firstRegion = region.getRegionWithVertices(move);
 
       Region secondRegion = new Region();
       secondRegion.addAll(region);
@@ -77,7 +77,9 @@ public class Position {
       secondBoundary.addAll(fromBoundary.subList(fromId, toId + 1));
       secondBoundary.add(move.getCreatedVertex());
 
-      if (!move.getInvertedBoundaries()) {
+      System.out.println("First boundary: " + firstBoundary);
+      System.out.println("Second boundary: " + secondBoundary);
+      if (needsInvertion(move)) {
         firstRegion.add(firstBoundary);
         secondRegion.add(secondBoundary);
       } else {
@@ -98,6 +100,13 @@ public class Position {
       region.remove(toBoundary);
       region.add(newBoundary);
     }
+  }
+
+  private boolean needsInvertion(Move move) {
+    if (move.getFrom().equals(move.getTo())) {
+      return !move.getContainsSelf();
+    }
+    return move.getInvertedBoundaries();
   }
 
   public List<Region> getRegions() {
