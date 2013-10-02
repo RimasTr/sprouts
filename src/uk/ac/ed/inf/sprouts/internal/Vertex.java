@@ -50,6 +50,16 @@ public class Vertex {
     return String.valueOf(c); // + "(" + boundary.get(0).getC() + ")";
   }
 
+  public String toAbstractString() {
+    if (isAbstract()) {
+      return String.valueOf(c);
+    }
+    if (isUppercase()) {
+      return String.valueOf(InternalConstants.FIRST_UPPERCASE_LETTER);
+    }
+    return String.valueOf(InternalConstants.FIRST_LOWERCASE_LETTER);
+  }
+
   @Override
   public int hashCode() {
     return (int) c;

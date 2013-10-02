@@ -166,4 +166,14 @@ public class Move {
   public void containsSelf() {
     containsSelf = true;
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    return toNotation().equals(((Move) obj).toNotation());
+  }
+
+  @Override
+  public int hashCode() {
+    return toNotation().hashCode();
+  }
 }

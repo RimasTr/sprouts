@@ -39,9 +39,21 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
 
   @Override
   public String toString() {
+    return toString(false);
+  }
+
+  public String toAbstractString() {
+    return toString(true);
+  }
+
+  public String toString(boolean isAbstract) {
     String result = "";
     for (Vertex vertex : this) {
-      result += vertex;
+      if (isAbstract) {
+        result += vertex.toAbstractString();
+      } else {
+        result += vertex;
+      }
     }
     return result + InternalConstants.END_OF_BOUNDARY_CHAR;
   }
@@ -49,14 +61,14 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
   public String toString(int start) {
     String result = "";
     for (int i = 0; i < size(); i++) {
-      result += this.get((start + i) % size());
+      result += this.get((start + i) % size()).toAbstractString();
     }
     return result + InternalConstants.END_OF_BOUNDARY_CHAR;
   }
 
   @Override
   public int compareTo(InternalBoundary o) {
-    return toString().compareTo(o.toString());
+    return toAbstractString().compareTo(o.toAbstractString());
   }
 
   public List<Vertex> getVertices() {
@@ -73,7 +85,7 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
       // Nothing to sort
       return;
     }
-    String minimalString = this.toString();
+    String minimalString = this.toString(0);
     int minimalIndex = 0;
     for (int i = 1; i < size(); i++) {
       String current = this.toString(i);
@@ -88,5 +100,4 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
       add(vertex);
     }
   }
-
 }

@@ -1,5 +1,7 @@
 package uk.ac.ed.inf.sprouts;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
 
 import uk.ac.ed.inf.sprouts.external.Game;
@@ -9,13 +11,14 @@ import uk.ac.ed.inf.sprouts.internal.InternalPosition;
 public class Sprouts {
 
   enum GamePlayingType {
-    HUMAN_VS_HUMAN, HUMAN_VS_PC, PC_VS_PC
+    HUMAN_VS_HUMAN, HUMAN_VS_PC, PC_VS_PC, ALL_MOVES
   }
 
   public static final boolean LETTERS_MODE = true;
-  private static final GamePlayingType GAME_TYPE = GamePlayingType.PC_VS_PC;
-  private static final String AUTO_GAME_TYPE = "4+";
+  private static final GamePlayingType GAME_TYPE = GamePlayingType.ALL_MOVES;
+  private static final String AUTO_GAME_TYPE = "5+";
   private static final Long SEED = null;
+  private static final int NUMBER_OF_MOVES_TO_GENERATE = 1000;
 
   private static RandomMoveGenerator moveGenerator;
 
@@ -25,9 +28,38 @@ public class Sprouts {
       case PC_VS_PC:
         runAutoGame();
         break;
+      case ALL_MOVES:
+        runAllMoves();
+        break;
       default:
         runGameVsPc(GAME_TYPE);
         break;
+    }
+  }
+
+  private static void runAllMoves() {
+    String gameTypeString = AUTO_GAME_TYPE;
+    Game game = Game.fromString(gameTypeString);
+    System.out.println("Game type is: " + game.getInitialSprouts() + " " + game.getGameType());
+    System.out.println("Position is: \n" + game.getPosition());
+
+    makeMove("1(6)2", game);
+    makeMove("3(7)4", game);
+
+    HashSet<Move> movesSet = new HashSet<Move>();
+    HashMap<String, Move> possiblePositions = new HashMap<String, Move>();
+    for (int i = 0; i < NUMBER_OF_MOVES_TO_GENERATE; i++) {
+      Game clone = game.deepClone();
+      Move move = moveGenerator.generateRandomMove(clone.getPosition());
+      clone.getPosition().makeMove(move);
+      movesSet.add(move);
+      possiblePositions.put(InternalPosition.fromExternal(clone.getPosition()).toString(), move);
+    }
+    System.out.println("All moves (" + movesSet.size() + ")");
+    System.out.println("All possible positions (" + possiblePositions.keySet().size() + ")");
+    for (String positionString : possiblePositions.keySet()) {
+      System.out.println(possiblePositions.get(positionString).toNotation() + " : "
+          + positionString);
     }
   }
 
@@ -96,7 +128,7 @@ public class Sprouts {
   private static void makeMove(Move move, Game game) {
     System.out.println("The move is: " + move.toNotation());
     game.getPosition().makeMove(move);
-//    System.out.println("New position is: \n" + game.getPosition());
+    // System.out.println("New position is: \n" + game.getPosition());
     System.out.println("Internal position is: \n"
         + InternalPosition.fromExternal(game.getPosition()));
     System.out.println();

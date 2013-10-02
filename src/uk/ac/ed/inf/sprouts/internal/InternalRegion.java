@@ -87,4 +87,10 @@ public class InternalRegion extends ArrayList<InternalBoundary> implements Compa
     }
     Collections.sort(this);
   }
+
+  public void inverseOrientation() {
+    for (InternalBoundary boundary : this) {
+      Collections.reverse(boundary);
+    }
+  }
 }

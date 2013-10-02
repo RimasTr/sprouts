@@ -20,7 +20,7 @@ public class InternalPosition extends ArrayList<InternalRegion> {
       InternalRegion internalRegion = InternalRegion.fromExternal(position, region);
       internalPosition.add(internalRegion);
     }
-    System.out.println("Original position:\n" + internalPosition);
+//    System.out.println("Original position:\n" + internalPosition);
     internalPosition.optimize();
     return internalPosition;
   }
@@ -135,6 +135,7 @@ public class InternalPosition extends ArrayList<InternalRegion> {
     sort();
     renameLowercase();
     renameUppercase();
+    sort();
   }
 
   private void renameLowercase() {
@@ -175,6 +176,14 @@ public class InternalPosition extends ArrayList<InternalRegion> {
   private void sort() {
     for (InternalRegion region : this) {
       region.sort();
+      String normalRepresentation = region.toString();
+      region.inverseOrientation();
+      region.sort();
+      String reverseRepresentation = region.toString();
+      if (normalRepresentation.compareTo(reverseRepresentation) < 0) {
+        region.inverseOrientation();
+        region.sort();
+      }
     }
     Collections.sort(this);
   }

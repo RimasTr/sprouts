@@ -1,12 +1,15 @@
 package uk.ac.ed.inf.sprouts.external;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import com.google.common.base.Joiner;
 
-public class Position {
+public class Position implements Serializable {
+
+  private static final long serialVersionUID = 2071824388766229559L;
 
   private List<Region> regions;
   private HashMap<Integer, Integer> lives;
@@ -41,7 +44,7 @@ public class Position {
     numberOfVertices++;
 
     Region region = findRegion(move);
-    System.out.println("Move in the region: " + region);
+//    System.out.println("Move in the region: " + region);
 
     Boundary fromBoundary = region.getBoundary(move.getFrom());
     Boundary toBoundary = region.getBoundary(move.getTo());
@@ -179,7 +182,7 @@ public class Position {
             if (possibleRegions.get(0).hasAliveVerticesExcept(lives, move.getFrom(), move.getTo())) {
               return possibleRegions.get(1);
             }
-            System.out.println("Warning, might be ambiguos");
+            //System.out.println("Warning, might be ambiguos");
           }
         }
       }
@@ -187,5 +190,19 @@ public class Position {
     // TODO: assert one and only one
     // Only one possible combination:
     return possibleRegions.get(0);
+  }
+
+  @SuppressWarnings("unchecked")
+  public Position clone() {
+    try {
+      Position clone = (Position) super.clone();
+      clone.regions = (List<Region>) ((ArrayList<Region>) regions).clone();
+      clone.lives = (HashMap<Integer, Integer>) lives.clone();
+      clone.numberOfVertices = numberOfVertices;
+      return clone;
+    } catch (CloneNotSupportedException e) {
+      e.printStackTrace();
+      throw new RuntimeException();
+    }
   }
 }
