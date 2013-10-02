@@ -1,10 +1,16 @@
-package uk.ac.ed.inf.sprouts;
+package uk.ac.ed.inf.sprouts.external;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
+import uk.ac.ed.inf.sprouts.Sprouts;
+import uk.ac.ed.inf.sprouts.internal.VertexHelper;
+
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 
 public class Boundary extends ArrayList<Integer> {
 
@@ -26,7 +32,15 @@ public class Boundary extends ArrayList<Integer> {
 
   @Override
   public String toString() {
-    return "(" + Joiner.on(",").join(this) + ")";
+    if (!Sprouts.LETTERS_MODE) {
+      return "(" + Joiner.on(",").join(this) + ")";
+    }
+    List<Character> letters = Lists.transform(this, new Function<Integer, Character>() {
+      public Character apply(Integer i) {
+        return VertexHelper.getSimpleLetter(i);
+      }
+    });
+    return "(" + Joiner.on(",").join(letters) + ")";
   }
 
   public static Boundary joinTwoBoundaries(Boundary fromBoundary, Boundary toBoundary, Move move) {
@@ -63,7 +77,7 @@ public class Boundary extends ArrayList<Integer> {
   }
 
   public static boolean meetsClockwiseExpectations(Boundary boundary, int index) {
-    return boundary.get((index + boundary.size() - 1) % boundary.size()) <= boundary.get((index + 1)
-        % boundary.size());
+    return boundary.get((index + boundary.size() - 1) % boundary.size()) <= boundary
+        .get((index + 1) % boundary.size());
   }
 }

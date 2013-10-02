@@ -7,6 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
+import uk.ac.ed.inf.sprouts.external.Boundary;
+import uk.ac.ed.inf.sprouts.external.Move;
+import uk.ac.ed.inf.sprouts.external.Position;
+import uk.ac.ed.inf.sprouts.external.Region;
+
 public class RandomMoveGenerator {
 
   class Vertex {

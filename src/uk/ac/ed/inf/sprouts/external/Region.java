@@ -1,4 +1,4 @@
-package uk.ac.ed.inf.sprouts;
+package uk.ac.ed.inf.sprouts.external;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -92,5 +92,4 @@ public class Region extends ArrayList<Boundary> {
   public String toString() {
     return Joiner.on(";").join(this);
   }
-
 }

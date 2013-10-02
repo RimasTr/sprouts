@@ -2,12 +2,17 @@ package uk.ac.ed.inf.sprouts;
 
 import java.util.Scanner;
 
+import uk.ac.ed.inf.sprouts.external.Game;
+import uk.ac.ed.inf.sprouts.external.Move;
+import uk.ac.ed.inf.sprouts.internal.InternalPosition;
+
 public class Sprouts {
 
   enum GamePlayingType {
     HUMAN_VS_HUMAN, HUMAN_VS_PC, PC_VS_PC
   }
 
+  public static final boolean LETTERS_MODE = true;
   private static final GamePlayingType GAME_TYPE = GamePlayingType.PC_VS_PC;
   private static final String AUTO_GAME_TYPE = "4+";
   private static final Long SEED = null;
@@ -91,6 +96,9 @@ public class Sprouts {
   private static void makeMove(Move move, Game game) {
     System.out.println("The move is: " + move.toNotation());
     game.getPosition().makeMove(move);
-    System.out.println("New position is: \n" + game.getPosition());
+//    System.out.println("New position is: \n" + game.getPosition());
+    System.out.println("Internal position is: \n"
+        + InternalPosition.fromExternal(game.getPosition()));
+    System.out.println();
   }
 }

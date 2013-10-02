@@ -1,11 +1,16 @@
-package uk.ac.ed.inf.sprouts;
+package uk.ac.ed.inf.sprouts.external;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import uk.ac.ed.inf.sprouts.Sprouts;
+import uk.ac.ed.inf.sprouts.internal.VertexHelper;
+
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 
 public class Move {
 
@@ -110,13 +115,25 @@ public class Move {
   }
 
   public String toNotation() {
-    String notation = "" + from + (invertedFrom ? "!" : "") + "(" + createdVertex;
+    Function<Integer, String> toNotation = new Function<Integer, String>() {
+      @Override
+      public String apply(Integer vertex) {
+        if (!Sprouts.LETTERS_MODE) {
+          return String.valueOf(vertex);
+        }
+        return String.valueOf(VertexHelper.getSimpleLetter(vertex));
+      }
+    };
+    String notation =
+        "" + toNotation.apply(from) + (invertedFrom ? "!" : "") + "("
+            + toNotation.apply(createdVertex);
     if (regionVertex != null) {
-      notation += "@" + regionVertex;
+      notation += "@" + toNotation.apply(regionVertex);
     }
-    notation += ")" + (invertedTo ? "!" : "") + to + (invertedBoundaries ? "!" : "");
+    notation +=
+        ")" + (invertedTo ? "!" : "") + toNotation.apply(to) + (invertedBoundaries ? "!" : "");
     if (boundariesVertices.size() > 0) {
-      notation += "[" + Joiner.on(",").join(boundariesVertices) + "]";
+      notation += "[" + Joiner.on(",").join(Lists.transform(boundariesVertices, toNotation)) + "]";
     }
     return notation;
   }
