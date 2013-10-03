@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import uk.ac.ed.inf.sprouts.Sprouts;
 import uk.ac.ed.inf.sprouts.internal.VertexHelper;
+import uk.ac.ed.inf.sprouts.runners.Sprouts;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
@@ -39,8 +39,11 @@ public class Move implements Comparable<Move> {
   }
 
   public static Move fromString(String moveString) {
-    Pattern pattern =
-        Pattern.compile("(\\d+)(!)?\\((\\d+)(@(\\d+))?\\)(!)?(\\d+)(!)?(\\[(.*)\\])?");
+    String regularExpression =
+        Sprouts.LETTERS_MODE
+            ? "(\\w+)(!)?\\((\\w+)(@(\\w+))?\\)(!)?(\\w+)(!)?(\\[(.*)\\])?"
+            : "(\\d+)(!)?\\((\\d+)(@(\\d+))?\\)(!)?(\\d+)(!)?(\\[(.*)\\])?";
+    Pattern pattern = Pattern.compile(regularExpression);
     Matcher matcher = pattern.matcher(moveString);
 
     if (matcher.matches()) {
@@ -48,12 +51,12 @@ public class Move implements Comparable<Move> {
       // for (int i = 1; i <= matcher.groupCount(); i++)
       // System.out.println(i + ": " + matcher.group(i));
 
-      Integer from = Integer.parseInt(matcher.group(1));
+      Integer from = parseVertex(matcher.group(1));
       Boolean invertedFrom = matcher.group(2) != null;
-      Integer to = Integer.parseInt(matcher.group(7));
+      Integer to = parseVertex(matcher.group(7));
       Boolean invertedTo = matcher.group(6) != null;
-      Integer createdVertex = Integer.parseInt(matcher.group(3));
-      Integer regionVertex = matcher.group(4) != null ? Integer.parseInt(matcher.group(5)) : null;
+      Integer createdVertex = parseVertex(matcher.group(3));
+      Integer regionVertex = matcher.group(4) != null ? parseVertex(matcher.group(5)) : null;
 
       List<Integer> boundariesVertices = parseBoundariesVertices(matcher.group(10));
       Boolean invertedBoundaries = matcher.group(8) != null;
@@ -141,15 +144,18 @@ public class Move implements Comparable<Move> {
   private static List<Integer> parseBoundariesVertices(String verticesString) {
     List<Integer> vertices = new ArrayList<Integer>();
     if (verticesString != null) {
-      System.out.println(verticesString);
-      Pattern pattern = Pattern.compile("(((\\d+)|((\\d+)-(\\d+)))(,|$))");
+      String regularExpression =
+          Sprouts.LETTERS_MODE
+              ? "(((\\w+)|((\\w+)-(\\w+)))(,|$))"
+              : "(((\\d+)|((\\d+)-(\\d+)))(,|$))";
+      Pattern pattern = Pattern.compile(regularExpression);
       Matcher matcher = pattern.matcher(verticesString);
       while (matcher.find()) {
         if (matcher.group(3) != null) {
-          vertices.add(Integer.parseInt(matcher.group(3)));
+          vertices.add(parseVertex(matcher.group(3)));
         } else {
-          int from = Integer.parseInt(matcher.group(5));
-          int to = Integer.parseInt(matcher.group(6));
+          int from = parseVertex(matcher.group(5));
+          int to = parseVertex(matcher.group(6));
           for (int i = from; i <= to; i++) {
             vertices.add(i);
           }
@@ -161,6 +167,13 @@ public class Move implements Comparable<Move> {
       }
     };
     return vertices;
+  }
+
+  private static Integer parseVertex(String string) {
+    if (Sprouts.LETTERS_MODE) {
+      return (int) string.charAt(0) - (int) 'a' + 1;
+    }
+    return Integer.parseInt(string);
   }
 
   public void containsSelf() {

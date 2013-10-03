@@ -1,4 +1,4 @@
-package uk.ac.ed.inf.sprouts;
+package uk.ac.ed.inf.sprouts.runners;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import uk.ac.ed.inf.sprouts.AllMovesGenerator;
+import uk.ac.ed.inf.sprouts.RandomMoveGenerator;
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.internal.InternalPosition;

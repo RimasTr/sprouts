@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import uk.ac.ed.inf.sprouts.Sprouts;
 import uk.ac.ed.inf.sprouts.internal.VertexHelper;
+import uk.ac.ed.inf.sprouts.runners.Sprouts;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;

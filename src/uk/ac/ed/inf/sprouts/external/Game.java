@@ -76,4 +76,8 @@ public class Game implements Serializable {
     }
     return null;
   }
+
+  public void makeMove(String string) {
+    position.makeMove(Move.fromString(string));
+  }
 }
