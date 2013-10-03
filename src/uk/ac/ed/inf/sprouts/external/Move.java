@@ -12,7 +12,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
-public class Move {
+public class Move implements Comparable<Move> {
 
   private final Integer from;
   private final Boolean invertedFrom;
@@ -175,5 +175,10 @@ public class Move {
   @Override
   public int hashCode() {
     return toNotation().hashCode();
+  }
+
+  @Override
+  public int compareTo(Move o) {
+    return toNotation().compareTo(o.toNotation());
   }
 }
