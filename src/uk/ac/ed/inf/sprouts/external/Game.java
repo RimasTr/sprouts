@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,11 +18,13 @@ public class Game implements Serializable {
   private final int initialSprouts;
   private final GameType gameType;
   private Position position;
+  private List<Move> movesHistory;
 
   Game(int initialSprouts, GameType gameType) {
     this.initialSprouts = initialSprouts;
     this.gameType = gameType;
     this.position = new Position(initialSprouts);
+    this.movesHistory = new ArrayList<Move>();
   }
 
   public static Game fromString(String gameTypeString) {
@@ -52,11 +56,16 @@ public class Game implements Serializable {
     return position;
   }
 
+  public List<Move> getMovesHistory() {
+    return movesHistory;
+  }
+
   public boolean isOver() {
     return position.isLost();
   }
 
   public void makeMove(Move move) {
+    movesHistory.add(move);
     position.makeMove(move);
   }
 
@@ -78,6 +87,6 @@ public class Game implements Serializable {
   }
 
   public void makeMove(String string) {
-    position.makeMove(Move.fromString(string));
+    makeMove(Move.fromString(string));
   }
 }

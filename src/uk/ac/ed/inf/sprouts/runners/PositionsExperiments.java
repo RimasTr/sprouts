@@ -7,16 +7,16 @@ import uk.ac.ed.inf.sprouts.internal.InternalPosition;
 public class PositionsExperiments {
 
   public static void main(String[] args) {
-    printPosition("0.0.0.}!");
-    printPosition("0.1d1d.}!");
-    printPosition("BE.}0.1EB.}!");
-    printPosition("B.}CF.}0.CFB.}!");
-    printPosition("B.}0.B.}G.}G.}!");
-    printPosition("B.}G.}G.}AH.}B.AH.}!");
-    printPosition("B.}G.}G.}B..}I.}I.}!");
+//    printPosition("0.0.0.}!");
+//    printPosition("0.1d1d.}!");
+//    printPosition("BE.}0.1EB.}!");
+//    printPosition("B.}CF.}0.CFB.}!");
+//    printPosition("B.}0.B.}G.}G.}!");
+//    printPosition("B.}G.}G.}AH.}B.AH.}!");
+//    printPosition("B.}G.}G.}B..}I.}I.}!");
 //    printPosition("a.b.c.}!");
 //    printPosition("a.bdcD.}!");
-
+    printPosition("bd.ae.}cgf.}cfdbdfg.}aeh.}ahe.}!");
     Scanner scanner = new Scanner(System.in);
     System.out.print("Enter position:\n");
     String positionString = scanner.nextLine();

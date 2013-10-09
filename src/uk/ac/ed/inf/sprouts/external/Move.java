@@ -1,5 +1,6 @@
 package uk.ac.ed.inf.sprouts.external;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -12,7 +13,9 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
-public class Move implements Comparable<Move> {
+public class Move implements Comparable<Move>, Serializable {
+
+  private static final long serialVersionUID = -5014845674738051746L;
 
   private final Integer from;
   private final Boolean invertedFrom;

@@ -31,6 +31,7 @@ public class InternalPosition extends ArrayList<InternalRegion> {
     for (int i = 0; i < regions.length - 1; i++) {
       internalPosition.add(InternalRegion.fromString(regions[i]));
     }
+    internalPosition.optimize();
     return internalPosition;
   }
 
@@ -58,6 +59,7 @@ public class InternalPosition extends ArrayList<InternalRegion> {
   }
 
   private void detectAbstractVertices(PositionMap map) {
+    List<Vertex> removedVertices = new ArrayList<Vertex>();
     for (Vertex vertex : map.keySet()) {
       List<Vertex> occurrences = map.get(vertex);
       switch (occurrences.size()) {
@@ -111,11 +113,19 @@ public class InternalPosition extends ArrayList<InternalRegion> {
         default:
           // occurs 3 times
           // remove
+//          for (Vertex v : occurrences) {
+//            v.getBoundary().remove(v);
+//          }
           for (Vertex v : occurrences) {
-            v.getBoundary().remove(v);
+            removedVertices.add(v);
           }
           break;
       }
+    }
+
+    // Remove vertices
+    for (Vertex v : removedVertices) {
+      v.getBoundary().remove(v);
     }
   }
 

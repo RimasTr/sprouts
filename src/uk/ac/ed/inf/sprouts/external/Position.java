@@ -167,6 +167,13 @@ public class Position implements Serializable {
         // TODO: empty also means that there are no alive vertices in that region, should check it
         // as well
         if (possibleRegions.size() > 1) {
+          // Take into account that the region vertex was empty
+          if (!possibleRegions.get(0).hasAliveVerticesExcept(lives, move.getFrom(), move.getTo())) {
+            return possibleRegions.get(0);
+          }
+          if (!possibleRegions.get(1).hasAliveVerticesExcept(lives, move.getFrom(), move.getTo())) {
+            return possibleRegions.get(1);
+          }
           // Still not clear, try ! symbols:
           Boundary possibleBoundary = possibleRegions.get(0).getBoundary(move.getFrom());
           int vertexId =
@@ -178,11 +185,8 @@ public class Position implements Serializable {
               return possibleRegions.get(0);
             }
           } else {
-            // Take into account that the region vertex was empty
-            if (possibleRegions.get(0).hasAliveVerticesExcept(lives, move.getFrom(), move.getTo())) {
-              return possibleRegions.get(1);
-            }
-            //System.out.println("Warning, might be ambiguos");
+            System.out.println("Warning, might be ambiguos");
+            return possibleRegions.get(0);
           }
         }
       }

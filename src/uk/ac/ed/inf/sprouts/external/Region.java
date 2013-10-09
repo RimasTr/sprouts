@@ -90,6 +90,6 @@ public class Region extends ArrayList<Boundary> {
 
   @Override
   public String toString() {
-    return Joiner.on(";").join(this);
+    return Joiner.on("").join(this) + "}";
   }
 }

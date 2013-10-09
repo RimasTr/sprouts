@@ -60,7 +60,7 @@ public class Sprouts {
     for (int i = 0; i < NUMBER_OF_MOVES_TO_GENERATE; i++) {
       Game clone = game.deepClone();
       Move move = moveGenerator.generateRandomMove(clone.getPosition());
-      clone.getPosition().makeMove(move);
+      clone.makeMove(move);
       movesSet.add(move);
       possiblePositions.put(InternalPosition.fromExternal(clone.getPosition()).toString(), move);
     }
@@ -88,7 +88,7 @@ public class Sprouts {
 
     for (Move move : moves) {
       Game clone = game.deepClone();
-      clone.getPosition().makeMove(move);
+      clone.makeMove(move);
       possiblePositions.put(InternalPosition.fromExternal(clone.getPosition()).toString(), move);
     }
     System.out.println("All possible positions (" + possiblePositions.keySet().size() + ")");
@@ -162,7 +162,7 @@ public class Sprouts {
 
   private static void makeMove(Move move, Game game) {
     System.out.println("The move is: " + move.toNotation());
-    game.getPosition().makeMove(move);
+    game.makeMove(move);
     // System.out.println("New position is: \n" + game.getPosition());
     System.out.println("Internal position is: \n"
         + InternalPosition.fromExternal(game.getPosition()));
