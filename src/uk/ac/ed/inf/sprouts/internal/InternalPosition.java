@@ -3,8 +3,10 @@ package uk.ac.ed.inf.sprouts.internal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import uk.ac.ed.inf.sprouts.external.Position;
 import uk.ac.ed.inf.sprouts.external.Region;
@@ -20,7 +22,7 @@ public class InternalPosition extends ArrayList<InternalRegion> {
       InternalRegion internalRegion = InternalRegion.fromExternal(position, region);
       internalPosition.add(internalRegion);
     }
-//    System.out.println("Original position:\n" + internalPosition);
+    // System.out.println("Original position:\n" + internalPosition);
     internalPosition.optimize();
     return internalPosition;
   }
@@ -43,30 +45,37 @@ public class InternalPosition extends ArrayList<InternalRegion> {
     return result;
   }
 
+  // TODO: private
   public void optimize() {
-//    System.out.println("Before:    " + this);
+    // System.out.println("Before:    " + this);
     PositionMap map = getMap();
     detectAbstractVertices(map);
-//    System.out.println("After1:    " + this);
+    // System.out.println("After1:    " + this);
     deleteEmptyBoundariesAndRegions();
-//    System.out.println("After2:    " + this);
+    // System.out.println("After2:    " + this);
     // recompute map
     map = new PositionMap(getVertices());
     detectAbstractVertices(map);
-//    System.out.println("After3:    " + this);
+    // System.out.println("After3:    " + this);
     canonize();
-//    System.out.println("After4:    " + this);
+    // System.out.println("After4:    " + this);
   }
 
   private void detectAbstractVertices(PositionMap map) {
     List<Vertex> removedVertices = new ArrayList<Vertex>();
     for (Vertex vertex : map.keySet()) {
       List<Vertex> occurrences = map.get(vertex);
+      if (vertex.getC() == '3') {
+        for (Vertex v : occurrences) {
+          removedVertices.add(v);
+        }
+        continue;
+      }
       switch (occurrences.size()) {
         case 1:
           // only occurs once
           if (vertex.isUppercase()) {
-            vertex.setC(InternalConstants.TWO_CHAR);
+            vertex.setC(InternalConstants.CHAR_2);
             break;
           } else {
             // lowercase
@@ -75,12 +84,12 @@ public class InternalPosition extends ArrayList<InternalRegion> {
               case 1:
                 // in a boundary with a single vertex
                 // replace by 0
-                vertex.setC(InternalConstants.ZERO_CHAR);
+                vertex.setC(InternalConstants.CHAR_0);
                 break;
               default:
                 // in a boundary with several vertices
                 // replace by 1
-                vertex.setC(InternalConstants.ONE_CHAR);
+                vertex.setC(InternalConstants.CHAR_1);
                 break;
             }
           }
@@ -97,7 +106,7 @@ public class InternalPosition extends ArrayList<InternalRegion> {
               // one after the other
               // replace by 2
               firstBoundary.remove(firstVertex);
-              secondVertex.setC(InternalConstants.TWO_CHAR);
+              secondVertex.setC(InternalConstants.CHAR_2);
             } else {
               // lowercase
               firstVertex.setC(Character.toLowerCase(firstVertex.getC()));
@@ -113,9 +122,9 @@ public class InternalPosition extends ArrayList<InternalRegion> {
         default:
           // occurs 3 times
           // remove
-//          for (Vertex v : occurrences) {
-//            v.getBoundary().remove(v);
-//          }
+          // for (Vertex v : occurrences) {
+          // v.getBoundary().remove(v);
+          // }
           for (Vertex v : occurrences) {
             removedVertices.add(v);
           }
@@ -210,5 +219,11 @@ public class InternalPosition extends ArrayList<InternalRegion> {
     }
     result += InternalConstants.END_OF_POSITION_CHAR;
     return result;
+  }
+
+  @Override
+  public InternalPosition clone() {
+    // TODO: more efficient?
+    return InternalPosition.fromString(this.toString());
   }
 }

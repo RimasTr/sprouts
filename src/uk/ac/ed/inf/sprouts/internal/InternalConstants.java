@@ -12,13 +12,14 @@ public class InternalConstants {
   public static final String END_OF_REGION_REGEX = "}";
   public static final String END_OF_POSITION_REGEX = "!";
 
-  public static final char ZERO_CHAR = '0';
-  public static final char ONE_CHAR = '1';
-  public static final char TWO_CHAR = '2';
+  public static final char CHAR_0 = '0';
+  public static final char CHAR_1 = '1';
+  public static final char CHAR_2 = '2';
+  public static final char CHAR_3 = '3';
 
   public static final char FIRST_LOWERCASE_LETTER = 'a';
   public static final char FIRST_UPPERCASE_LETTER = 'A';
 
-  public static final ImmutableList<Character> ABSTRACT_CHARS = ImmutableList.of(ZERO_CHAR,
-      ONE_CHAR, TWO_CHAR);
+  public static final ImmutableList<Character> ABSTRACT_CHARS = ImmutableList.of(CHAR_0, CHAR_1,
+      CHAR_2);
 }

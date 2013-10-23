@@ -52,10 +52,11 @@ public class MoveBruteforcer {
       System.out.println("Checking " + possiblePositions.get(position).getMove().toNotation());
       if (!isWin(possiblePositions.get(position).getGame(), position)) {
         winningMove = possiblePositions.get(position).getMove();
-//        System.out.println("Different positions: " + alreadyComputedPositions.size());
+        System.out.println("Different positions: " + alreadyComputedPositions.size());
         return;
       }
     }
+    System.out.println("Different positions: " + alreadyComputedPositions.size());
   }
 
   public boolean hasWinningMove() {

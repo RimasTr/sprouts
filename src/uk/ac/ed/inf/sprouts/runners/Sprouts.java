@@ -20,9 +20,9 @@ public class Sprouts {
     HUMAN_VS_HUMAN, HUMAN_VS_PC, PC_VS_PC, ALL_MOVES_RANDOM, ALL_MOVES
   }
 
-  public static final boolean LETTERS_MODE = true;
-  private static final GamePlayingType GAME_TYPE = GamePlayingType.ALL_MOVES;
-  private static final String AUTO_GAME_TYPE = "4+";
+  public static final boolean LETTERS_MODE = false;
+  private static final GamePlayingType GAME_TYPE = GamePlayingType.HUMAN_VS_HUMAN;
+  private static final String AUTO_GAME_TYPE = "2+";
   private static final Long SEED = null;
   private static final int NUMBER_OF_MOVES_TO_GENERATE = 1000;
 
@@ -163,7 +163,7 @@ public class Sprouts {
   private static void makeMove(Move move, Game game) {
     System.out.println("The move is: " + move.toNotation());
     game.makeMove(move);
-    // System.out.println("New position is: \n" + game.getPosition());
+    System.out.println("New position is: \n" + game.getPosition());
     System.out.println("Internal position is: \n"
         + InternalPosition.fromExternal(game.getPosition()));
     System.out.println();

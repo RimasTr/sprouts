@@ -39,6 +39,8 @@ public class Vertex {
         return 2;
       case '2':
         return 1;
+      case '3':
+        return 0;
       default:
         // All letters
         return 1;

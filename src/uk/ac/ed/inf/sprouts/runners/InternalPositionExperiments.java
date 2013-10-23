@@ -1,9 +1,10 @@
 package uk.ac.ed.inf.sprouts.runners;
 
-import uk.ac.ed.inf.sprouts.internal.ChildrenGenerator;
+import java.util.Scanner;
+
 import uk.ac.ed.inf.sprouts.internal.InternalPosition;
 
-public class PositionsExperiments {
+public class InternalPositionExperiments {
 
   public static void main(String[] args) {
 //    printPosition("0.0.0.}!");
@@ -15,8 +16,15 @@ public class PositionsExperiments {
 //    printPosition("B.}G.}G.}B..}I.}I.}!");
 //    printPosition("a.b.c.}!");
 //    printPosition("a.bdcD.}!");
-//    printPosition("bd.ae.}0.0.0.}cgf.}1cfdbdfg.}aeh.}ahe.}!");
-    printPosition("al.}al.bnmcnm.}d.cofpgqfocm.}e.hrisjsiuktkuir.fqgp.}kt.}!");
+    printPosition("bd.ae.}cgf.}cfdbdfg.}aeh.}ahe.}!");
+    Scanner scanner = new Scanner(System.in);
+    System.out.print("Enter position:\n");
+    String positionString = scanner.nextLine();
+    InternalPosition position = InternalPosition.fromString(positionString);
+    System.out.println("Position is: \n" + position);
+    position.optimize();
+    System.out.println("New position is: " + position);
+    System.out.println("----");
   }
 
   public static void printPosition(String string) {
@@ -25,8 +33,6 @@ public class PositionsExperiments {
     System.out.println("Position is:     " + position);
     position.optimize();
     System.out.println("New position is: " + position);
-    ChildrenGenerator childrenGenerator = new ChildrenGenerator(position);
-    System.out.println(childrenGenerator.generateAllChildren());
     System.out.println("----");
   }
 }

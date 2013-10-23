@@ -81,6 +81,7 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
   }
 
   public void sort() {
+    // TODO: make more efficient
     if (size() < 2) {
       // Nothing to sort
       return;
