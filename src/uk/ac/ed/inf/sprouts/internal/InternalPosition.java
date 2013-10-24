@@ -3,10 +3,8 @@ package uk.ac.ed.inf.sprouts.internal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import uk.ac.ed.inf.sprouts.external.Position;
 import uk.ac.ed.inf.sprouts.external.Region;
@@ -65,7 +63,11 @@ public class InternalPosition extends ArrayList<InternalRegion> {
     List<Vertex> removedVertices = new ArrayList<Vertex>();
     for (Vertex vertex : map.keySet()) {
       List<Vertex> occurrences = map.get(vertex);
-      if (vertex.getC() == '3') {
+//      if (vertex.getC() == 'a') {
+//        System.out.println("Vertex: " + vertex.getC());
+//        System.out.println("Occurences: " + occurrences);
+//      }
+      if (vertex.getC() == InternalConstants.CHAR_3) {
         for (Vertex v : occurrences) {
           removedVertices.add(v);
         }
@@ -225,5 +227,9 @@ public class InternalPosition extends ArrayList<InternalRegion> {
   public InternalPosition clone() {
     // TODO: more efficient?
     return InternalPosition.fromString(this.toString());
+  }
+
+  public InternalPosition recreate() {
+    return clone();
   }
 }

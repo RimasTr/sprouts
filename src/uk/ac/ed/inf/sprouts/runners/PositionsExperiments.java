@@ -1,5 +1,7 @@
 package uk.ac.ed.inf.sprouts.runners;
 
+import java.util.Set;
+
 import uk.ac.ed.inf.sprouts.internal.ChildrenGenerator;
 import uk.ac.ed.inf.sprouts.internal.InternalPosition;
 
@@ -17,16 +19,19 @@ public class PositionsExperiments {
 //    printPosition("a.bdcD.}!");
 //    printPosition("bd.ae.}0.0.0.}cgf.}1cfdbdfg.}aeh.}ahe.}!");
     printPosition("al.}al.bnmcnm.}d.cofpgqfocm.}e.hrisjsiuktkuir.fqgp.}kt.}!");
+    //printPosition("0.0.0.0.0.0.0.}!");
   }
 
   public static void printPosition(String string) {
     System.out.println("Position string: " + string);
     InternalPosition position = InternalPosition.fromString(string);
     System.out.println("Position is:     " + position);
-    position.optimize();
-    System.out.println("New position is: " + position);
     ChildrenGenerator childrenGenerator = new ChildrenGenerator(position);
-    System.out.println(childrenGenerator.generateAllChildren());
+    long time = System.currentTimeMillis();
+    Set<InternalPosition> children = childrenGenerator.generateAllChildren();
+    System.out.println((System.currentTimeMillis() - time) / 1000.0);
+    System.out.println(children);
+    System.out.println(children.size());
     System.out.println("----");
   }
 }

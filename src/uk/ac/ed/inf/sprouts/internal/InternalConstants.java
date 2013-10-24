@@ -17,6 +17,10 @@ public class InternalConstants {
   public static final char CHAR_2 = '2';
   public static final char CHAR_3 = '3';
 
+  public static final char TEMP_1 = 'x';
+  public static final char TEMP_2 = 'y';
+  public static final char TEMP_NEW = 'z';
+
   public static final char FIRST_LOWERCASE_LETTER = 'a';
   public static final char FIRST_UPPERCASE_LETTER = 'A';
 

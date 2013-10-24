@@ -101,4 +101,23 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
       add(vertex);
     }
   }
+
+  public static InternalBoundary joinTwoBoundaries(InternalBoundary fromBoundary,
+      InternalBoundary toBoundary, InternalMove move) {
+    int fromIndex = move.getFrom().getVertexIndex();
+    int toIndex = move.getTo().getVertexIndex();
+
+    InternalBoundary newBoundary = new InternalBoundary();
+    newBoundary.addAll(fromBoundary.subList(0, fromIndex + 1));
+    newBoundary.add(new Vertex(InternalConstants.TEMP_NEW, newBoundary));
+    if (toBoundary.size() > 1) {
+      newBoundary.addAll(toBoundary.subList(toIndex, toBoundary.size()));
+    }
+    newBoundary.addAll(toBoundary.subList(0, toIndex + 1));
+    newBoundary.add(new Vertex(InternalConstants.TEMP_NEW, newBoundary));
+    if (fromBoundary.size() > 1) {
+      newBoundary.addAll(fromBoundary.subList(fromIndex, fromBoundary.size()));
+    }
+    return newBoundary;
+  }
 }

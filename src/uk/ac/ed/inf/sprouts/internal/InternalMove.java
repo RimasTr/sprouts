@@ -18,7 +18,16 @@ public class InternalMove {
     return to;
   }
 
+  public int getRegionIndex() {
+    return from.getRegionIndex();
+  }
+
   public boolean inTheSameBoundary() {
     return from.getBoundaryIndex() == to.getBoundaryIndex();
+  }
+
+  @Override
+  public String toString() {
+    return from.toString() + " -> " + to.toString();
   }
 }
