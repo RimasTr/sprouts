@@ -165,7 +165,7 @@ public class AllMovesGenerator {
     return result;
   }
 
-  public static List<List<Boundary>> allPossibleSplits(List<Boundary> boundaries) {
+  private static List<List<Boundary>> allPossibleSplits(List<Boundary> boundaries) {
     List<List<Boundary>> possibleSplits = new ArrayList<List<Boundary>>();
     if (boundaries.isEmpty()) {
       possibleSplits.add(new ArrayList<Boundary>());

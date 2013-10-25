@@ -18,8 +18,9 @@ public class PositionsExperiments {
 //    printPosition("a.b.c.}!");
 //    printPosition("a.bdcD.}!");
 //    printPosition("bd.ae.}0.0.0.}cgf.}1cfdbdfg.}aeh.}ahe.}!");
-    printPosition("al.}al.bnmcnm.}d.cofpgqfocm.}e.hrisjsiuktkuir.fqgp.}kt.}!");
-    //printPosition("0.0.0.0.0.0.0.}!");
+    //printPosition("al.}al.bnmcnm.}d.cofpgqfocm.}e.hrisjsiuktkuir.fqgp.}kt.}!");
+    //printPosition("0.0.0.0.0.0.0.0.0.}!");
+    printPosition("1.}!");
   }
 
   public static void printPosition(String string) {

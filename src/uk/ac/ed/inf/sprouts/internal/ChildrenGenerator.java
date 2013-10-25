@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.Collections2;
+
 public class ChildrenGenerator {
 
   private final InternalPosition position;
@@ -20,6 +22,11 @@ public class ChildrenGenerator {
       children.addAll(generateAllPossiblePositionsAfter(move));
     }
     return children;
+  }
+
+  public Set<String> generateAllChildrenStrings() {
+    return new HashSet<String>(Collections2.transform(generateAllChildren(),
+        InternalPosition.toString));
   }
 
   private List<InternalMove> generateInternalMoves() {
@@ -58,8 +65,7 @@ public class ChildrenGenerator {
               continue;
             }
           }
-          regionResult.add(new VertexInfo(vertex, regionIndex, boundaryIndex,
-              vertexIndex));
+          regionResult.add(new VertexInfo(vertex, regionIndex, boundaryIndex, vertexIndex));
         }
       }
       result.add(regionResult);
@@ -70,11 +76,12 @@ public class ChildrenGenerator {
   private List<InternalPosition> generateAllPossiblePositionsAfter(InternalMove move) {
     List<InternalPosition> positions = new ArrayList<InternalPosition>();
     if (move.inTheSameBoundary()) {
-      positions.addAll(getPositionsAfterMove(move));
+      List<InternalPosition> positionsAfterMove = getPositionsAfterMove(move);
+      positions.addAll(positionsAfterMove);
+      // System.out.println("Move: " + move);
+      // System.out.println("Position: " + positionsAfterMove);
     } else {
       positions.add(getPositionAfterMove(move));
-//      System.out.println("Move: " + move);
-//      System.out.println("Position: " + getPositionAfterMove(move));
     }
     return positions;
   }
@@ -84,7 +91,62 @@ public class ChildrenGenerator {
    */
   private List<InternalPosition> getPositionsAfterMove(InternalMove move) {
     List<InternalPosition> positions = new ArrayList<InternalPosition>();
-    // TODO: implement
+    InternalPosition partialPosition = position.clone();
+    InternalRegion moveRegion = partialPosition.get(move.getRegionIndex());
+    InternalBoundary moveBoundary = moveRegion.get(move.getFrom().getBoundaryIndex());
+    // Rename vertices:
+    if (move.getFrom().getVertexIndex() == move.getTo().getVertexIndex()) {
+      // Same vertex:
+      moveBoundary.get(move.getFrom().getVertexIndex()).setC(
+          renameVertexTwice(moveBoundary.get(move.getFrom().getVertexIndex()).getC()));
+    } else {
+      moveBoundary.get(move.getFrom().getVertexIndex()).setC(
+          renameVertex(moveBoundary.get(move.getFrom().getVertexIndex()).getC(),
+              InternalConstants.TEMP_1));
+      moveBoundary.get(move.getTo().getVertexIndex()).setC(
+          renameVertex(moveBoundary.get(move.getTo().getVertexIndex()).getC(),
+              InternalConstants.TEMP_2));
+    }
+    // Remove current region/boundary
+    moveRegion.remove(move.getFrom().getBoundaryIndex());
+    partialPosition.remove(move.getRegionIndex());
+    // TODO: detect equivalent boundaries and reduce the number of splits?
+    Set<List<InternalBoundary>> splits = allPossibleSplits(moveRegion);
+    // System.out.println("Number of splits: " + splits.size());
+    // System.out.println("Splits: " + splits);
+    for (List<InternalBoundary> split : splits) {
+      InternalRegion firstRegion = new InternalRegion(split);
+      InternalRegion secondRegion = new InternalRegion();
+      secondRegion.addAll(moveRegion);
+      for (InternalBoundary boundary : firstRegion) {
+        secondRegion.remove(boundary);
+      }
+
+      int fromId = move.getFrom().getVertexIndex();
+      int toId = move.getTo().getVertexIndex();
+
+      InternalBoundary firstBoundary = new InternalBoundary();
+      firstBoundary.addAll(moveBoundary.subList(0, fromId + 1));
+      firstBoundary.add(new Vertex(InternalConstants.TEMP_NEW, firstBoundary));
+      if (moveBoundary.size() > 1) {
+        firstBoundary.addAll(moveBoundary.subList(toId, moveBoundary.size()));
+      }
+
+      InternalBoundary secondBoundary = new InternalBoundary();
+      secondBoundary.addAll(moveBoundary.subList(fromId, toId + 1));
+      secondBoundary.add(new Vertex(InternalConstants.TEMP_NEW, firstBoundary));
+
+      // System.out.println("First boundary: " + firstBoundary);
+      // System.out.println("Second boundary: " + secondBoundary);
+      firstRegion.add(firstBoundary);
+      secondRegion.add(secondBoundary);
+
+      InternalPosition newPosition = new InternalPosition(partialPosition);
+      newPosition.add(firstRegion);
+      newPosition.add(secondRegion);
+      positions.add(newPosition.recreate());
+      // positions.add(newPosition);
+    }
     return positions;
   }
 
@@ -94,6 +156,9 @@ public class ChildrenGenerator {
   private InternalPosition getPositionAfterMove(InternalMove move) {
     InternalPosition newPosition = position.clone();
     InternalRegion region = newPosition.get(move.getRegionIndex());
+    if (region.size() <= move.getTo().getBoundaryIndex()) {
+      System.out.println("Booom!");
+    }
     InternalBoundary fromBoundary = region.get(move.getFrom().getBoundaryIndex());
     InternalBoundary toBoundary = region.get(move.getTo().getBoundaryIndex());
     // Rename vertices:
@@ -107,6 +172,9 @@ public class ChildrenGenerator {
     region.remove(fromBoundary);
     region.remove(toBoundary);
     region.add(newBoundary);
+//    if (position.toString().equals("0.A.}0.A.}!")) {
+//      return newPosition;
+//    }
     return newPosition.recreate();
   }
 
@@ -121,5 +189,36 @@ public class ChildrenGenerator {
       default:
         return vertex;
     }
+  }
+
+  private char renameVertexTwice(char vertex) {
+    switch (vertex) {
+      case InternalConstants.CHAR_0:
+        return InternalConstants.TEMP_1;
+      case InternalConstants.CHAR_1:
+        return InternalConstants.CHAR_3;
+      default:
+        throw new RuntimeException("Not enough lives");
+    }
+  }
+
+  // TODO: Create an abstract one to reuse in Boundary
+  private static Set<List<InternalBoundary>> allPossibleSplits(List<InternalBoundary> boundaries) {
+    Set<List<InternalBoundary>> possibleSplits = new HashSet<List<InternalBoundary>>();
+    if (boundaries.isEmpty()) {
+      possibleSplits.add(new ArrayList<InternalBoundary>());
+      return possibleSplits;
+    }
+    List<InternalBoundary> list = new ArrayList<InternalBoundary>(boundaries);
+    InternalBoundary head = list.get(0);
+    List<InternalBoundary> rest = new ArrayList<InternalBoundary>(list.subList(1, list.size()));
+    for (List<InternalBoundary> set : allPossibleSplits(rest)) {
+      List<InternalBoundary> newSet = new ArrayList<InternalBoundary>();
+      newSet.add(head);
+      newSet.addAll(set);
+      possibleSplits.add(newSet);
+      possibleSplits.add(set);
+    }
+    return possibleSplits;
   }
 }

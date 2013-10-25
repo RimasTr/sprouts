@@ -1,6 +1,7 @@
 package uk.ac.ed.inf.sprouts.internal;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -9,9 +10,20 @@ import uk.ac.ed.inf.sprouts.external.Boundary;
 import uk.ac.ed.inf.sprouts.external.Position;
 import uk.ac.ed.inf.sprouts.external.Region;
 
-public class InternalRegion extends ArrayList<InternalBoundary> implements Comparable<InternalRegion> {
+public class InternalRegion extends ArrayList<InternalBoundary>
+    implements
+      Comparable<InternalRegion> {
 
   private static final long serialVersionUID = -183105657365459414L;
+
+  public InternalRegion() {
+    super();
+  }
+
+  public InternalRegion(Collection<InternalBoundary> boundaries) {
+    super();
+    this.addAll(boundaries);
+  }
 
   public static InternalRegion fromExternal(Position position, Region region) {
     InternalRegion internalRegion = new InternalRegion();

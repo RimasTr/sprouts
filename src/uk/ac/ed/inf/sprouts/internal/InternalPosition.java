@@ -6,12 +6,29 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.common.base.Function;
+
 import uk.ac.ed.inf.sprouts.external.Position;
 import uk.ac.ed.inf.sprouts.external.Region;
 
 public class InternalPosition extends ArrayList<InternalRegion> {
 
   private static final long serialVersionUID = 2586045556331715946L;
+
+  public static Function<InternalPosition, String> toString =
+      new Function<InternalPosition, String>() {
+        public String apply(InternalPosition position) {
+          return position.toString();
+        }
+      };
+
+  public InternalPosition() {
+    super();
+  }
+
+  public InternalPosition(InternalPosition position) {
+    super(position);
+  }
 
   public static InternalPosition fromExternal(Position position) {
     InternalPosition internalPosition = new InternalPosition();
@@ -25,12 +42,17 @@ public class InternalPosition extends ArrayList<InternalRegion> {
     return internalPosition;
   }
 
-  public static InternalPosition fromString(String string) {
+  public static InternalPosition fromStringUnoptimized(String string) {
     InternalPosition internalPosition = new InternalPosition();
     String[] regions = string.split(String.valueOf(InternalConstants.END_OF_REGION_CHAR));
     for (int i = 0; i < regions.length - 1; i++) {
       internalPosition.add(InternalRegion.fromString(regions[i]));
     }
+    return internalPosition;
+  }
+
+  public static InternalPosition fromString(String string) {
+    InternalPosition internalPosition = InternalPosition.fromStringUnoptimized(string);
     internalPosition.optimize();
     return internalPosition;
   }
@@ -63,10 +85,10 @@ public class InternalPosition extends ArrayList<InternalRegion> {
     List<Vertex> removedVertices = new ArrayList<Vertex>();
     for (Vertex vertex : map.keySet()) {
       List<Vertex> occurrences = map.get(vertex);
-//      if (vertex.getC() == 'a') {
-//        System.out.println("Vertex: " + vertex.getC());
-//        System.out.println("Occurences: " + occurrences);
-//      }
+      // if (vertex.getC() == 'a') {
+      // System.out.println("Vertex: " + vertex.getC());
+      // System.out.println("Occurences: " + occurrences);
+      // }
       if (vertex.getC() == InternalConstants.CHAR_3) {
         for (Vertex v : occurrences) {
           removedVertices.add(v);
@@ -223,13 +245,19 @@ public class InternalPosition extends ArrayList<InternalRegion> {
     return result;
   }
 
+  public boolean isLost() {
+    return this.isEmpty();
+  }
+
   @Override
   public InternalPosition clone() {
     // TODO: more efficient?
-    return InternalPosition.fromString(this.toString());
+    return InternalPosition.fromStringUnoptimized(this.toString());
   }
 
   public InternalPosition recreate() {
-    return clone();
+    InternalPosition position = this.clone();
+    position.optimize();
+    return position;
   }
 }

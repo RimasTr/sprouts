@@ -110,7 +110,7 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
     InternalBoundary newBoundary = new InternalBoundary();
     newBoundary.addAll(fromBoundary.subList(0, fromIndex + 1));
     newBoundary.add(new Vertex(InternalConstants.TEMP_NEW, newBoundary));
-    if (toBoundary.size() > 1) {
+    if (needsEnd(toBoundary)) {
       newBoundary.addAll(toBoundary.subList(toIndex, toBoundary.size()));
     }
     newBoundary.addAll(toBoundary.subList(0, toIndex + 1));
@@ -119,5 +119,10 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
       newBoundary.addAll(fromBoundary.subList(fromIndex, fromBoundary.size()));
     }
     return newBoundary;
+  }
+
+  private static boolean needsEnd(InternalBoundary boundary) {
+    // TODO: does it really work?
+    return boundary.size() > 1 || (boundary.size() == 1 && boundary.get(0).isUppercase());
   }
 }
