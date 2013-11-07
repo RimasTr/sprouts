@@ -88,13 +88,14 @@ public class SimpleMoveBruteforcer implements MoveBruteforcer {
     HashMap<String, MoveResult> possiblePositions = getPossiblePositions(game);
 
     // TODO: remove, debug
-//    if (currentPosition.equals("1abc2cba.}!")) {
-//      System.out.println(game.getMovesHistory());
-//      ArrayList list = new ArrayList(possiblePositions.keySet());
-//      Collections.sort(list);
-//      System.out.println("Blah " + list);
-//      // getPossiblePositions(game, true);
-//    }
+    if (currentPosition.equals(ImprovedMoveBruteforcer.DEBUG_POSITION)) {
+      System.out.println(game.getMovesHistory());
+      ArrayList list = new ArrayList(possiblePositions.keySet());
+      Collections.sort(list);
+      System.out.println("Debug pos: " + list);
+      System.out.println("History: " + game.getMovesHistory());
+      getPossiblePositions(game, true);
+    }
     for (String position : possiblePositions.keySet()) {
       if (!isWin(possiblePositions.get(position).getGame(), position)) {
         // if (!checkIfMatches(currentPosition, game, true)) {

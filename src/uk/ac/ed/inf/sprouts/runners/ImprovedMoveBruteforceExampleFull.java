@@ -8,7 +8,7 @@ import uk.ac.ed.inf.sprouts.external.Move;
 public class ImprovedMoveBruteforceExampleFull {
 
   public static void main(String[] args) {
-    Game game = Game.fromString("4+");
+    Game game = Game.fromString("6+");
 
     while (!game.isOver()) {
       MoveBruteforcer moveBruteforcer = new ImprovedMoveBruteforcer(game);

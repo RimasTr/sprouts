@@ -20,7 +20,7 @@ public class PositionsExperiments {
 //    printPosition("bd.ae.}0.0.0.}cgf.}1cfdbdfg.}aeh.}ahe.}!");
     //printPosition("al.}al.bnmcnm.}d.cofpgqfocm.}e.hrisjsiuktkuir.fqgp.}kt.}!");
     //printPosition("0.0.0.0.0.0.0.0.0.}!");
-    printPosition("1.}!");
+    printPosition("ABC.}BC.}DE.FG.}DE.}FAG.}!");
   }
 
   public static void printPosition(String string) {

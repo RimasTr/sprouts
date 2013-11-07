@@ -16,15 +16,17 @@ public class InternalPositionExperiments {
 //    printPosition("B.}G.}G.}B..}I.}I.}!");
 //    printPosition("a.b.c.}!");
 //    printPosition("a.bdcD.}!");
-    printPosition("bd.ae.}cgf.}cfdbdfg.}aeh.}ahe.}!");
-    Scanner scanner = new Scanner(System.in);
-    System.out.print("Enter position:\n");
-    String positionString = scanner.nextLine();
-    InternalPosition position = InternalPosition.fromString(positionString);
-    System.out.println("Position is: \n" + position);
-    position.optimize();
-    System.out.println("New position is: " + position);
-    System.out.println("----");
+    printPosition("0.2z3z.}!");
+//    Scanner scanner = new Scanner(System.in);
+//    System.out.print("Enter position:\n");
+//    String positionString = scanner.nextLine();
+//    InternalPosition position = InternalPosition.fromStringUnoptimized(positionString);
+//    System.out.println("Position is: \n" + position);
+//    position.optimize();
+//    System.out.println("New position is: " + position);
+//    position.optimize();
+//    System.out.println("New position is: " + position);
+//    System.out.println("----");
   }
 
   public static void printPosition(String string) {

@@ -67,18 +67,18 @@ public class InternalPosition extends ArrayList<InternalRegion> {
 
   // TODO: private
   public void optimize() {
-    // System.out.println("Before:    " + this);
+//    System.out.println("Before:    " + this);
     PositionMap map = getMap();
     detectAbstractVertices(map);
-    // System.out.println("After1:    " + this);
+//    System.out.println("After1:    " + this);
     deleteEmptyBoundariesAndRegions();
-    // System.out.println("After2:    " + this);
+//    System.out.println("After2:    " + this);
     // recompute map
     map = new PositionMap(getVertices());
     detectAbstractVertices(map);
-    // System.out.println("After3:    " + this);
+//    System.out.println("After3:    " + this);
     canonize();
-    // System.out.println("After4:    " + this);
+//    System.out.println("After4:    " + this);
   }
 
   private void detectAbstractVertices(PositionMap map) {
@@ -133,14 +133,20 @@ public class InternalPosition extends ArrayList<InternalRegion> {
               secondVertex.setC(InternalConstants.CHAR_2);
             } else {
               // lowercase
-              firstVertex.setC(Character.toLowerCase(firstVertex.getC()));
-              secondVertex.setC(Character.toLowerCase(secondVertex.getC()));
+              if (Character.isUpperCase(firstVertex.getC())) {
+                char letter = map.getNextLowercase();
+                firstVertex.setC(letter);
+                secondVertex.setC(letter);
+              }
             }
           } else {
             // different boundaries (and regions)
             // uppercase
-            firstVertex.setC(Character.toUpperCase(firstVertex.getC()));
-            secondVertex.setC(Character.toUpperCase(secondVertex.getC()));
+            if (Character.isLowerCase(firstVertex.getC())) {
+              char letter = map.getNextUppercase();
+              firstVertex.setC(letter);
+              secondVertex.setC(letter);
+            }
           }
           break;
         default:

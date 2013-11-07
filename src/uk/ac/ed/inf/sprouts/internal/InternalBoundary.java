@@ -115,7 +115,7 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
     }
     newBoundary.addAll(toBoundary.subList(0, toIndex + 1));
     newBoundary.add(new Vertex(InternalConstants.TEMP_NEW, newBoundary));
-    if (fromBoundary.size() > 1) {
+    if (needsEnd(fromBoundary)) {
       newBoundary.addAll(fromBoundary.subList(fromIndex, fromBoundary.size()));
     }
     return newBoundary;

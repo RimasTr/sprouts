@@ -24,6 +24,8 @@ public class InternalConstants {
   public static final char FIRST_LOWERCASE_LETTER = 'a';
   public static final char FIRST_UPPERCASE_LETTER = 'A';
 
+  public static final ImmutableList<Character> TEMP_LETTERS = ImmutableList.of(TEMP_1, TEMP_2,
+      TEMP_NEW);
   public static final ImmutableList<Character> ABSTRACT_CHARS = ImmutableList.of(CHAR_0, CHAR_1,
       CHAR_2);
 }

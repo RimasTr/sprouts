@@ -7,14 +7,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import com.google.common.collect.Lists;
-
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.internal.ChildrenGenerator;
 import uk.ac.ed.inf.sprouts.internal.InternalPosition;
 
 public class ImprovedMoveBruteforcer implements MoveBruteforcer {
+
+  public static String DEBUG_POSITION = "ABC.}BC.}DE.FG.}DE.}FAG.}!--";
 
   private Game game;
   private Move winningMove;
@@ -59,6 +59,7 @@ public class ImprovedMoveBruteforcer implements MoveBruteforcer {
   }
 
   private boolean isWin(String currentPosition) {
+    // System.out.println("Calculating " + currentPosition);
     if (currentPosition.length() <= 1) {
       return false;
     }
@@ -68,11 +69,11 @@ public class ImprovedMoveBruteforcer implements MoveBruteforcer {
 
     Set<String> possiblePositions = getPossibleInternalPositions(currentPosition);
     // TODO: remove, debug
-//    if (currentPosition.equals("1abc2cba.}!")) {
-//      ArrayList list = new ArrayList(possiblePositions);
-//      Collections.sort(list);
-//      System.out.println("Blah " + list);
-//    }
+    if (currentPosition.equals(DEBUG_POSITION)) {
+      ArrayList<String> list = new ArrayList<String>(possiblePositions);
+      Collections.sort(list);
+      System.out.println("Debug pos:  " + list);
+    }
     for (String position : possiblePositions) {
       if (!isWin(position)) {
         if (!checkIfMatches(currentPosition, true)) {

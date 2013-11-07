@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import uk.ac.ed.inf.sprouts.ImprovedMoveBruteforcer;
+
 import com.google.common.collect.Collections2;
 
 public class ChildrenGenerator {
@@ -18,7 +20,13 @@ public class ChildrenGenerator {
   public Set<InternalPosition> generateAllChildren() {
     HashSet<InternalPosition> children = new HashSet<InternalPosition>();
     List<InternalMove> moves = generateInternalMoves();
+    // TODO: remove
+    String posString = position.toString();
     for (InternalMove move : moves) {
+      if (posString.equals(ImprovedMoveBruteforcer.DEBUG_POSITION)) {
+        System.out.println("Move :" + move);
+        System.out.println("Positions :" + generateAllPossiblePositionsAfter(move));
+      }
       children.addAll(generateAllPossiblePositionsAfter(move));
     }
     return children;
@@ -39,6 +47,10 @@ public class ChildrenGenerator {
           VertexInfo to = regionVertices.get(j);
           if (i == j && from.getVertex().getLives() < 2) {
             // Can't connect to itself if it has only 1 life
+            continue;
+          } else if (from.getVertex().getC() == to.getVertex().getC()
+              && !from.getVertex().isAbstract() && !to.getVertex().isAbstract()) {
+            // Can't connect non-abstract vertices (a-zA-Z) to other occurrence of them
             continue;
           }
           internalMoves.add(new InternalMove(from, to));
@@ -102,10 +114,10 @@ public class ChildrenGenerator {
     } else {
       moveBoundary.get(move.getFrom().getVertexIndex()).setC(
           renameVertex(moveBoundary.get(move.getFrom().getVertexIndex()).getC(),
-              InternalConstants.TEMP_1));
+              InternalConstants.TEMP_1, moveBoundary.size()));
       moveBoundary.get(move.getTo().getVertexIndex()).setC(
           renameVertex(moveBoundary.get(move.getTo().getVertexIndex()).getC(),
-              InternalConstants.TEMP_2));
+              InternalConstants.TEMP_2, moveBoundary.size()));
     }
     // Remove current region/boundary
     moveRegion.remove(move.getFrom().getBoundaryIndex());
@@ -156,34 +168,33 @@ public class ChildrenGenerator {
   private InternalPosition getPositionAfterMove(InternalMove move) {
     InternalPosition newPosition = position.clone();
     InternalRegion region = newPosition.get(move.getRegionIndex());
-    if (region.size() <= move.getTo().getBoundaryIndex()) {
-      System.out.println("Booom!");
-    }
     InternalBoundary fromBoundary = region.get(move.getFrom().getBoundaryIndex());
     InternalBoundary toBoundary = region.get(move.getTo().getBoundaryIndex());
     // Rename vertices:
     fromBoundary.get(move.getFrom().getVertexIndex()).setC(
-        renameVertex(move.getFrom().getVertex().getC(), InternalConstants.TEMP_1));
+        renameVertex(move.getFrom().getVertex().getC(), InternalConstants.TEMP_1,
+            fromBoundary.size()));
     toBoundary.get(move.getTo().getVertexIndex()).setC(
-        renameVertex(move.getTo().getVertex().getC(), InternalConstants.TEMP_2));
+        renameVertex(move.getTo().getVertex().getC(), InternalConstants.TEMP_2, toBoundary.size()));
 
     InternalBoundary newBoundary =
         InternalBoundary.joinTwoBoundaries(fromBoundary, toBoundary, move);
     region.remove(fromBoundary);
     region.remove(toBoundary);
     region.add(newBoundary);
-//    if (position.toString().equals("0.A.}0.A.}!")) {
-//      return newPosition;
-//    }
+    // if (position.toString().equals("0.A.}0.A.}!")) {
+    // return newPosition;
+    // }
     return newPosition.recreate();
   }
 
-  private char renameVertex(char vertex, char temp) {
+  private char renameVertex(char vertex, char temp, int size) {
     switch (vertex) {
       case InternalConstants.CHAR_0:
         return InternalConstants.CHAR_1;
       case InternalConstants.CHAR_1:
-        return temp;
+        if (size > 1) return temp;
+        return InternalConstants.CHAR_2;
       case InternalConstants.CHAR_2:
         return InternalConstants.CHAR_3;
       default:

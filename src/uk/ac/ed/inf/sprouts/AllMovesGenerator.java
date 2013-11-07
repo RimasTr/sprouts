@@ -67,7 +67,6 @@ public class AllMovesGenerator {
       List<Vertex> vertices = getAliveVertices(position, region);
 
       Integer createdVertex = position.getNumberOfVertices() + 1;
-      Integer regionVertex = null;
       List<Integer> boundariesVertices = new ArrayList<Integer>();
       for (int fromId = 0; fromId < vertices.size(); fromId++) {
         Vertex from = vertices.get(fromId);
@@ -89,12 +88,15 @@ public class AllMovesGenerator {
               (position.getLives().get(to.getNumber()).equals(1)) ? !Boundary
                   .meetsClockwiseExpectations(to.getBoundary(), to.getIdInBoundary()) : false;
           boolean invertedBoundaries = false;
-
+          Integer regionVertex = null;
           if (from.getBoundary().equals(to.getBoundary())) {
             // To the same boundary
             if (from.getBoundary().size() == 2) {
               // Need to use @ to specify region.
               regionVertex = getRegionVertex(to, from, position, region);
+              if (regionVertex != null && regionVertex.equals(from.getNumber())) {
+                throw new RuntimeException("Blah");
+              }
             }
             Set<List<Integer>> allBoundaryVerticesCombinations =
                 getAllBoundaryVerticesCombinations(from, to, region);
@@ -135,7 +137,7 @@ public class AllMovesGenerator {
 
   private Integer getRegionVertex(Vertex to, Vertex from, Position position, Region region) {
     for (Vertex vertex : getAliveVertices(position, region)) {
-      if (!vertex.equals(from) && !vertex.equals(to)) {
+      if (vertex.getNumber() != from.getNumber() && vertex.getNumber() != to.getNumber()) {
         return vertex.getNumber();
       }
     }

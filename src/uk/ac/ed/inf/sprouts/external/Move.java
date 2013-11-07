@@ -39,6 +39,9 @@ public class Move implements Comparable<Move>, Serializable {
     this.boundariesVertices = boundariesVertices;
     this.invertedBoundaries = invertedBoundaries;
     this.containsSelf = false;
+    if (regionVertex != null && regionVertex.equals(from)) {
+      System.err.println("WTF is happening? " + regionVertex + " " + from + " " + to);
+    }
   }
 
   public static Move fromString(String moveString) {
@@ -114,10 +117,11 @@ public class Move implements Comparable<Move>, Serializable {
 
   @Override
   public String toString() {
-    return "Move [from=" + from + ", invertedFrom=" + invertedFrom + ", to=" + to + ", invertedTo="
-        + invertedTo + ", createdVertex=" + createdVertex + ", regionVertex=" + regionVertex
-        + ", boundariesVertices=" + boundariesVertices + ", invertedBoundaries="
-        + invertedBoundaries + "]";
+    return toNotation();
+//    return "Move [from=" + from + ", invertedFrom=" + invertedFrom + ", to=" + to + ", invertedTo="
+//        + invertedTo + ", createdVertex=" + createdVertex + ", regionVertex=" + regionVertex
+//        + ", boundariesVertices=" + boundariesVertices + ", invertedBoundaries="
+//        + invertedBoundaries + "]";
   }
 
   public String toNotation() {
