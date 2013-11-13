@@ -10,7 +10,7 @@ import uk.ac.ed.inf.sprouts.external.Game;
 public class ImprovedMoveBruteforceTester {
 
   public static void main(String[] args) {
-    Game game = Game.fromString("5+");
+    Game game = Game.fromString("4+");
 //    game.makeMove("3(6)4");
 //    game.makeMove("4(7)!6![5]");
 //    game.makeMove("1(8)1");

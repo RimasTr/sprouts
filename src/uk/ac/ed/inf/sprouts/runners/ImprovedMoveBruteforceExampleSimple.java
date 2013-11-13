@@ -10,6 +10,7 @@ public class ImprovedMoveBruteforceExampleSimple {
     Game game = Game.fromString("4+");
     //game.makeMove("a(d)c");
 
+    long time = System.currentTimeMillis();
     MoveBruteforcer moveBruteforcer = new ImprovedMoveBruteforcer(game);
     moveBruteforcer.compute();
     if (moveBruteforcer.hasWinningMove()) {
@@ -18,5 +19,6 @@ public class ImprovedMoveBruteforceExampleSimple {
       System.out.println("Doesn't have winning move. Random move: "
           + moveBruteforcer.getRandomMove().toNotation());
     }
+    System.out.println("Time: " + (System.currentTimeMillis() - time)/1000.0);
   }
 }

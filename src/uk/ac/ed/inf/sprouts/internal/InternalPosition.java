@@ -241,13 +241,17 @@ public class InternalPosition extends ArrayList<InternalRegion> {
     return new PositionMap(getVertices());
   }
 
+  protected char getEndChar() {
+    return InternalConstants.END_OF_POSITION_CHAR;
+  }
+
   @Override
   public String toString() {
     String result = "";
     for (InternalRegion region : this) {
       result += region.toString();
     }
-    result += InternalConstants.END_OF_POSITION_CHAR;
+    result += getEndChar();
     return result;
   }
 

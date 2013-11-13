@@ -1,8 +1,7 @@
 package uk.ac.ed.inf.sprouts.runners;
 
-import java.util.Scanner;
-
 import uk.ac.ed.inf.sprouts.internal.InternalPosition;
+import uk.ac.ed.inf.sprouts.internal.InternalPositionWithLands;
 
 public class InternalPositionExperiments {
 
@@ -16,7 +15,7 @@ public class InternalPositionExperiments {
 //    printPosition("B.}G.}G.}B..}I.}I.}!");
 //    printPosition("a.b.c.}!");
 //    printPosition("a.bdcD.}!");
-    printPosition("0.2z3z.}!");
+    printPosition("AB.}BC.}AC.}DE.}EF.}DF.}!");
 //    Scanner scanner = new Scanner(System.in);
 //    System.out.print("Enter position:\n");
 //    String positionString = scanner.nextLine();
@@ -35,6 +34,7 @@ public class InternalPositionExperiments {
     System.out.println("Position is:     " + position);
     position.optimize();
     System.out.println("New position is: " + position);
+    System.out.println("Split position: " + new InternalPositionWithLands(position));
     System.out.println("----");
   }
 }
