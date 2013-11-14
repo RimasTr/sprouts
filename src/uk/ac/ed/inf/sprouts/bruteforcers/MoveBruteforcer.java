@@ -1,4 +1,4 @@
-package uk.ac.ed.inf.sprouts;
+package uk.ac.ed.inf.sprouts.bruteforcers;
 
 import java.util.HashMap;
 

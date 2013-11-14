@@ -15,7 +15,7 @@ public class InternalPositionExperiments {
 //    printPosition("B.}G.}G.}B..}I.}I.}!");
 //    printPosition("a.b.c.}!");
 //    printPosition("a.bdcD.}!");
-    printPosition("AB.}BC.}AC.}DE.}EF.}DF.}!");
+    printPosition("0.AB.}0.C.}1C.}AB.}!");
 //    Scanner scanner = new Scanner(System.in);
 //    System.out.print("Enter position:\n");
 //    String positionString = scanner.nextLine();

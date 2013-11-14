@@ -1,4 +1,4 @@
-package uk.ac.ed.inf.sprouts;
+package uk.ac.ed.inf.sprouts.bruteforcers;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import uk.ac.ed.inf.sprouts.AllMovesGenerator;
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.internal.InternalPosition;
@@ -90,7 +91,7 @@ public class SimpleMoveBruteforcer implements MoveBruteforcer {
     // TODO: remove, debug
     if (currentPosition.equals(ImprovedMoveBruteforcer.DEBUG_POSITION)) {
       System.out.println(game.getMovesHistory());
-      ArrayList list = new ArrayList(possiblePositions.keySet());
+      ArrayList<String> list = new ArrayList<String>(possiblePositions.keySet());
       Collections.sort(list);
       System.out.println("Debug pos: " + list);
       System.out.println("History: " + game.getMovesHistory());
@@ -117,6 +118,8 @@ public class SimpleMoveBruteforcer implements MoveBruteforcer {
     return false;
   }
 
+  @SuppressWarnings("unused")
+  // debug code
   private boolean checkIfMatches(String position, Game game, boolean expectedValue) {
     if (!position.equals(pos)) {
       return true;

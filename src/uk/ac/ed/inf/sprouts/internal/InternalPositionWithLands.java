@@ -9,19 +9,33 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+import com.google.common.base.Function;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-public class InternalPositionWithLands extends ArrayList<Land> {
+public class InternalPositionWithLands extends ArrayList<InternalPosition> {
 
   private static final long serialVersionUID = -7575398053641141623L;
 
-  public InternalPositionWithLands(InternalPosition position) {
-    this.addAll(splitIntoLands(position));
+  public InternalPositionWithLands() {
+    super();
   }
 
-  private List<Land> splitIntoLands(InternalPosition position) {
-    List<Land> result = new ArrayList<Land>();
+  public InternalPositionWithLands(InternalPosition position) {
+    for (InternalPosition land : splitIntoLands(position)) {
+      land.optimize();
+      this.add(land);
+    }
+  }
+
+  public static InternalPositionWithLands fromSingleLand(InternalPosition land) {
+    InternalPositionWithLands position = new InternalPositionWithLands();
+    position.add(land);
+    return position;
+  }
+
+  private List<InternalPosition> splitIntoLands(InternalPosition position) {
+    List<InternalPosition> result = new ArrayList<InternalPosition>();
     if (position.isEmpty()) {
       return result;
     }
@@ -31,7 +45,7 @@ public class InternalPositionWithLands extends ArrayList<Land> {
     Queue<Integer> queue = new LinkedList<Integer>();
     for (int startingRegion = 0; startingRegion < position.size(); startingRegion++) {
       if (!visited.contains(startingRegion)) {
-        Land currentLand = new Land();
+        InternalPosition currentLand = new InternalPosition();
         queue.add(startingRegion);
         visited.add(startingRegion);
         while (!queue.isEmpty()) {
@@ -87,13 +101,39 @@ public class InternalPositionWithLands extends ArrayList<Land> {
     return result;
   }
 
+  public static InternalPositionWithLands fromStringUnoptimized(String string) {
+    InternalPositionWithLands internalPosition = new InternalPositionWithLands();
+    String[] lands = string.split(String.valueOf(InternalConstants.END_OF_LAND_CHAR));
+    for (int i = 0; i < lands.length - 1; i++) {
+      internalPosition.add(InternalPosition.fromString(lands[i]));
+    }
+    return internalPosition;
+  }
+
+  public static InternalPositionWithLands fromString(String string) {
+    return new InternalPositionWithLands(InternalPosition.fromStringUnoptimized(string));
+  }
+
+  public void optimize() {
+    for (InternalPosition land : this) {
+      land.optimize();
+    }
+  }
+
   @Override
   public String toString() {
     String result = "";
-    for (Land land : this) {
+    for (InternalPosition land : this) {
       result += land.toString();
     }
     result += InternalConstants.END_OF_POSITION_CHAR;
     return result;
   }
+
+  public static Function<InternalPositionWithLands, String> toString =
+      new Function<InternalPositionWithLands, String>() {
+        public String apply(InternalPositionWithLands position) {
+          return position.toString();
+        }
+      };
 }

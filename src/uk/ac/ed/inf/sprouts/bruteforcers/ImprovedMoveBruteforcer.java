@@ -1,4 +1,4 @@
-package uk.ac.ed.inf.sprouts;
+package uk.ac.ed.inf.sprouts.bruteforcers;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import uk.ac.ed.inf.sprouts.AllMovesGenerator;
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.internal.ChildrenGenerator;
@@ -38,6 +39,7 @@ public class ImprovedMoveBruteforcer implements MoveBruteforcer {
       }
     }
     System.out.println("Different positions: " + alreadyComputedPositions.size());
+    System.out.println(alreadyComputedPositions.toString());
   }
 
   public boolean hasWinningMove() {

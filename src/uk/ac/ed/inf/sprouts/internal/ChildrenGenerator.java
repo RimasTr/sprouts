@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import uk.ac.ed.inf.sprouts.ImprovedMoveBruteforcer;
+import uk.ac.ed.inf.sprouts.bruteforcers.ImprovedMoveBruteforcer;
 
 import com.google.common.collect.Collections2;
 

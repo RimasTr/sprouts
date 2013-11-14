@@ -1,7 +1,7 @@
 package uk.ac.ed.inf.sprouts.runners;
 
-import uk.ac.ed.inf.sprouts.MoveBruteforcer;
-import uk.ac.ed.inf.sprouts.SimpleMoveBruteforcer;
+import uk.ac.ed.inf.sprouts.bruteforcers.MoveBruteforcer;
+import uk.ac.ed.inf.sprouts.bruteforcers.SimpleMoveBruteforcer;
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
 
