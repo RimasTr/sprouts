@@ -60,6 +60,10 @@ public class Game implements Serializable {
     return movesHistory;
   }
 
+  public int getNumberOfMoves() {
+    return movesHistory.size();
+  }
+
   public boolean isOver() {
     return position.isLost();
   }

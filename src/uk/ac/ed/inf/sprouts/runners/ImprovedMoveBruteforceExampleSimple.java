@@ -7,7 +7,7 @@ import uk.ac.ed.inf.sprouts.external.Game;
 public class ImprovedMoveBruteforceExampleSimple {
 
   public static void main(String[] args) {
-    Game game = Game.fromString("4+");
+    Game game = Game.fromString("5+");
     //game.makeMove("a(d)c");
 
     long time = System.currentTimeMillis();

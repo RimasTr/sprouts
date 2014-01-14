@@ -1,4 +1,4 @@
-package uk.ac.ed.inf.sprouts;
+package uk.ac.ed.inf.sprouts.external;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,11 +6,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-
-import uk.ac.ed.inf.sprouts.external.Boundary;
-import uk.ac.ed.inf.sprouts.external.Move;
-import uk.ac.ed.inf.sprouts.external.Position;
-import uk.ac.ed.inf.sprouts.external.Region;
 
 public class RandomMoveGenerator {
 

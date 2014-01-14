@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-import uk.ac.ed.inf.sprouts.AllMovesGenerator;
-import uk.ac.ed.inf.sprouts.RandomMoveGenerator;
+import uk.ac.ed.inf.sprouts.external.AllMovesGenerator;
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
+import uk.ac.ed.inf.sprouts.external.RandomMoveGenerator;
 import uk.ac.ed.inf.sprouts.internal.InternalPosition;
 
 public class Sprouts {
@@ -21,8 +21,8 @@ public class Sprouts {
   }
 
   public static final boolean LETTERS_MODE = false;
-  private static final GamePlayingType GAME_TYPE = GamePlayingType.HUMAN_VS_HUMAN;
-  private static final String AUTO_GAME_TYPE = "2+";
+  private static final GamePlayingType GAME_TYPE = GamePlayingType.HUMAN_VS_PC;
+  private static final String AUTO_GAME_TYPE = "3+";
   private static final Long SEED = null;
   private static final int NUMBER_OF_MOVES_TO_GENERATE = 1000;
 

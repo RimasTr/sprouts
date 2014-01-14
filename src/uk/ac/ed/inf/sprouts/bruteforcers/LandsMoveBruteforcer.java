@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import uk.ac.ed.inf.sprouts.AllMovesGenerator;
+import uk.ac.ed.inf.sprouts.external.AllMovesGenerator;
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.internal.ChildrenGenerator;
@@ -29,17 +29,18 @@ public class LandsMoveBruteforcer implements MoveBruteforcer {
 
   public void compute() {
     alreadyComputedPositions = new HashMap<String, Integer>();
-    possiblePositions = getPossiblePositions(game);
-    System.out.println("Possible moves: " + possiblePositions.size());
-    for (String position : possiblePositions.keySet()) {
-      System.out.println("Checking " + possiblePositions.get(position).toNotation());
-      if (!isWin(position)) {
-        winningMove = possiblePositions.get(position);
-        System.out.println("Different positions: " + alreadyComputedPositions.size());
-        return;
-      }
-    }
-    System.out.println("Different positions: " + alreadyComputedPositions.size());
+    isWin(InternalPosition.fromExternal(game.getPosition()).toString());
+//    possiblePositions = getPossiblePositions(game);
+//    System.out.println("Possible moves: " + possiblePositions.size());
+//    for (String position : possiblePositions.keySet()) {
+//      System.out.println("Checking " + possiblePositions.get(position).toNotation());
+//      if (!isWin(position)) {
+//        winningMove = possiblePositions.get(position);
+//        System.out.println("Different positions: " + alreadyComputedPositions.size());
+//        return;
+//      }
+//    }
+//    System.out.println("Different positions: " + alreadyComputedPositions.size());
   }
 
   public boolean hasWinningMove() {
@@ -62,7 +63,7 @@ public class LandsMoveBruteforcer implements MoveBruteforcer {
 
   private boolean isWin(String currentPosition) {
     int result = computeNimber(currentPosition);
-    //System.out.println("Result of " + currentPosition + " is " + result);
+    System.out.println("Result of " + currentPosition + " is " + result);
     return result > 0;
   }
 
@@ -77,7 +78,7 @@ public class LandsMoveBruteforcer implements MoveBruteforcer {
     InternalPositionWithLands lands = InternalPositionWithLands.fromString(currentPosition);
     if (lands.size() > 1) {
       // TODO: maybe store combined result as well?
-      System.out.println("Splitting " + currentPosition + " --------- ");
+      //System.out.println("Splitting " + currentPosition + " --------- ");
       return computeNimberOfSeveralLands(lands);
     }
     // Else only one land
@@ -90,7 +91,7 @@ public class LandsMoveBruteforcer implements MoveBruteforcer {
     while (nimbers.contains(result)) {
       result++;
     }
-    System.out.println("Nimber of " + currentPosition + " is " + result);
+    //System.out.println("Nimber of " + currentPosition + " is " + result);
     alreadyComputedPositions.put(currentPosition, result);
     return result;
   }
@@ -100,7 +101,7 @@ public class LandsMoveBruteforcer implements MoveBruteforcer {
     for (InternalPosition land : lands) {
       //System.out.println("computing " + land.toString());
       int nimber = computeNimber(land.toString());
-      //System.out.println("of " + land.toString() + " is " + nimber);
+      System.out.println("of " + land.toString() + " is " + nimber);
       result = result ^ nimber;
     }
     //System.out.println("Total: " + result);

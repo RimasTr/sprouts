@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import uk.ac.ed.inf.sprouts.AllMovesGenerator;
+import uk.ac.ed.inf.sprouts.external.AllMovesGenerator;
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.internal.ChildrenGenerator;
@@ -39,7 +39,7 @@ public class ImprovedMoveBruteforcer implements MoveBruteforcer {
       }
     }
     System.out.println("Different positions: " + alreadyComputedPositions.size());
-    System.out.println(alreadyComputedPositions.toString());
+    //System.out.println(alreadyComputedPositions.toString());
   }
 
   public boolean hasWinningMove() {
@@ -61,7 +61,7 @@ public class ImprovedMoveBruteforcer implements MoveBruteforcer {
   }
 
   private boolean isWin(String currentPosition) {
-    // System.out.println("Calculating " + currentPosition);
+    //System.out.println("Calculating " + currentPosition);
     if (currentPosition.length() <= 1) {
       return false;
     }
@@ -82,6 +82,7 @@ public class ImprovedMoveBruteforcer implements MoveBruteforcer {
           System.out.println("Wins by going to " + position);
         }
         alreadyComputedPositions.put(currentPosition, true);
+        //System.out.println(currentPosition + "\ttrue");
         return true;
       }
     }
@@ -93,6 +94,7 @@ public class ImprovedMoveBruteforcer implements MoveBruteforcer {
     // System.out.println("All moves: ");
     // getPossiblePositions(game, true);
     // }
+    //System.out.println(currentPosition + "\tfalse");
     alreadyComputedPositions.put(currentPosition, false);
     return false;
   }
