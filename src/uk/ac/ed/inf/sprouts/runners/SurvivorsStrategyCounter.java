@@ -11,7 +11,7 @@ public class SurvivorsStrategyCounter {
     int randomWon = 0;
 
     for (int i = 0; i < 20; i++) {
-      Game game = Game.fromString("7+");
+      Game game = Game.fromString("4+");
 
       while (!game.isOver()) {
         SurvivorsStrategy strategy = new SurvivorsStrategy(game);

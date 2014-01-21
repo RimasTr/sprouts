@@ -43,11 +43,43 @@ public class SurvivorsStrategy {
   }
 
   private boolean computeSurvivorsGoal() {
-    int survivorsEstimate = game.getInitialSprouts() * 2 / 3;
-    if (countSurvivors(game) > survivorsEstimate) {
-      return true;
+    int wantedNumberOfSurvivors = getWantedNumberOfSurvivors();
+    if (countSurvivors(game) > wantedNumberOfSurvivors) {
+      return false;
     }
-    return false;
+    return true;
+  }
+
+  private int getWantedNumberOfSurvivors() {
+    double finalSurvivorsEstimate = game.getInitialSprouts() * 2.0 / 3.0;
+    double numberOfMovesEstimate = game.getInitialSprouts() * 3.0 - finalSurvivorsEstimate;
+    double wantedNumberOfSurvivors;
+    if (needsEvenNumberOfSurvivors(numberOfMovesEstimate, finalSurvivorsEstimate)) {
+      wantedNumberOfSurvivors = roundToNearestEven(finalSurvivorsEstimate);
+    } else {
+      wantedNumberOfSurvivors = roundToNearestOdd(finalSurvivorsEstimate);
+    }
+    double wantedSurvivorsEstimate =
+        wantedNumberOfSurvivors * (game.getNumberOfMoves() / numberOfMovesEstimate);
+    return (int) Math.round(wantedSurvivorsEstimate);
+  }
+
+  private boolean needsEvenNumberOfSurvivors(double numberOfMovesEstimate,
+      double finalSurvivorsEstimate) {
+    if (game.getNumberOfMoves() % 2 == Math.round(numberOfMovesEstimate) % 2) {
+      // estimated outcome is fine for the player
+      return Math.round(finalSurvivorsEstimate) % 2 == 0;
+    } else {
+      return !(Math.round(finalSurvivorsEstimate) % 2 == 0);
+    }
+  }
+
+  private int roundToNearestEven(double number) {
+    return (int) (Math.round(number / 2.0) * 2.0);
+  }
+
+  private double roundToNearestOdd(double number) {
+    return roundToNearestEven(number + 1) - 1;
   }
 
   private int countSurvivors(Game game) {
