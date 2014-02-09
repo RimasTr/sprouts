@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import com.google.common.base.Function;
 import com.google.common.collect.HashMultimap;
@@ -103,9 +104,12 @@ public class InternalPositionWithLands extends ArrayList<InternalPosition> {
 
   public static InternalPositionWithLands fromStringUnoptimized(String string) {
     InternalPositionWithLands internalPosition = new InternalPositionWithLands();
-    String[] lands = string.split(String.valueOf(InternalConstants.END_OF_LAND_CHAR));
-    for (int i = 0; i < lands.length - 1; i++) {
-      internalPosition.add(InternalPosition.fromString(lands[i]));
+    StringTokenizer lands =
+        new StringTokenizer(string, String.valueOf(InternalConstants.END_OF_LAND_CHAR));
+    int total = lands.countTokens();
+    while (total > 1) {
+      internalPosition.add(InternalPosition.fromString(lands.nextToken()));
+      total--;
     }
     return internalPosition;
   }

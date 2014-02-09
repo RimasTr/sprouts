@@ -5,11 +5,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
-import com.google.common.base.Function;
+import java.util.StringTokenizer;
 
 import uk.ac.ed.inf.sprouts.external.Position;
 import uk.ac.ed.inf.sprouts.external.Region;
+
+import com.google.common.base.Function;
 
 public class InternalPosition extends ArrayList<InternalRegion> {
 
@@ -44,9 +45,12 @@ public class InternalPosition extends ArrayList<InternalRegion> {
 
   public static InternalPosition fromStringUnoptimized(String string) {
     InternalPosition internalPosition = new InternalPosition();
-    String[] regions = string.split(String.valueOf(InternalConstants.END_OF_REGION_CHAR));
-    for (int i = 0; i < regions.length - 1; i++) {
-      internalPosition.add(InternalRegion.fromString(regions[i]));
+    StringTokenizer regions =
+        new StringTokenizer(string, String.valueOf(InternalConstants.END_OF_REGION_CHAR));
+    int total = regions.countTokens();
+    while (total > 1) {
+      internalPosition.add(InternalRegion.fromString(regions.nextToken()));
+      total--;
     }
     return internalPosition;
   }
@@ -67,18 +71,18 @@ public class InternalPosition extends ArrayList<InternalRegion> {
 
   // TODO: private
   public void optimize() {
-//    Output.debug("Before:    " + this);
+    // Output.debug("Before:    " + this);
     PositionMap map = getMap();
     detectAbstractVertices(map);
-//    Output.debug("After1:    " + this);
+    // Output.debug("After1:    " + this);
     deleteEmptyBoundariesAndRegions();
-//    Output.debug("After2:    " + this);
+    // Output.debug("After2:    " + this);
     // recompute map
     map = new PositionMap(getVertices());
     detectAbstractVertices(map);
-//    Output.debug("After3:    " + this);
+    // Output.debug("After3:    " + this);
     canonize();
-//    Output.debug("After4:    " + this);
+    // Output.debug("After4:    " + this);
   }
 
   private void detectAbstractVertices(PositionMap map) {

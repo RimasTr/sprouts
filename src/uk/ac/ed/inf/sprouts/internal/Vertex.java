@@ -7,10 +7,12 @@ public class Vertex {
 
   private final InternalBoundary boundary;
   private char c;
+  private int i;
 
   public Vertex(char c, InternalBoundary boundary) {
     super();
     this.c = c;
+    this.i = (int) c;
     this.boundary = boundary;
   }
 
@@ -20,6 +22,7 @@ public class Vertex {
 
   public void setC(char c) {
     this.c = c;
+    this.i = (int) c;
   }
 
   public InternalBoundary getBoundary() {
@@ -64,7 +67,7 @@ public class Vertex {
 
   @Override
   public int hashCode() {
-    return (int) c;
+    return i;
   }
 
   @Override

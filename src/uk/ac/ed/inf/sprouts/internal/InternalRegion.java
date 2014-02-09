@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import uk.ac.ed.inf.sprouts.external.Boundary;
 import uk.ac.ed.inf.sprouts.external.Position;
@@ -36,9 +37,10 @@ public class InternalRegion extends ArrayList<InternalBoundary>
 
   public static InternalRegion fromString(String string) {
     InternalRegion internalRegion = new InternalRegion();
-    String[] boundaries = string.split(InternalConstants.END_OF_BOUNDARY_REGEX);
-    for (int i = 0; i < boundaries.length; i++) {
-      internalRegion.add(InternalBoundary.fromString(boundaries[i]));
+    StringTokenizer boundaries =
+        new StringTokenizer(string, String.valueOf(InternalConstants.END_OF_BOUNDARY_CHAR));
+    while (boundaries.hasMoreTokens()) {
+      internalRegion.add(InternalBoundary.fromString(boundaries.nextToken()));
     }
     return internalRegion;
   }
