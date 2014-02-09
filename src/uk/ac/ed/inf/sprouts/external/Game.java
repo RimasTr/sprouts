@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import uk.ac.ed.inf.sprouts.utils.Output;
+
 public class Game implements Serializable {
 
   private static final long serialVersionUID = 8360779598976895710L;
@@ -32,14 +34,14 @@ public class Game implements Serializable {
     Matcher matcher = pattern.matcher(gameTypeString);
 
     if (matcher.matches()) {
-      // System.out.println("Matches: ");
+      // Output.debug("Matches: ");
       // for (int i = 1; i <= matcher.groupCount(); i++)
-      // System.out.println(i + ": " + matcher.group(i));
+      // Output.debug(i + ": " + matcher.group(i));
       Integer initialSprouts = Integer.parseInt(matcher.group(1));
       GameType gameType = GameType.fromSymbol(matcher.group(2));
       return new Game(initialSprouts, gameType);
     } else {
-      System.out.println("Fail");
+      Output.debug("Fail");
       return null;
     }
   }
@@ -83,9 +85,9 @@ public class Game implements Serializable {
       ObjectInputStream ois = new ObjectInputStream(bais);
       return (Game) ois.readObject();
     } catch (IOException e) {
-      System.out.println(e);
+      Output.debug("" + e);
     } catch (ClassNotFoundException e) {
-      System.out.println(e);
+      Output.debug("" + e);
     }
     return null;
   }

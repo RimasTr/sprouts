@@ -69,13 +69,17 @@ public class Region extends ArrayList<Boundary> {
   }
 
   public boolean hasMoves(HashMap<Integer, Integer> lives) {
+    return (getLives(lives) > 1);
+  }
+
+  public int getLives(HashMap<Integer, Integer> lives) {
     int totalLives = 0;
     for (int vertex : lives.keySet()) {
       if (this.containsVertex(vertex)) {
         totalLives += lives.get(vertex);
       }
     }
-    return (totalLives > 1);
+    return totalLives;
   }
 
   public boolean hasAliveVerticesExcept(HashMap<Integer, Integer> lives, Integer from, Integer to) {

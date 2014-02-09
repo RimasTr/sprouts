@@ -2,6 +2,7 @@ package uk.ac.ed.inf.sprouts.runners;
 
 import uk.ac.ed.inf.sprouts.internal.InternalPosition;
 import uk.ac.ed.inf.sprouts.internal.InternalPositionWithLands;
+import uk.ac.ed.inf.sprouts.utils.Output;
 
 public class InternalPositionExperiments {
 
@@ -20,21 +21,21 @@ public class InternalPositionExperiments {
 //    System.out.print("Enter position:\n");
 //    String positionString = scanner.nextLine();
 //    InternalPosition position = InternalPosition.fromStringUnoptimized(positionString);
-//    System.out.println("Position is: \n" + position);
+//    Output.debug("Position is: \n" + position);
 //    position.optimize();
-//    System.out.println("New position is: " + position);
+//    Output.debug("New position is: " + position);
 //    position.optimize();
-//    System.out.println("New position is: " + position);
-//    System.out.println("----");
+//    Output.debug("New position is: " + position);
+//    Output.debug("----");
   }
 
   public static void printPosition(String string) {
-    System.out.println("Position string: " + string);
+    Output.debug("Position string: " + string);
     InternalPosition position = InternalPosition.fromString(string);
-    System.out.println("Position is:     " + position);
+    Output.debug("Position is:     " + position);
     position.optimize();
-    System.out.println("New position is: " + position);
-    System.out.println("Split position: " + new InternalPositionWithLands(position));
-    System.out.println("----");
+    Output.debug("New position is: " + position);
+    Output.debug("Split position: " + new InternalPositionWithLands(position));
+    Output.debug("----");
   }
 }

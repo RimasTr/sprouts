@@ -13,6 +13,7 @@ import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.external.RandomMoveGenerator;
 import uk.ac.ed.inf.sprouts.internal.InternalPosition;
+import uk.ac.ed.inf.sprouts.utils.Output;
 
 public class Sprouts {
 
@@ -49,8 +50,8 @@ public class Sprouts {
   private static void runAllMovesByRandom() {
     String gameTypeString = AUTO_GAME_TYPE;
     Game game = Game.fromString(gameTypeString);
-    System.out.println("Game type is: " + game.getInitialSprouts() + " " + game.getGameType());
-    System.out.println("Position is: \n" + game.getPosition());
+    Output.debug("Game type is: " + game.getInitialSprouts() + " " + game.getGameType());
+    Output.debug("Position is: \n" + game.getPosition());
 
     // makeMove("1(6)2", game);
     // makeMove("3(7)4", game);
@@ -64,10 +65,10 @@ public class Sprouts {
       movesSet.add(move);
       possiblePositions.put(InternalPosition.fromExternal(clone.getPosition()).toString(), move);
     }
-    System.out.println("All moves (" + movesSet.size() + ")");
-    System.out.println("All possible positions (" + possiblePositions.keySet().size() + ")");
+    Output.debug("All moves (" + movesSet.size() + ")");
+    Output.debug("All possible positions (" + possiblePositions.keySet().size() + ")");
     for (String positionString : possiblePositions.keySet()) {
-      System.out.println(possiblePositions.get(positionString).toNotation() + " : "
+      Output.debug(possiblePositions.get(positionString).toNotation() + " : "
           + positionString);
     }
   }
@@ -75,8 +76,8 @@ public class Sprouts {
   private static void runAllMoves() {
     String gameTypeString = AUTO_GAME_TYPE;
     Game game = Game.fromString(gameTypeString);
-    System.out.println("Game type is: " + game.getInitialSprouts() + " " + game.getGameType());
-    System.out.println("Position is: \n" + game.getPosition());
+    Output.debug("Game type is: " + game.getInitialSprouts() + " " + game.getGameType());
+    Output.debug("Position is: \n" + game.getPosition());
 
     //makeMove("1(9)2", game);
 
@@ -84,16 +85,16 @@ public class Sprouts {
     Set<Move> moves = allMovesGenerator.generateAllMoves(game.getPosition());
     HashMap<String, Move> possiblePositions = new HashMap<String, Move>();
     printMovesInOrder(moves);
-    System.out.println("All moves (" + moves.size() + ")");
+    Output.debug("All moves (" + moves.size() + ")");
 
     for (Move move : moves) {
       Game clone = game.deepClone();
       clone.makeMove(move);
       possiblePositions.put(InternalPosition.fromExternal(clone.getPosition()).toString(), move);
     }
-    System.out.println("All possible positions (" + possiblePositions.keySet().size() + ")");
+    Output.debug("All possible positions (" + possiblePositions.keySet().size() + ")");
     for (String positionString : possiblePositions.keySet()) {
-      System.out.println(positionString + "\t\t"
+      Output.debug(positionString + "\t\t"
           + possiblePositions.get(positionString).toNotation());
     }
   }
@@ -103,14 +104,14 @@ public class Sprouts {
     System.out.print("Enter game type:\n");
     String gameTypeString = scanner.nextLine();
     Game game = Game.fromString(gameTypeString);
-    System.out.println("Game type is: " + game.getInitialSprouts() + " " + game.getGameType());
-    System.out.println("Position is: \n" + game.getPosition());
+    Output.debug("Game type is: " + game.getInitialSprouts() + " " + game.getGameType());
+    Output.debug("Position is: \n" + game.getPosition());
 
     // String seedString = scanner.nextLine();
     // Long.parseLong(seedString)
 
     if (gamePlayingType == GamePlayingType.HUMAN_VS_PC) {
-      System.out.println("Do you want to start first (Y/N):");
+      Output.debug("Do you want to start first (Y/N):");
       String startString = scanner.nextLine();
       boolean computerStarts = startString.toLowerCase().equals("n");
 
@@ -120,17 +121,17 @@ public class Sprouts {
     }
 
     while (!game.isOver()) {
-      System.out.println("Enter your move:");
+      Output.debug("Enter your move:");
       String moveString = scanner.nextLine();
       makeMove(moveString, game);
       if (game.isOver()) {
-        System.out.println("Human wins");
+        Output.debug("Human wins");
         break;
       }
       if (gamePlayingType == GamePlayingType.HUMAN_VS_PC) {
         makeMove(moveGenerator.generateRandomMove(game.getPosition()), game);
         if (game.isOver()) {
-          System.out.println("Computer wins");
+          Output.debug("Computer wins");
         }
       }
     }
@@ -139,8 +140,8 @@ public class Sprouts {
   private static void runAutoGame() {
     String gameTypeString = AUTO_GAME_TYPE;
     Game game = Game.fromString(gameTypeString);
-    System.out.println("Game type is: " + game.getInitialSprouts() + " " + game.getGameType());
-    System.out.println("Position is: \n" + game.getPosition());
+    Output.debug("Game type is: " + game.getInitialSprouts() + " " + game.getGameType());
+    Output.debug("Position is: \n" + game.getPosition());
 
     while (!game.isOver()) {
       makeMove(moveGenerator.generateRandomMove(game.getPosition()), game);
@@ -161,19 +162,19 @@ public class Sprouts {
   }
 
   private static void makeMove(Move move, Game game) {
-    System.out.println("The move is: " + move.toNotation());
+    Output.debug("The move is: " + move.toNotation());
     game.makeMove(move);
-    System.out.println("New position is: \n" + game.getPosition());
-    System.out.println("Internal position is: \n"
+    Output.debug("New position is: \n" + game.getPosition());
+    Output.debug("Internal position is: \n"
         + InternalPosition.fromExternal(game.getPosition()));
-    System.out.println();
+    Output.debug();
   }
 
   private static void printMovesInOrder(Set<Move> movesSet) {
     List<Move> moves = new ArrayList<Move>(movesSet);
     Collections.sort(moves);
     for (Move move : moves) {
-      System.out.println(move.toNotation());
+      Output.debug(move.toNotation());
     }
   }
 }

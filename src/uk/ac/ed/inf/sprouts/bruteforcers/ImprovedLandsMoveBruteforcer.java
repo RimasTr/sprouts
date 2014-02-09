@@ -14,6 +14,8 @@ import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.internal.ChildrenGenerator;
 import uk.ac.ed.inf.sprouts.internal.InternalPosition;
 import uk.ac.ed.inf.sprouts.internal.InternalPositionWithLands;
+import uk.ac.ed.inf.sprouts.utils.Output;
+import uk.ac.ed.inf.sprouts.utils.SavedPositionsHandler;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -26,24 +28,45 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
   private Move winningMove;
   private HashMap<String, Move> possiblePositions;
   private HashMap<String, Boolean> alreadyComputedPositions;
+  private HashMap<String, Boolean> savedPositions;
+  private int save = 0;
 
   public ImprovedLandsMoveBruteforcer(Game game) {
     this.game = game;
+    this.alreadyComputedPositions = new HashMap<String, Boolean>();
+    this.savedPositions = new HashMap<String, Boolean>();
+  }
+
+  public ImprovedLandsMoveBruteforcer(Game game, HashMap<String, Boolean> savedPositions) {
+    this(game);
+    this.alreadyComputedPositions = savedPositions;
+  }
+
+  public ImprovedLandsMoveBruteforcer(Game game, int save) {
+    this(game);
+    this.save = save;
   }
 
   public void compute() {
-    alreadyComputedPositions = new HashMap<String, Boolean>();
     possiblePositions = getPossiblePositions(game);
-    System.out.println("Possible moves: " + possiblePositions.size());
+    Output.debug("Possible moves: " + possiblePositions.size());
     for (String position : possiblePositions.keySet()) {
-      System.out.println("Checking " + possiblePositions.get(position).toNotation());
-      if (!isWin(position, 0)) {
+      Output.debug("Checking " + possiblePositions.get(position).toNotation());
+      if (!isWin(position, 0, 0)) {
         winningMove = possiblePositions.get(position);
-        System.out.println("Different positions: " + alreadyComputedPositions.size());
+        finish();
         return;
       }
     }
-    System.out.println("Different positions: " + alreadyComputedPositions.size());
+    finish();
+  }
+
+  private void finish() {
+    Output.debug("Different positions: " + alreadyComputedPositions.size());
+    Output.debug("Saved positions: " + savedPositions.size());
+    if (save > 0) {
+      SavedPositionsHandler.savePositionsToFile(savedPositions);
+    }
   }
 
   public boolean hasWinningMove() {
@@ -64,8 +87,10 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
     return possiblePositions.get(randomKey);
   }
 
-  private boolean isWin(String currentPosition, int nimber) {
-    //System.out.println("Calculating " + currentPosition + " " + nimber);
+  private boolean isWin(String currentPosition, int nimber, int depth) {
+    if (depth < 0) {
+      Output.debug("Calculating " + currentPosition + " " + nimber + " " + depth);
+    }
     if (currentPosition.length() <= 1) {
       return nimber != 0;
     }
@@ -75,60 +100,71 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
     InternalPositionWithLands lands = InternalPositionWithLands.fromString(currentPosition);
     if (lands.size() > 1) {
       // TODO: maybe store combined result as well?
-      // System.out.println("Splitting " + currentPosition + " --------- ");
+      // Output.debug("Splitting " + currentPosition + " --------- ");
       List<String> landStrings =
           Lists.newArrayList(Iterables.transform(lands, InternalPosition.toString));
       Collections.sort(landStrings, new LandComparator());
-      int n = computeNimberOfSeveralLands(landStrings.subList(1, lands.size()));
-      return isWin(landStrings.get(0), nimber ^ n);
+      int n = computeNimberOfSeveralLands(landStrings.subList(1, lands.size()), depth);
+      return isWin(landStrings.get(0), nimber ^ n, depth);
     }
     // Else only one land
+    boolean result = false;
     for (int i = 0; i < nimber; i++) {
-      if (!isWin(currentPosition, i)) {
-        alreadyComputedPositions.put(currentPosition + nimber, true);
-        // System.out.println(currentPosition + "\ttrue 1");
-        return true;
+      if (!isWin(currentPosition, i, depth)) {
+        savePosition(currentPosition, nimber, true, depth);
+        // Output.debug(currentPosition + "\ttrue 1");
+        result = true;
+        if (depth >= save) {
+          return result;
+        }
       }
     }
+    if (result) {
+      return result;
+    }
     Set<String> possiblePositions = getPossibleInternalPositions(lands.get(0));
-    // System.out.println("Children: " + possiblePositions);
+    // Output.debug("Children: " + possiblePositions);
     for (String position : possiblePositions) {
       // First check already computed possitions maybe?
       if (alreadyComputedPositions.containsKey(position + nimber)
           && !alreadyComputedPositions.get(position + nimber)) {
-        // System.out.println(currentPosition + "\ttrue 2");
-        alreadyComputedPositions.put(currentPosition + nimber, true);
+        // Output.debug(currentPosition + "\ttrue 2");
+        savePosition(currentPosition, nimber, true, depth);
         return true;
       }
     }
+    result = false;
     for (String position : possiblePositions) {
-      if (!isWin(position, nimber)) {
-        // System.out.println(currentPosition + "\ttrue 3");
-        alreadyComputedPositions.put(currentPosition + nimber, true);
-        return true;
+      if (!isWin(position, nimber, depth + 1)) {
+        // Output.debug(currentPosition + "\ttrue 3");
+        savePosition(currentPosition, nimber, true, depth);
+        result = true;
+        if (depth >= save) {
+          return result;
+        }
       }
     }
-    alreadyComputedPositions.put(currentPosition + nimber, false);
-    // System.out.println(currentPosition + "\tfalse");
-    return false;
-  }
-
-  private int computeNimberOfSeveralLands(List<String> list) {
-    int result = 0;
-    for (String land : list) {
-      // System.out.println("computing " + land.toString());
-      int nimber = computeNimber(land);
-      // System.out.println("of " + land.toString() + " is " + nimber);
-      result = result ^ nimber;
-    }
-    // System.out.println("Total: " + result);
+    savePosition(currentPosition, nimber, result, depth);
+    // Output.debug(currentPosition + "\tfalse");
     return result;
   }
 
-  private int computeNimber(String position) {
+  private int computeNimberOfSeveralLands(List<String> list, int depth) {
+    int result = 0;
+    for (String land : list) {
+      // Output.debug("computing " + land.toString());
+      int nimber = computeNimber(land, depth);
+      // Output.debug("of " + land.toString() + " is " + nimber);
+      result = result ^ nimber;
+    }
+    // Output.debug("Total: " + result);
+    return result;
+  }
+
+  private int computeNimber(String position, int depth) {
     int n = 0;
     while (true) {
-      if (!isWin(position, n++)) {
+      if (!isWin(position, n++, depth)) {
         return n - 1;
       }
     }
@@ -153,7 +189,17 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
   }
 
   public HashMap<String, Boolean> getComputedPositions() {
-    // TODO: maybe implement something for testing
-    return null;
+    return alreadyComputedPositions;
+  }
+
+  public HashMap<String, Boolean> getSavedPositions() {
+    return savedPositions;
+  }
+
+  private void savePosition(String currentPosition, int nimber, boolean value, int depth) {
+    alreadyComputedPositions.put(currentPosition + nimber, value);
+    if (depth < save) {
+      savedPositions.put(currentPosition + nimber, value);
+    }
   }
 }

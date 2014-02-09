@@ -9,7 +9,9 @@ import java.util.Set;
 import uk.ac.ed.inf.sprouts.external.AllMovesGenerator;
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
+import uk.ac.ed.inf.sprouts.external.Region;
 import uk.ac.ed.inf.sprouts.internal.InternalPosition;
+import uk.ac.ed.inf.sprouts.utils.Output;
 
 public class SurvivorsStrategy {
 
@@ -51,7 +53,8 @@ public class SurvivorsStrategy {
   }
 
   private int getWantedNumberOfSurvivors() {
-    double finalSurvivorsEstimate = game.getInitialSprouts() * 2.0 / 3.0;
+    // double finalSurvivorsEstimate = game.getInitialSprouts() * 2.0 / 3.0;
+    double finalSurvivorsEstimate = getFinalSurvivorsEstimate();
     double numberOfMovesEstimate = game.getInitialSprouts() * 3.0 - finalSurvivorsEstimate;
     double wantedNumberOfSurvivors;
     if (needsEvenNumberOfSurvivors(numberOfMovesEstimate, finalSurvivorsEstimate)) {
@@ -62,6 +65,16 @@ public class SurvivorsStrategy {
     double wantedSurvivorsEstimate =
         wantedNumberOfSurvivors * (game.getNumberOfMoves() / numberOfMovesEstimate);
     return (int) Math.round(wantedSurvivorsEstimate);
+  }
+
+  private double getFinalSurvivorsEstimate() {
+    double estimate = 0;
+    HashMap<Integer, Integer> lives = game.getPosition().getLives();
+    for (Region region : game.getPosition().getRegions()) {
+      double regionEstimate = (2.0 / 9.0) * region.getLives(lives);
+      estimate += (regionEstimate > 1.0 ? regionEstimate : 1.0);
+    }
+    return estimate;
   }
 
   private boolean needsEvenNumberOfSurvivors(double numberOfMovesEstimate,
@@ -90,20 +103,41 @@ public class SurvivorsStrategy {
 
   public void compute() {
     possiblePositions = getPossiblePositions(game);
-    System.out.println("Possible moves: " + possiblePositions.size());
+    double maxAverage = -99999999;
+    Output.debug("Possible moves: " + possiblePositions.size());
     for (String position : possiblePositions.keySet()) {
-      System.out.println("Checking " + possiblePositions.get(position).getMove().toNotation());
-      if (!isOptimal(possiblePositions.get(position).getGame())) {
-        optimalMove = possiblePositions.get(position).getMove();
-        return;
+      Output.debug("Checking " + possiblePositions.get(position).getMove().toNotation());
+      HashMap<String, MoveResult> possibleChildPositions =
+          getPossiblePositions(possiblePositions.get(position).getGame());
+      double average;
+      if (!possibleChildPositions.isEmpty()) {
+         average = (needsMoreSurvivors ? 1.0 : -1.0) * computeAverage(possibleChildPositions);
+      } else {
+        average = 2; // TODO: some other value? shouldn't happen anyway
       }
+      if (average > maxAverage) {
+        optimalMove = possiblePositions.get(position).getMove();
+      }
+      return;
+      // if (!isOptimal(possiblePositions.get(position).getGame())) {
+      // optimalMove = possiblePositions.get(position).getMove();
+      // return;
+      // }
     }
   }
 
-  private boolean isOptimal(Game gameAfterMove) {
-    // TODO: make sure it works
-    return (needsMoreSurvivors == (countSurvivors(gameAfterMove) > countSurvivors(game)));
+  private double computeAverage(HashMap<String, MoveResult> possibleChildPositions) {
+    int sum = 0;
+    for (MoveResult result : possibleChildPositions.values()) {
+      sum += countSurvivors(result.getGame());
+    }
+    return sum * 1.0 / possibleChildPositions.values().size();
   }
+
+  // private boolean isOptimal(Game gameAfterMove) {
+  // // TODO: make sure it works
+  // return (needsMoreSurvivors == (countSurvivors(gameAfterMove) > countSurvivors(game)));
+  // }
 
   public boolean hasOptimalMove() {
     return optimalMove != null;
@@ -132,7 +166,7 @@ public class SurvivorsStrategy {
     Set<Move> moves = allMovesGenerator.generateAllMoves(game.getPosition());
     HashMap<String, MoveResult> possiblePositions = new HashMap<String, MoveResult>();
     if (debug) {
-      System.out.println("All moves (" + moves.size() + ")");
+      Output.debug("All moves (" + moves.size() + ")");
     }
     for (Move move : moves) {
       Game clone = game.deepClone();
@@ -140,14 +174,14 @@ public class SurvivorsStrategy {
       InternalPosition internalPosition = InternalPosition.fromExternal(clone.getPosition());
       String internalPositionString = internalPosition.toString();
       if (debug) {
-        System.out.println(move.toNotation() + " -> " + internalPositionString);
-        System.out.println(clone.getPosition());
+        Output.debug(move.toNotation() + " -> " + internalPositionString);
+        Output.debug("" + clone.getPosition());
       }
       possiblePositions.put(internalPositionString, new MoveResult(move, clone));
     }
-    // System.out.println("All possible positions (" + possiblePositions.keySet().size() + ")");
+    // Output.debug("All possible positions (" + possiblePositions.keySet().size() + ")");
     // for (String positionString : possiblePositions.keySet()) {
-    // System.out.println(positionString + "\t\t"
+    // Output.debug(positionString + "\t\t"
     // + possiblePositions.get(positionString).getMove().toNotation());
     // }
     return possiblePositions;

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import uk.ac.ed.inf.sprouts.utils.Output;
+
 import com.google.common.base.Joiner;
 
 public class Position implements Serializable {
@@ -37,20 +39,20 @@ public class Position implements Serializable {
   }
 
   public void makeMove(Move move) {
-//    System.out.println("Making move: " + move);
+//    Output.debug("Making move: " + move);
 
     adjustLives(move);
 
     numberOfVertices++;
 
     Region region = findRegion(move);
-//    System.out.println("Move in the region: " + region);
+//    Output.debug("Move in the region: " + region);
 
     Boundary fromBoundary = region.getBoundary(move.getFrom());
     Boundary toBoundary = region.getBoundary(move.getTo());
 
     if (fromBoundary.equals(toBoundary)) {
-//      System.out.println("Move in the same boundary: " + fromBoundary);
+//      Output.debug("Move in the same boundary: " + fromBoundary);
       region.remove(fromBoundary);
       // TODO: handle inversion
       Region firstRegion = region.getRegionWithVertices(move);
@@ -80,8 +82,8 @@ public class Position implements Serializable {
       secondBoundary.addAll(fromBoundary.subList(fromId, toId + 1));
       secondBoundary.add(move.getCreatedVertex());
 
-//      System.out.println("First boundary: " + firstBoundary);
-//      System.out.println("Second boundary: " + secondBoundary);
+//      Output.debug("First boundary: " + firstBoundary);
+//      Output.debug("Second boundary: " + secondBoundary);
       if (needsInvertion(move)) {
         firstRegion.add(firstBoundary);
         secondRegion.add(secondBoundary);
@@ -94,10 +96,10 @@ public class Position implements Serializable {
       regions.add(firstRegion);
       regions.add(secondRegion);
 
-      // System.out.println("Boundaries in the first region: " + firstRegion);
-      // System.out.println("Boundaries in the second region: " + secondRegion);
+      // Output.debug("Boundaries in the first region: " + firstRegion);
+      // Output.debug("Boundaries in the second region: " + secondRegion);
     } else {
-//      System.out.println("Move in different boundaries:\n" + fromBoundary + "\n" + toBoundary);
+//      Output.debug("Move in different boundaries:\n" + fromBoundary + "\n" + toBoundary);
       Boundary newBoundary = Boundary.joinTwoBoundaries(fromBoundary, toBoundary, move);
       region.remove(fromBoundary);
       region.remove(toBoundary);
@@ -185,7 +187,7 @@ public class Position implements Serializable {
               return possibleRegions.get(0);
             }
           } else {
-            System.out.println("Warning, might be ambiguos");
+            Output.debug("Warning, might be ambiguos");
             return possibleRegions.get(0);
           }
         }

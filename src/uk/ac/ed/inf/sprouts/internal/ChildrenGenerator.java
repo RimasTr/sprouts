@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import uk.ac.ed.inf.sprouts.bruteforcers.ImprovedMoveBruteforcer;
+import uk.ac.ed.inf.sprouts.utils.Output;
 
 import com.google.common.collect.Collections2;
 
@@ -24,8 +25,8 @@ public class ChildrenGenerator {
     String posString = position.toString();
     for (InternalMove move : moves) {
       if (posString.equals(ImprovedMoveBruteforcer.DEBUG_POSITION)) {
-        System.out.println("Move :" + move);
-        System.out.println("Positions :" + generateAllPossiblePositionsAfter(move));
+        Output.debug("Move :" + move);
+        Output.debug("Positions :" + generateAllPossiblePositionsAfter(move));
       }
       children.addAll(generateAllPossiblePositionsAfter(move));
     }
@@ -90,8 +91,8 @@ public class ChildrenGenerator {
     if (move.inTheSameBoundary()) {
       List<InternalPosition> positionsAfterMove = getPositionsAfterMove(move);
       positions.addAll(positionsAfterMove);
-      // System.out.println("Move: " + move);
-      // System.out.println("Position: " + positionsAfterMove);
+      // Output.debug("Move: " + move);
+      // Output.debug("Position: " + positionsAfterMove);
     } else {
       positions.add(getPositionAfterMove(move));
     }
@@ -124,8 +125,8 @@ public class ChildrenGenerator {
     partialPosition.remove(move.getRegionIndex());
     // TODO: detect equivalent boundaries and reduce the number of splits?
     Set<List<InternalBoundary>> splits = allPossibleSplits(moveRegion);
-    // System.out.println("Number of splits: " + splits.size());
-    // System.out.println("Splits: " + splits);
+    // Output.debug("Number of splits: " + splits.size());
+    // Output.debug("Splits: " + splits);
     for (List<InternalBoundary> split : splits) {
       InternalRegion firstRegion = new InternalRegion(split);
       InternalRegion secondRegion = new InternalRegion();
@@ -148,8 +149,8 @@ public class ChildrenGenerator {
       secondBoundary.addAll(moveBoundary.subList(fromId, toId + 1));
       secondBoundary.add(new Vertex(InternalConstants.TEMP_NEW, firstBoundary));
 
-      // System.out.println("First boundary: " + firstBoundary);
-      // System.out.println("Second boundary: " + secondBoundary);
+      // Output.debug("First boundary: " + firstBoundary);
+      // Output.debug("Second boundary: " + secondBoundary);
       firstRegion.add(firstBoundary);
       secondRegion.add(secondBoundary);
 

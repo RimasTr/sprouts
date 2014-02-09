@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import uk.ac.ed.inf.sprouts.internal.VertexHelper;
 import uk.ac.ed.inf.sprouts.runners.Sprouts;
+import uk.ac.ed.inf.sprouts.utils.Output;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
@@ -53,9 +54,9 @@ public class Move implements Comparable<Move>, Serializable {
     Matcher matcher = pattern.matcher(moveString);
 
     if (matcher.matches()) {
-      // System.out.println("Matches: ");
+      // Output.debug("Matches: ");
       // for (int i = 1; i <= matcher.groupCount(); i++)
-      // System.out.println(i + ": " + matcher.group(i));
+      // Output.debug(i + ": " + matcher.group(i));
 
       Integer from = parseVertex(matcher.group(1));
       Boolean invertedFrom = matcher.group(2) != null;
@@ -70,7 +71,7 @@ public class Move implements Comparable<Move>, Serializable {
       return new Move(from, invertedFrom, to, invertedTo, createdVertex, regionVertex,
           boundariesVertices, invertedBoundaries);
     } else {
-      System.out.println("Fail");
+      Output.debug("Fail");
       return null;
     }
   }
@@ -168,9 +169,9 @@ public class Move implements Comparable<Move>, Serializable {
           }
         }
 
-        // System.out.println("Matches: ");
+        // Output.debug("Matches: ");
         // for (int i = 1; i <= matcher.groupCount(); i++)
-        // System.out.println(i + ": " + matcher.group(i));
+        // Output.debug(i + ": " + matcher.group(i));
       }
     };
     return vertices;

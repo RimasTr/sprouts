@@ -37,7 +37,7 @@ public class InternalPosition extends ArrayList<InternalRegion> {
       InternalRegion internalRegion = InternalRegion.fromExternal(position, region);
       internalPosition.add(internalRegion);
     }
-    // System.out.println("Original position:\n" + internalPosition);
+    // Output.debug("Original position:\n" + internalPosition);
     internalPosition.optimize();
     return internalPosition;
   }
@@ -67,18 +67,18 @@ public class InternalPosition extends ArrayList<InternalRegion> {
 
   // TODO: private
   public void optimize() {
-//    System.out.println("Before:    " + this);
+//    Output.debug("Before:    " + this);
     PositionMap map = getMap();
     detectAbstractVertices(map);
-//    System.out.println("After1:    " + this);
+//    Output.debug("After1:    " + this);
     deleteEmptyBoundariesAndRegions();
-//    System.out.println("After2:    " + this);
+//    Output.debug("After2:    " + this);
     // recompute map
     map = new PositionMap(getVertices());
     detectAbstractVertices(map);
-//    System.out.println("After3:    " + this);
+//    Output.debug("After3:    " + this);
     canonize();
-//    System.out.println("After4:    " + this);
+//    Output.debug("After4:    " + this);
   }
 
   private void detectAbstractVertices(PositionMap map) {
@@ -86,8 +86,8 @@ public class InternalPosition extends ArrayList<InternalRegion> {
     for (Vertex vertex : map.keySet()) {
       List<Vertex> occurrences = map.get(vertex);
       // if (vertex.getC() == 'a') {
-      // System.out.println("Vertex: " + vertex.getC());
-      // System.out.println("Occurences: " + occurrences);
+      // Output.debug("Vertex: " + vertex.getC());
+      // Output.debug("Occurences: " + occurrences);
       // }
       if (vertex.getC() == InternalConstants.CHAR_3) {
         for (Vertex v : occurrences) {

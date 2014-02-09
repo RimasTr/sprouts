@@ -11,6 +11,7 @@ import uk.ac.ed.inf.sprouts.external.AllMovesGenerator;
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.internal.InternalPosition;
+import uk.ac.ed.inf.sprouts.utils.Output;
 
 public class SimpleMoveBruteforcer implements MoveBruteforcer {
 
@@ -48,16 +49,16 @@ public class SimpleMoveBruteforcer implements MoveBruteforcer {
   public void compute() {
     alreadyComputedPositions = new HashMap<String, Boolean>();
     possiblePositions = getPossiblePositions(game);
-    System.out.println("Possible moves: " + possiblePositions.size());
+    Output.debug("Possible moves: " + possiblePositions.size());
     for (String position : possiblePositions.keySet()) {
-      System.out.println("Checking " + possiblePositions.get(position).getMove().toNotation());
+      Output.debug("Checking " + possiblePositions.get(position).getMove().toNotation());
       if (!isWin(possiblePositions.get(position).getGame(), position)) {
         winningMove = possiblePositions.get(position).getMove();
-        System.out.println("Different positions: " + alreadyComputedPositions.size());
+        Output.debug("Different positions: " + alreadyComputedPositions.size());
         return;
       }
     }
-    System.out.println("Different positions: " + alreadyComputedPositions.size());
+    Output.debug("Different positions: " + alreadyComputedPositions.size());
   }
 
   public boolean hasWinningMove() {
@@ -90,28 +91,28 @@ public class SimpleMoveBruteforcer implements MoveBruteforcer {
 
     // TODO: remove, debug
     if (currentPosition.equals(ImprovedMoveBruteforcer.DEBUG_POSITION)) {
-      System.out.println(game.getMovesHistory());
+      Output.debug("" + game.getMovesHistory());
       ArrayList<String> list = new ArrayList<String>(possiblePositions.keySet());
       Collections.sort(list);
-      System.out.println("Debug pos: " + list);
-      System.out.println("History: " + game.getMovesHistory());
+      Output.debug("Debug pos: " + list);
+      Output.debug("History: " + game.getMovesHistory());
       getPossiblePositions(game, true);
     }
     for (String position : possiblePositions.keySet()) {
       if (!isWin(possiblePositions.get(position).getGame(), position)) {
         // if (!checkIfMatches(currentPosition, game, true)) {
-        // System.out.println("Wins by " + possiblePositions.get(position).getMove().toNotation());
+        // Output.debug("Wins by " + possiblePositions.get(position).getMove().toNotation());
         // }
         alreadyComputedPositions.put(currentPosition, true);
         return true;
       }
     }
     // if (!checkIfMatches(currentPosition, game, false)) {
-    // System.out.println("All distinct moves: ");
+    // Output.debug("All distinct moves: ");
     // for (String position : possiblePositions.keySet()) {
-    // System.out.println(possiblePositions.get(position).getMove().toNotation());
+    // Output.debug(possiblePositions.get(position).getMove().toNotation());
     // }
-    // System.out.println("All moves: ");
+    // Output.debug("All moves: ");
     // getPossiblePositions(game, true);
     // }
     alreadyComputedPositions.put(currentPosition, false);
@@ -125,29 +126,29 @@ public class SimpleMoveBruteforcer implements MoveBruteforcer {
       return true;
     }
     if (alreadyComputedPositions.containsKey(position)) {
-      // System.out.println("-- Get: " + alreadyComputedPositions.get(position));
+      // Output.debug("-- Get: " + alreadyComputedPositions.get(position));
       if (alreadyComputedPositions.get(position) != expectedValue) {
-        System.out.println("----------------- Doesn't match: " + position);
-        System.out.println("Should have been: " + expectedValue);
+        Output.debug("----------------- Doesn't match: " + position);
+        Output.debug("Should have been: " + expectedValue);
 
-        System.out.println("Position: ");
-        System.out.println(game.getPosition());
-        System.out.println("Moves history:");
+        Output.debug("Position: ");
+        Output.debug("" + game.getPosition());
+        Output.debug("Moves history:");
         for (Move intMove : game.getMovesHistory()) {
-          System.out.println(intMove.toNotation());
+          Output.debug(intMove.toNotation());
         }
 
         return false;
       }
       return true;
     } else {
-      System.out.println("Adding " + expectedValue);
+      Output.debug("Adding " + expectedValue);
 
-      System.out.println("Position: ");
-      System.out.println(game.getPosition());
-      System.out.println("Moves history:");
+      Output.debug("Position: ");
+      Output.debug("" + game.getPosition());
+      Output.debug("Moves history:");
       for (Move intMove : game.getMovesHistory()) {
-        System.out.println(intMove.toNotation());
+        Output.debug(intMove.toNotation());
       }
       return false;
     }
@@ -162,7 +163,7 @@ public class SimpleMoveBruteforcer implements MoveBruteforcer {
     Set<Move> moves = allMovesGenerator.generateAllMoves(game.getPosition());
     HashMap<String, MoveResult> possiblePositions = new HashMap<String, MoveResult>();
     if (debug) {
-      System.out.println("All moves (" + moves.size() + ")");
+      Output.debug("All moves (" + moves.size() + ")");
     }
     for (Move move : moves) {
       Game clone = game.deepClone();
@@ -170,14 +171,14 @@ public class SimpleMoveBruteforcer implements MoveBruteforcer {
       InternalPosition internalPosition = InternalPosition.fromExternal(clone.getPosition());
       String internalPositionString = internalPosition.toString();
       if (debug) {
-        System.out.println(move.toNotation() + " -> " + internalPositionString);
-        System.out.println(clone.getPosition());
+        Output.debug(move.toNotation() + " -> " + internalPositionString);
+        Output.debug("" + clone.getPosition());
       }
       possiblePositions.put(internalPositionString, new MoveResult(move, clone));
     }
-    // System.out.println("All possible positions (" + possiblePositions.keySet().size() + ")");
+    // Output.debug("All possible positions (" + possiblePositions.keySet().size() + ")");
     // for (String positionString : possiblePositions.keySet()) {
-    // System.out.println(positionString + "\t\t"
+    // Output.debug(positionString + "\t\t"
     // + possiblePositions.get(positionString).getMove().toNotation());
     // }
     return possiblePositions;

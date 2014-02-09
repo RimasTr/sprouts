@@ -13,6 +13,7 @@ import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.internal.ChildrenGenerator;
 import uk.ac.ed.inf.sprouts.internal.InternalPosition;
 import uk.ac.ed.inf.sprouts.internal.InternalPositionWithLands;
+import uk.ac.ed.inf.sprouts.utils.Output;
 
 public class LandsMoveBruteforcer implements MoveBruteforcer {
 
@@ -31,16 +32,16 @@ public class LandsMoveBruteforcer implements MoveBruteforcer {
     alreadyComputedPositions = new HashMap<String, Integer>();
     isWin(InternalPosition.fromExternal(game.getPosition()).toString());
 //    possiblePositions = getPossiblePositions(game);
-//    System.out.println("Possible moves: " + possiblePositions.size());
+//    Output.debug("Possible moves: " + possiblePositions.size());
 //    for (String position : possiblePositions.keySet()) {
-//      System.out.println("Checking " + possiblePositions.get(position).toNotation());
+//      Output.debug("Checking " + possiblePositions.get(position).toNotation());
 //      if (!isWin(position)) {
 //        winningMove = possiblePositions.get(position);
-//        System.out.println("Different positions: " + alreadyComputedPositions.size());
+//        Output.debug("Different positions: " + alreadyComputedPositions.size());
 //        return;
 //      }
 //    }
-//    System.out.println("Different positions: " + alreadyComputedPositions.size());
+//    Output.debug("Different positions: " + alreadyComputedPositions.size());
   }
 
   public boolean hasWinningMove() {
@@ -63,12 +64,12 @@ public class LandsMoveBruteforcer implements MoveBruteforcer {
 
   private boolean isWin(String currentPosition) {
     int result = computeNimber(currentPosition);
-    System.out.println("Result of " + currentPosition + " is " + result);
+    Output.debug("Result of " + currentPosition + " is " + result);
     return result > 0;
   }
 
   private int computeNimber(String currentPosition) {
-    //System.out.println("Calculating " + currentPosition);
+    //Output.debug("Calculating " + currentPosition);
     if (currentPosition.length() <= 1) {
       return 0;
     }
@@ -78,7 +79,7 @@ public class LandsMoveBruteforcer implements MoveBruteforcer {
     InternalPositionWithLands lands = InternalPositionWithLands.fromString(currentPosition);
     if (lands.size() > 1) {
       // TODO: maybe store combined result as well?
-      //System.out.println("Splitting " + currentPosition + " --------- ");
+      //Output.debug("Splitting " + currentPosition + " --------- ");
       return computeNimberOfSeveralLands(lands);
     }
     // Else only one land
@@ -91,7 +92,7 @@ public class LandsMoveBruteforcer implements MoveBruteforcer {
     while (nimbers.contains(result)) {
       result++;
     }
-    //System.out.println("Nimber of " + currentPosition + " is " + result);
+    //Output.debug("Nimber of " + currentPosition + " is " + result);
     alreadyComputedPositions.put(currentPosition, result);
     return result;
   }
@@ -99,12 +100,12 @@ public class LandsMoveBruteforcer implements MoveBruteforcer {
   private int computeNimberOfSeveralLands(InternalPositionWithLands lands) {
     int result = 0;
     for (InternalPosition land : lands) {
-      //System.out.println("computing " + land.toString());
+      //Output.debug("computing " + land.toString());
       int nimber = computeNimber(land.toString());
-      System.out.println("of " + land.toString() + " is " + nimber);
+      Output.debug("of " + land.toString() + " is " + nimber);
       result = result ^ nimber;
     }
-    //System.out.println("Total: " + result);
+    //Output.debug("Total: " + result);
     return result;
   }
 

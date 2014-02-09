@@ -4,6 +4,7 @@ import java.util.Set;
 
 import uk.ac.ed.inf.sprouts.internal.ChildrenGenerator;
 import uk.ac.ed.inf.sprouts.internal.InternalPosition;
+import uk.ac.ed.inf.sprouts.utils.Output;
 
 public class PositionsExperiments {
 
@@ -24,15 +25,15 @@ public class PositionsExperiments {
   }
 
   public static void printPosition(String string) {
-    System.out.println("Position string: " + string);
+    Output.debug("Position string: " + string);
     InternalPosition position = InternalPosition.fromString(string);
-    System.out.println("Position is:     " + position);
+    Output.debug("Position is:     " + position);
     ChildrenGenerator childrenGenerator = new ChildrenGenerator(position);
     long time = System.currentTimeMillis();
     Set<InternalPosition> children = childrenGenerator.generateAllChildren();
-    System.out.println((System.currentTimeMillis() - time) / 1000.0);
-    System.out.println(children);
-    System.out.println(children.size());
-    System.out.println("----");
+    Output.debug("" + (System.currentTimeMillis() - time) / 1000.0);
+    Output.debug("" + children);
+    Output.debug("" + children.size());
+    Output.debug("----");
   }
 }

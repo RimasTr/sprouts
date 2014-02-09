@@ -6,6 +6,7 @@ import uk.ac.ed.inf.sprouts.bruteforcers.ImprovedMoveBruteforcer;
 import uk.ac.ed.inf.sprouts.bruteforcers.MoveBruteforcer;
 import uk.ac.ed.inf.sprouts.bruteforcers.SimpleMoveBruteforcer;
 import uk.ac.ed.inf.sprouts.external.Game;
+import uk.ac.ed.inf.sprouts.utils.Output;
 
 public class ImprovedMoveBruteforceTester {
 
@@ -22,37 +23,37 @@ public class ImprovedMoveBruteforceTester {
     MoveBruteforcer improvedMoveBruteforcer = new ImprovedMoveBruteforcer(game);
     improvedMoveBruteforcer.compute();
     if (improvedMoveBruteforcer.hasWinningMove()) {
-      System.out.println("Winning move: " + improvedMoveBruteforcer.getWinningMove().toNotation());
+      Output.debug("Winning move: " + improvedMoveBruteforcer.getWinningMove().toNotation());
     } else {
-      System.out.println("Doesn't have winning move. Random move: "
+      Output.debug("Doesn't have winning move. Random move: "
           + improvedMoveBruteforcer.getRandomMove().toNotation());
     }
 
-    System.out.println("-------------");
+    Output.debug("-------------");
 
     MoveBruteforcer simpleMoveBruteforcer = new SimpleMoveBruteforcer(game);
     simpleMoveBruteforcer.compute();
     if (simpleMoveBruteforcer.hasWinningMove()) {
-      System.out.println("Winning move: " + simpleMoveBruteforcer.getWinningMove().toNotation());
+      Output.debug("Winning move: " + simpleMoveBruteforcer.getWinningMove().toNotation());
     } else {
-      System.out.println("Doesn't have winning move. Random move: "
+      Output.debug("Doesn't have winning move. Random move: "
           + simpleMoveBruteforcer.getRandomMove().toNotation());
     }
 
-    System.out.println("-------------");
+    Output.debug("-------------");
 
     HashMap<String, Boolean> simplePositions = simpleMoveBruteforcer.getComputedPositions();
     HashMap<String, Boolean> improvedPositions = improvedMoveBruteforcer.getComputedPositions();
     for (String position : simplePositions.keySet()) {
       if (improvedPositions.containsKey(position)) {
         if (!improvedPositions.get(position).equals(simplePositions.get(position))) {
-          System.out.println("Error: " + position + " is not " + simplePositions.get(position));
+          Output.debug("Error: " + position + " is not " + simplePositions.get(position));
         }
       }
     }
 
-    System.out.println("-------------");
+    Output.debug("-------------");
 
-    System.out.println("DONE");
+    Output.debug("DONE");
   }
 }

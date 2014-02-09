@@ -4,6 +4,7 @@ import uk.ac.ed.inf.sprouts.bruteforcers.MoveBruteforcer;
 import uk.ac.ed.inf.sprouts.bruteforcers.SimpleMoveBruteforcer;
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
+import uk.ac.ed.inf.sprouts.utils.Output;
 
 public class MoveBruteforceExampleFull {
 
@@ -17,15 +18,15 @@ public class MoveBruteforceExampleFull {
       Move move;
       if (moveBruteforcer.hasWinningMove()) {
         move = moveBruteforcer.getWinningMove();
-        System.out.println("Winning move: " + move.toNotation());
+        Output.debug("Winning move: " + move.toNotation());
       } else {
         move = moveBruteforcer.getRandomMove();
-        System.out.println("Doesn't have winning move. Random move: " + move.toNotation());
+        Output.debug("Doesn't have winning move. Random move: " + move.toNotation());
       }
       game.makeMove(move);
 
-      System.out.println();
+      Output.debug();
     }
-    System.out.println("Game over");
+    Output.debug("Game over");
   }
 }

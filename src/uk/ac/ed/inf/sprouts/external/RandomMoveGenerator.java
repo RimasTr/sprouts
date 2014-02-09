@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
+import uk.ac.ed.inf.sprouts.utils.Output;
+
 public class RandomMoveGenerator {
 
   class Vertex {
@@ -62,14 +64,14 @@ public class RandomMoveGenerator {
   public RandomMoveGenerator() {
     super();
     this.seed = System.currentTimeMillis();
-    System.out.println("Seed: " + seed);
+    Output.debug("Seed: " + seed);
     random = new Random(seed);
   }
 
   public RandomMoveGenerator(long seed) {
     super();
     this.seed = seed;
-    System.out.println("Seed: " + seed);
+    Output.debug("Seed: " + seed);
     random = new Random(seed);
   }
 
