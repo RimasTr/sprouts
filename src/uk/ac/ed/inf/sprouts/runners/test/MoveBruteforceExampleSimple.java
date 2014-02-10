@@ -1,4 +1,4 @@
-package uk.ac.ed.inf.sprouts.runners;
+package uk.ac.ed.inf.sprouts.runners.test;
 
 import uk.ac.ed.inf.sprouts.bruteforcers.MoveBruteforcer;
 import uk.ac.ed.inf.sprouts.bruteforcers.SimpleMoveBruteforcer;

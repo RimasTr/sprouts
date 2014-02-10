@@ -1,18 +1,18 @@
-package uk.ac.ed.inf.sprouts.runners;
+package uk.ac.ed.inf.sprouts.runners.test;
 
-import uk.ac.ed.inf.sprouts.bruteforcers.ImprovedMoveBruteforcer;
 import uk.ac.ed.inf.sprouts.bruteforcers.MoveBruteforcer;
+import uk.ac.ed.inf.sprouts.bruteforcers.SimpleMoveBruteforcer;
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.utils.Output;
 
-public class ImprovedMoveBruteforceExampleFull {
+public class MoveBruteforceExampleFull {
 
   public static void main(String[] args) {
-    Game game = Game.fromString("1+");
+    Game game = Game.fromString("4+");
 
     while (!game.isOver()) {
-      MoveBruteforcer moveBruteforcer = new ImprovedMoveBruteforcer(game);
+      MoveBruteforcer moveBruteforcer = new SimpleMoveBruteforcer(game);
       moveBruteforcer.compute();
 
       Move move;

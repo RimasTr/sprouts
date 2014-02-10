@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import uk.ac.ed.inf.sprouts.internal.VertexHelper;
-import uk.ac.ed.inf.sprouts.runners.Sprouts;
+import uk.ac.ed.inf.sprouts.runners.old.Sprouts;
 import uk.ac.ed.inf.sprouts.utils.Output;
 
 import com.google.common.base.Function;

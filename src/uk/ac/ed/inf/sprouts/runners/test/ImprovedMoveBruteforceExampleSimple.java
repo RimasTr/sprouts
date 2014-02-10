@@ -1,21 +1,18 @@
-package uk.ac.ed.inf.sprouts.runners;
+package uk.ac.ed.inf.sprouts.runners.test;
 
-import uk.ac.ed.inf.sprouts.bruteforcers.LandsMoveBruteforcer;
+import uk.ac.ed.inf.sprouts.bruteforcers.ImprovedMoveBruteforcer;
 import uk.ac.ed.inf.sprouts.bruteforcers.MoveBruteforcer;
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.utils.Output;
 
-public class LandsMoveBruteforceExampleSimple {
+public class ImprovedMoveBruteforceExampleSimple {
 
   public static void main(String[] args) {
     Game game = Game.fromString("5+");
-    game.makeMove("1(6)1");
-    game.makeMove("1(7@2)6[5,4]");
-    game.makeMove("7(8)4");
-    game.makeMove("2(9)2");
+    //game.makeMove("a(d)c");
 
     long time = System.currentTimeMillis();
-    MoveBruteforcer moveBruteforcer = new LandsMoveBruteforcer(game);
+    MoveBruteforcer moveBruteforcer = new ImprovedMoveBruteforcer(game);
     moveBruteforcer.compute();
     if (moveBruteforcer.hasWinningMove()) {
       Output.debug("Winning move: " + moveBruteforcer.getWinningMove().toNotation());

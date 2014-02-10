@@ -1,17 +1,14 @@
-package uk.ac.ed.inf.sprouts.runners;
-
-import java.util.HashMap;
+package uk.ac.ed.inf.sprouts.runners.test;
 
 import uk.ac.ed.inf.sprouts.bruteforcers.ImprovedLandsMoveBruteforcer;
 import uk.ac.ed.inf.sprouts.bruteforcers.MoveBruteforcer;
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.utils.Output;
-import uk.ac.ed.inf.sprouts.utils.SavedPositionsHandler;
 
 public class ImprovedLandsMoveBruteforceExampleSimple {
 
   public static void main(String[] args) {
-    Game game = Game.fromString("6+");
+    Game game = Game.fromString("7+");
 
 //    game.makeMove("5(7)5[1,2,4,6]");
 //    game.makeMove("4(8)4[1,2,5,7]");
@@ -41,10 +38,10 @@ public class ImprovedLandsMoveBruteforceExampleSimple {
 //    game.makeMove("3(20@5)19![5,7]");
 
     long time = System.currentTimeMillis();
-    HashMap<String, Boolean> savedPositions = SavedPositionsHandler.getSavedPositions();
-    //MoveBruteforcer moveBruteforcer = new ImprovedLandsMoveBruteforcer(game, 6);
+    //HashMap<String, Boolean> savedPositions = SavedPositionsHandler.getSavedPositions();
     //MoveBruteforcer moveBruteforcer = new ImprovedLandsMoveBruteforcer(game, savedPositions);
-    MoveBruteforcer moveBruteforcer = new ImprovedLandsMoveBruteforcer(game);
+    MoveBruteforcer moveBruteforcer = new ImprovedLandsMoveBruteforcer(game, 6);
+    //MoveBruteforcer moveBruteforcer = new ImprovedLandsMoveBruteforcer(game);
     moveBruteforcer.compute();
     if (moveBruteforcer.hasWinningMove()) {
       Output.debug("Winning move: " + moveBruteforcer.getWinningMove().toNotation());

@@ -81,6 +81,9 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
     if (game.isOver()) {
       return null;
     }
+    if (possiblePositions == null) {
+      possiblePositions = getPossiblePositions(game);
+    }
     Random random = new Random();
     List<String> keys = new ArrayList<String>(possiblePositions.keySet());
     String randomKey = keys.get(random.nextInt(keys.size()));
@@ -88,7 +91,7 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
   }
 
   private boolean isWin(String currentPosition, int nimber, int depth) {
-    if (depth < 0) {
+    if (depth < 3) {
       Output.debug("Calculating " + currentPosition + " " + nimber + " " + depth);
     }
     if (currentPosition.length() <= 1) {
