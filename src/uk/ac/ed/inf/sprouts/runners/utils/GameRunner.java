@@ -24,6 +24,10 @@ public class GameRunner {
     }
   }
 
+  public int getSurvivors() {
+    return 3 * game.getInitialSprouts() - game.getNumberOfMoves();
+  }
+
   public int run() {
     // Output.debug("Game type is: " + game.getInitialSprouts() + " " + game.getGameType());
     // Output.debug("Position is: \n" + game.getPosition());

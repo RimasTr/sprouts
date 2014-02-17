@@ -131,7 +131,7 @@ public class AllMovesGenerator {
   }
 
   private Integer getRegionVertex(Vertex to, Vertex from, Position position, Region region) {
-    for (Vertex vertex : getAliveVertices(position, region)) {
+    for (Vertex vertex : getAllAliveVertices(position, region)) {
       if (vertex.getNumber() != from.getNumber() && vertex.getNumber() != to.getNumber()) {
         return vertex.getNumber();
       }
@@ -149,9 +149,27 @@ public class AllMovesGenerator {
     return regionsWithMoves;
   }
 
-  private List<Vertex> getAliveVertices(Position position, Region region) {
+  private List<Vertex> getAllAliveVertices(Position position, Region region) {
     List<Vertex> result = new ArrayList<Vertex>();
     for (Boundary boundary : region) {
+      for (int i = 0; i < boundary.size(); i++) {
+        int vertex = boundary.get(i);
+        result.add(new Vertex(vertex, boundary, i));
+      }
+    }
+    return result;
+  }
+
+  private List<Vertex> getAliveVertices(Position position, Region region) {
+    List<Vertex> result = new ArrayList<Vertex>();
+    int addedZeros = 0;
+    for (Boundary boundary : region) {
+      if (boundary.size() == 1) {
+        if (addedZeros >= 2) {
+          continue;
+        }
+        addedZeros++;
+      }
       for (int i = 0; i < boundary.size(); i++) {
         int vertex = boundary.get(i);
         result.add(new Vertex(vertex, boundary, i));

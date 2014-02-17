@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 public class SavedPositionsHandler {
 
   private static String FILENAME = "savedPositions.txt";
+  private static HashMap<String, Boolean> positions;
 
   public static void savePositionsToFile(HashMap<String, Boolean> savedPositions) {
     try {
@@ -27,7 +28,10 @@ public class SavedPositionsHandler {
   }
 
   public static HashMap<String, Boolean> getSavedPositions() {
-    HashMap<String, Boolean> positions = new HashMap<String, Boolean>();
+    if (positions != null) {
+      return positions;
+    }
+    positions = new HashMap<String, Boolean>();
     BufferedReader in;
     try {
       in = new BufferedReader(new FileReader(FILENAME));

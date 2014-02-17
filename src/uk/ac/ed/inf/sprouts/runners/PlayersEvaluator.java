@@ -8,7 +8,7 @@ import uk.ac.ed.inf.sprouts.utils.Output;
 
 public class PlayersEvaluator {
 
-  private static final String GAME_TYPE = "6+";
+  private static final String GAME_TYPE = "10+";
   // Possible Players: RandomPlayer, BruteforcePlayer, StrategyPlayer, UserPlayer
   private static final Player PLAYER1 = new SmartPlayer();
   private static final Player PLAYER2 = new RandomPlayer();
@@ -17,13 +17,25 @@ public class PlayersEvaluator {
   public static void main(String[] args) {
 
     int firstPlayerWon = 0;
+    int survivorsSum = 0;
+    int survivorsMin = 999;
+    int survivorsMax = 0;
 
     for (int i = 0; i < NUM_OF_GAMES; i++) {
-      if (new GameRunner(GAME_TYPE, PLAYER1, PLAYER2).run() == 0) {
+      GameRunner gameRunner = new GameRunner(GAME_TYPE, PLAYER1, PLAYER2);
+      if (gameRunner.run() == 0) {
         firstPlayerWon++;
       }
+      int survivors = gameRunner.getSurvivors();
+      Output.debug("--------------------------- Survivors: " + survivors);
       Output.debug("--------------------------- " + firstPlayerWon + "/" + (i + 1));
+      survivorsSum += survivors;
+      survivorsMin = Math.min(survivorsMin, survivors);
+      survivorsMax = Math.max(survivorsMax, survivors);
     }
     Output.debug("First player won: " + firstPlayerWon + "/" + NUM_OF_GAMES);
+    Output.debug("Survivors min: " + survivorsMin);
+    Output.debug("Survivors average: " + 1.0 * survivorsSum / NUM_OF_GAMES);
+    Output.debug("Survivors max: " + survivorsMax);
   }
 }

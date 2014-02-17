@@ -10,13 +10,15 @@ import uk.ac.ed.inf.sprouts.utils.SavedPositionsHandler;
 public class BruteforcePlayer implements Player {
 
   private boolean useSavedPositions;
+  private boolean useOptimalMove;
 
   public BruteforcePlayer() {
-    this(false);
+    this(true, true);
   }
 
-  public BruteforcePlayer(boolean useSavedPositions) {
+  public BruteforcePlayer(boolean useSavedPositions, boolean useOptimalMove) {
     this.useSavedPositions = useSavedPositions;
+    this.useOptimalMove = useOptimalMove;
   }
 
   @Override
@@ -24,9 +26,9 @@ public class BruteforcePlayer implements Player {
     ImprovedLandsMoveBruteforcer player;
     if (useSavedPositions) {
       HashMap<String, Boolean> savedPositions = SavedPositionsHandler.getSavedPositions();
-      player = new ImprovedLandsMoveBruteforcer(game, savedPositions);
+      player = new ImprovedLandsMoveBruteforcer(game, savedPositions, useOptimalMove);
     } else {
-      player = new ImprovedLandsMoveBruteforcer(game);
+      player = new ImprovedLandsMoveBruteforcer(game, useOptimalMove);
     }
     player.compute();
     if (player.hasWinningMove()) {

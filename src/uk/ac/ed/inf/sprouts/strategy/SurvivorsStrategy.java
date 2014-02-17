@@ -118,7 +118,7 @@ public class SurvivorsStrategy {
       if (average > maxAverage) {
         optimalMove = possiblePositions.get(position).getMove();
       }
-      return;
+      // return;
       // if (!isOptimal(possiblePositions.get(position).getGame())) {
       // optimalMove = possiblePositions.get(position).getMove();
       // return;
