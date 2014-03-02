@@ -117,7 +117,7 @@ public class AllMovesGenerator {
       Region region) {
     Set<List<Integer>> result = new HashSet<List<Integer>>();
     List<Boundary> possibleBoundaries = new ArrayList<Boundary>(region);
-    // possibleBoundaries.remove(from.getBoundary());
+    //possibleBoundaries.remove(from.getBoundary());
     for (List<Boundary> boundaries : allPossibleSplits(possibleBoundaries)) {
       HashSet<Integer> currentList = new HashSet<Integer>();
       for (Boundary boundary : boundaries) {

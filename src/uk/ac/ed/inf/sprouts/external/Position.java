@@ -40,7 +40,10 @@ public class Position implements Serializable {
 
   public void makeMove(Move move) {
 //    Output.debug("Making move: " + move);
-
+    move.invertBoundaries(); // TODO: kpš?
+    if (move.getInvertedBoundaries()) {
+      move.removeInversion();
+    }
     adjustLives(move);
 
     numberOfVertices++;
@@ -111,6 +114,7 @@ public class Position implements Serializable {
     if (move.getFrom().equals(move.getTo())) {
       return !move.getContainsSelf();
     }
+    //return false;
     return move.getInvertedBoundaries();
   }
 

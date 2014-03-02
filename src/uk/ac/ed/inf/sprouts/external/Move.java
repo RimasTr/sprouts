@@ -18,10 +18,10 @@ public class Move implements Comparable<Move>, Serializable {
 
   private static final long serialVersionUID = -5014845674738051746L;
 
-  private final Integer from;
-  private final Boolean invertedFrom;
-  private final Integer to;
-  private final Boolean invertedTo;
+  private Integer from;
+  private Boolean invertedFrom;
+  private Integer to;
+  private Boolean invertedTo;
   private final Integer createdVertex;
   private final Integer regionVertex;
   private final List<Integer> boundariesVertices;
@@ -81,19 +81,19 @@ public class Move implements Comparable<Move>, Serializable {
   }
 
   public Integer getFrom() {
-    return from;
+      return from;
   }
 
   public Boolean getInvertedFrom() {
-    return invertedFrom;
+      return invertedFrom;
   }
 
   public Integer getTo() {
-    return to;
+      return to;
   }
 
   public Boolean getInvertedTo() {
-    return invertedTo;
+      return invertedTo;
   }
 
   public Integer getCreatedVertex() {
@@ -186,6 +186,17 @@ public class Move implements Comparable<Move>, Serializable {
 
   public void containsSelf() {
     containsSelf = true;
+  }
+
+  public void removeInversion() {
+    invertedBoundaries = !invertedBoundaries;
+    int t = to;
+    to = from;
+    from = t;
+
+    boolean t2 = invertedTo;
+    invertedTo = invertedFrom;
+    invertedFrom = t2;
   }
 
   @Override

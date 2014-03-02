@@ -11,6 +11,7 @@ public class GameRunner {
 
   private final Game game;
   private final Player players[];
+  private final boolean output[] = {false, false};
 
   public GameRunner(String gameType, Player player1, Player player2) {
     this.game = Game.fromString(gameType);
@@ -18,9 +19,17 @@ public class GameRunner {
     Output.debug("Game type is: " + game.getInitialSprouts() + " " + game.getGameType());
   }
 
+  public GameRunner(String gameType, Player player1, Player player2, boolean outputP1,
+      boolean outputP2) {
+    this(gameType, player1, player2);
+    output[0] = outputP1;
+    output[1] = outputP2;
+  }
+
   public void makeMoves(List<String> moves) {
     for (String move : moves) {
-      game.makeMove(move);
+      makeMove(Move.fromString(move), game);
+      //game.makeMove(move);
     }
   }
 
@@ -34,17 +43,23 @@ public class GameRunner {
 
     int current = 0;
     while (!game.isOver()) {
-      makeMove(players[current].getMove(game), game);
+      Move move = players[current].getMove(game);
+      if (output[current]) {
+        Output.move(move);
+      }
+      makeMove(move, game);
       current = (current + 1) % 2;
     }
-    Output.debug("Player " + ((current + 1) % 2 + 1) + " won");
-    return (current + 1) % 2;
+    int won = (current + 1) % 2; // 0 or 1
+    Output.debug("Player " + (won + 1) + " won");
+    Output.won(won + 1);
+    return won;
   }
 
   private void makeMove(Move move, Game game) {
     Output.debug("The move is: " + move.toNotation());
     game.makeMove(move);
-    // Output.debug("New position is: \n" + game.getPosition());
+    Output.debug("New position is: \n" + game.getPosition());
     // Output.debug("Internal position is: \n"
     // + InternalPosition.fromExternal(game.getPosition()));
     Output.debug();
