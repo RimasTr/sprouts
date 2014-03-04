@@ -39,7 +39,7 @@ public class Position implements Serializable {
   }
 
   public void makeMove(Move move) {
-//    Output.debug("Making move: " + move);
+    // Output.debug("Making move: " + move);
     move.invertBoundaries(); // TODO: kpš?
     if (move.getInvertedBoundaries()) {
       move.removeInversion();
@@ -49,13 +49,13 @@ public class Position implements Serializable {
     numberOfVertices++;
 
     Region region = findRegion(move);
-//    Output.debug("Move in the region: " + region);
+    // Output.debug("Move in the region: " + region);
 
     Boundary fromBoundary = region.getBoundary(move.getFrom());
     Boundary toBoundary = region.getBoundary(move.getTo());
 
     if (fromBoundary.equals(toBoundary)) {
-//      Output.debug("Move in the same boundary: " + fromBoundary);
+      // Output.debug("Move in the same boundary: " + fromBoundary);
       region.remove(fromBoundary);
       // TODO: handle inversion
       Region firstRegion = region.getRegionWithVertices(move);
@@ -85,8 +85,8 @@ public class Position implements Serializable {
       secondBoundary.addAll(fromBoundary.subList(fromId, toId + 1));
       secondBoundary.add(move.getCreatedVertex());
 
-//      Output.debug("First boundary: " + firstBoundary);
-//      Output.debug("Second boundary: " + secondBoundary);
+      // Output.debug("First boundary: " + firstBoundary);
+      // Output.debug("Second boundary: " + secondBoundary);
       if (needsInvertion(move)) {
         firstRegion.add(firstBoundary);
         secondRegion.add(secondBoundary);
@@ -102,7 +102,7 @@ public class Position implements Serializable {
       // Output.debug("Boundaries in the first region: " + firstRegion);
       // Output.debug("Boundaries in the second region: " + secondRegion);
     } else {
-//      Output.debug("Move in different boundaries:\n" + fromBoundary + "\n" + toBoundary);
+      // Output.debug("Move in different boundaries:\n" + fromBoundary + "\n" + toBoundary);
       Boundary newBoundary = Boundary.joinTwoBoundaries(fromBoundary, toBoundary, move);
       region.remove(fromBoundary);
       region.remove(toBoundary);
@@ -114,7 +114,7 @@ public class Position implements Serializable {
     if (move.getFrom().equals(move.getTo())) {
       return !move.getContainsSelf();
     }
-    //return false;
+    // return false;
     return move.getInvertedBoundaries();
   }
 
@@ -160,45 +160,65 @@ public class Position implements Serializable {
     List<Region> possibleRegions = findRegionsWithVertex(move.getFrom());
     // Vertex "to" must be in the same region:
     possibleRegions.retainAll(findRegionsWithVertex(move.getTo()));
-    if (possibleRegions.size() > 1) {
-      // TODO: better if structure
-      if (move.getRegionVertex() != null) {
-        // Region vertex must also be in the same region:
-        possibleRegions.retainAll(findRegionsWithVertex(move.getRegionVertex()));
+    Output.debug("RegionVertex", "Looking for regions");
+    if (possibleRegions.size() == 1) {
+      return possibleRegions.get(0);
+    }
+    Output.debug("RegionVertex", "More than one");
+    // TODO: better if structure
+    if (move.getRegionVertex() != null) {
+      // Region vertex must also be in the same region:
+      possibleRegions.retainAll(findRegionsWithVertex(move.getRegionVertex()));
+    }
+    if (possibleRegions.size() == 1) {
+      return possibleRegions.get(0);
+    }
+    Output.debug("RegionVertex", "Still more than one");
+    // Check if some points in the boundaries list are in only one of the regions:
+    for (int vertex : move.getBoundariesVertices()) {
+      possibleRegions.retainAll(findRegionsWithVertex(vertex));
+    }
+    if (possibleRegions.size() == 1) {
+      return possibleRegions.get(0);
+    }
+    // Still not clear, try ! symbols:
+    // TODO: maybe check the second vertex as well? But the first is enough, actually...
+    Output.debug("RegionVertex", "Trying ! symbols");
+    Output.debug("RegionVertex", "Possible regions: " + possibleRegions.toString());
+    Boundary possibleBoundary = possibleRegions.get(0).getBoundary(move.getFrom());
+    Output.debug("RegionVertex", "Possible boundary: " + possibleBoundary.toString());
+    int vertexId = Boundary.findVertexId(possibleBoundary, move.getFrom(), move.getInvertedFrom());
+    if (possibleBoundary.size() != 2) {
+      if (Boundary.meetsClockwiseExpectations(possibleBoundary, vertexId) == !move
+          .getInvertedFrom()) {
+        return possibleRegions.get(0);
       } else {
-        // Check if some points in the boundaries list are in only one of the regions:
-        for (int vertex : move.getBoundariesVertices()) {
-          possibleRegions.retainAll(findRegionsWithVertex(vertex));
+        return possibleRegions.get(1);
+      }
+    }
+    if (move.getRegionVertex() == null) {
+      Output.debug("RegionVertex", "And still more than one");
+      // Take into account that the region vertex was empty
+      boolean first =
+          !possibleRegions.get(0).hasAliveVerticesExcept(lives, move.getFrom(), move.getTo());
+      boolean second =
+          !possibleRegions.get(1).hasAliveVerticesExcept(lives, move.getFrom(), move.getTo());
+      if (!(first && second)) { // If both have no alive vertices - no use for us.
+        if (first) {
+          return possibleRegions.get(0);
         }
-        // TODO: empty also means that there are no alive vertices in that region, should check it
-        // as well
-        if (possibleRegions.size() > 1) {
-          // Take into account that the region vertex was empty
-          if (!possibleRegions.get(0).hasAliveVerticesExcept(lives, move.getFrom(), move.getTo())) {
-            return possibleRegions.get(0);
-          }
-          if (!possibleRegions.get(1).hasAliveVerticesExcept(lives, move.getFrom(), move.getTo())) {
-            return possibleRegions.get(1);
-          }
-          // Still not clear, try ! symbols:
-          Boundary possibleBoundary = possibleRegions.get(0).getBoundary(move.getFrom());
-          int vertexId =
-              Boundary.findVertexId(possibleBoundary, move.getFrom(), move.getInvertedFrom());
-          if (possibleBoundary.size() != 2) {
-            if (Boundary.meetsClockwiseExpectations(possibleBoundary, vertexId)) {
-              return possibleRegions.get(1);
-            } else {
-              return possibleRegions.get(0);
-            }
-          } else {
-            Output.debug("Warning, might be ambiguos");
-            return possibleRegions.get(0);
-          }
+        if (second) {
+          return possibleRegions.get(1);
         }
       }
     }
-    // TODO: assert one and only one
-    // Only one possible combination:
+    if (possibleRegions.size() < 1) {
+      Output.error("Could not find the region");
+      return null;
+    }
+    if (possibleRegions.size() > 1) {
+      Output.debug("Warning, might be ambiguos");
+    }
     return possibleRegions.get(0);
   }
 

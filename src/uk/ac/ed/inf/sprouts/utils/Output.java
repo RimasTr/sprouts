@@ -1,22 +1,29 @@
 package uk.ac.ed.inf.sprouts.utils;
 
+import java.util.Arrays;
+import java.util.List;
+
 import uk.ac.ed.inf.sprouts.external.Move;
 
 public class Output {
 
+  private static final List<String> DEBUG_TAGS = Arrays.asList("GameInfo", "RegionVertex", "NewPosition");
+  //"RegionVertex", "NewPosition"
+
   public static void out(String string) {
     System.out.println(string);
-    System.out.flush();
   }
 
   public static void move(Move move) {
     System.out.println("MOVE " + move.toNotation());
-    System.out.flush();
   }
 
   public static void won(int id) {
     System.out.println("WON " + id);
-    System.out.flush();
+  }
+
+  public static void error(String error) {
+    System.err.println("ERROR:" + error);
   }
 
   public static void debug() {
@@ -25,6 +32,11 @@ public class Output {
 
   public static void debug(String string) {
     System.out.println("-- " + string);
-    System.out.flush();
+  }
+
+  public static void debug(String tag, String string) {
+    if (DEBUG_TAGS.contains(tag)) {
+      debug("(" + tag + ") " + string);
+    }
   }
 }

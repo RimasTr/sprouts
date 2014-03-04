@@ -11,7 +11,7 @@ public class UserPlayer implements Player {
   @Override
   public Move getMove(Game game) {
     Scanner scanner = new Scanner(System.in);
-    Output.debug("Enter your move:");
+    Output.debug("GameInfo", "Enter your move:");
     String moveString = scanner.nextLine();
     return Move.fromString(moveString);
   }

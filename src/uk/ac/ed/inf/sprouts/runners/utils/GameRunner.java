@@ -1,7 +1,9 @@
 package uk.ac.ed.inf.sprouts.runners.utils;
 
 import java.util.List;
+import java.util.Set;
 
+import uk.ac.ed.inf.sprouts.external.AllMovesGenerator;
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.players.Player;
@@ -16,7 +18,8 @@ public class GameRunner {
   public GameRunner(String gameType, Player player1, Player player2) {
     this.game = Game.fromString(gameType);
     this.players = new Player[] {player1, player2};
-    Output.debug("Game type is: " + game.getInitialSprouts() + " " + game.getGameType());
+    Output
+        .debug("GameInfo", "Game type is: " + game.getInitialSprouts() + " " + game.getGameType());
   }
 
   public GameRunner(String gameType, Player player1, Player player2, boolean outputP1,
@@ -29,7 +32,7 @@ public class GameRunner {
   public void makeMoves(List<String> moves) {
     for (String move : moves) {
       makeMove(Move.fromString(move), game);
-      //game.makeMove(move);
+      // game.makeMove(move);
     }
   }
 
@@ -51,17 +54,21 @@ public class GameRunner {
       current = (current + 1) % 2;
     }
     int won = (current + 1) % 2; // 0 or 1
-    Output.debug("Player " + (won + 1) + " won");
+    Output.debug("GameInfo", "Player " + (won + 1) + " won");
     Output.won(won + 1);
     return won;
   }
 
   private void makeMove(Move move, Game game) {
-    Output.debug("The move is: " + move.toNotation());
+    Output.debug("GameInfo", "The move is: " + move.toNotation());
     game.makeMove(move);
-    Output.debug("New position is: \n" + game.getPosition());
+
+    Output.debug("NewPosition", "New position is: \n" + game.getPosition() + "\n");
     // Output.debug("Internal position is: \n"
     // + InternalPosition.fromExternal(game.getPosition()));
-    Output.debug();
+
+    // AllMovesGenerator allMovesGenerator = new AllMovesGenerator();
+    // Set<Move> moves = allMovesGenerator.generateAllMoves(game.getPosition());
+    // Output.debug("Possible moves: \n" + moves.toString() + "\n");
   }
 }

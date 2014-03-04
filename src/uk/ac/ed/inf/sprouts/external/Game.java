@@ -41,7 +41,7 @@ public class Game implements Serializable {
       GameType gameType = GameType.fromSymbol(matcher.group(2));
       return new Game(initialSprouts, gameType);
     } else {
-      Output.debug("Fail");
+      Output.error("Failed to parse the type of the game");
       return null;
     }
   }
@@ -85,9 +85,9 @@ public class Game implements Serializable {
       ObjectInputStream ois = new ObjectInputStream(bais);
       return (Game) ois.readObject();
     } catch (IOException e) {
-      Output.debug("" + e);
+      Output.error("" + e);
     } catch (ClassNotFoundException e) {
-      Output.debug("" + e);
+      Output.error("" + e);
     }
     return null;
   }

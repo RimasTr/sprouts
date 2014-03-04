@@ -71,7 +71,7 @@ public class Move implements Comparable<Move>, Serializable {
       return new Move(from, invertedFrom, to, invertedTo, createdVertex, regionVertex,
           boundariesVertices, invertedBoundaries);
     } else {
-      Output.debug("Fail");
+      Output.error("Failed to parse the move");
       return null;
     }
   }

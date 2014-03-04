@@ -1,12 +1,11 @@
 package uk.ac.ed.inf.sprouts.runners;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
-import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.players.BruteforcePlayer;
 import uk.ac.ed.inf.sprouts.players.Player;
 import uk.ac.ed.inf.sprouts.players.RandomPlayer;
+import uk.ac.ed.inf.sprouts.players.SmartPlayer;
 import uk.ac.ed.inf.sprouts.players.UserPlayer;
 import uk.ac.ed.inf.sprouts.runners.utils.GameRunner;
 import uk.ac.ed.inf.sprouts.utils.Output;

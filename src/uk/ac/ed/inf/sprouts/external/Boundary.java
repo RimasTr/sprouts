@@ -33,7 +33,7 @@ public class Boundary extends ArrayList<Integer> {
   @Override
   public String toString() {
     if (!Sprouts.LETTERS_MODE) {
-      return Joiner.on("").join(this) + ".";
+      return Joiner.on(" ").join(this) + ".";
     }
     List<Character> letters = Lists.transform(this, new Function<Integer, Character>() {
       public Character apply(Integer i) {

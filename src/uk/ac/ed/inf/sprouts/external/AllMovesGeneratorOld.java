@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class AllMovesGenerator {
+public class AllMovesGeneratorOld {
 
   class Vertex {
 
@@ -86,13 +86,14 @@ public class AllMovesGenerator {
           Integer regionVertex = null;
           if (from.getBoundary().equals(to.getBoundary())) {
             // To the same boundary
-            // if (from.getBoundary().size() == 2) {
-            // Need to use @ to specify region.
-            regionVertex = getRegionVertex(to, from, position, region);
-            if (regionVertex != null && regionVertex.equals(from.getNumber())) {
-              throw new RuntimeException("Blah");
+            if (from.getBoundary().size() == 2) {
+              // Need to use @ to specify region.
+              regionVertex = getRegionVertex(to, from, position, region);
+              if (regionVertex != null && regionVertex.equals(from.getNumber())) {
+                throw new RuntimeException("Blah");
+              }
             }
-            // }
+            // TODO: fix. ASAP
             Set<List<Integer>> allBoundaryVerticesCombinations =
                 getAllBoundaryVerticesCombinations(from, to, region);
             for (List<Integer> currentBoundaryVertices : allBoundaryVerticesCombinations) {
@@ -117,11 +118,7 @@ public class AllMovesGenerator {
       Region region) {
     Set<List<Integer>> result = new HashSet<List<Integer>>();
     List<Boundary> possibleBoundaries = new ArrayList<Boundary>(region);
-    if (from.getNumber() != to.getNumber()) {
-      // We only need to specify if this boundary is included or not if we're making a move from a
-      // spot to itself.
-      possibleBoundaries.remove(from.getBoundary());
-    }
+    //possibleBoundaries.remove(from.getBoundary());
     for (List<Boundary> boundaries : allPossibleSplits(possibleBoundaries)) {
       HashSet<Integer> currentList = new HashSet<Integer>();
       for (Boundary boundary : boundaries) {
