@@ -83,7 +83,7 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
       possiblePositions = getPossiblePositions(game);
     }
     Output.debug("Possible moves: " + possiblePositions.size());
-    Output.debug("Possible moves: " + possiblePositions);
+    //Output.debug("Possible moves: " + possiblePositions);
     for (String position : possiblePositions.keySet()) {
       Output.debug("Checking " + possiblePositions.get(position).toNotation());
       if (!isWin(position, 0, 0)) {
@@ -112,6 +112,9 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
     if (save > 0) {
       Output.debug("Saved positions: " + savedPositions.size());
       SavedPositionsHandler.savePositionsToFile(savedPositions);
+    }
+    if (hasWinningMove()) {
+      Output.debug("Winning position!");
     }
   }
 

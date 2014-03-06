@@ -10,6 +10,7 @@ import org.kohsuke.args4j.Option;
 import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.players.Player;
 import uk.ac.ed.inf.sprouts.players.RandomPlayer;
+import uk.ac.ed.inf.sprouts.players.SmartPlayer;
 import uk.ac.ed.inf.sprouts.runners.utils.OneMoveRunner;
 import uk.ac.ed.inf.sprouts.utils.Output;
 import uk.ac.ed.inf.sprouts.utils.ServerClient;
@@ -30,7 +31,7 @@ public class NextMovePlayer {
   private String gameType;
 
   @Option(name = "-t", usage = "Track user with the given username.\nE.g. '-t BestSproutsPlayerEver'.", metaVar = "<username>")
-  private String trackedUserString;
+  private String trackedUser;
 
   @Option(name = "-r", usage = "Set refresh interval in seconds.\nE.g. '-r 1'.", metaVar = "<seconds>")
   private long refreshInterval = 1;
@@ -52,16 +53,30 @@ public class NextMovePlayer {
     ServerClient client = new ServerClient(username);
 
     do {
-      if (gameType != null) {
+      if (trackedUser != null) {
+        // Tracking a user
+        List<String> games = client.getGames(trackedUser);
+        if (games.size() > 0) {
+          gameId = games.get(0);
+          gameType = client.joinGame(gameId);
+          Output.out();
+          Output.debug("GameInfo", "Found a game. Game id: " + gameId);
+        } else {
+          sleep();
+          continue;
+        }
+      } else if (gameType != null) {
         // Start a new game
         gameId = client.newGame(gameType);
+        Output.out();
         Output.debug("GameInfo", "Game started. Game id: " + gameId);
       } else if (gameId != null) {
         // Join the game
         gameType = client.joinGame(gameId);
+        Output.out();
         Output.debug("GameInfo", "Game joined. Game type: " + gameType);
       }
-      while (true) {
+      do {
         // Get moves
         Map<String, Object> movesResponse = client.getMoves(gameId);
         if ((Boolean) movesResponse.get("isOver")) {
@@ -94,8 +109,7 @@ public class NextMovePlayer {
           }
         }
         sleep();
-        Output.outSingle(".");
-      }
+      } while (trackedUser == null); // Only if we're not tracking a user.
     } while (keepPlaying);
   }
 
@@ -119,7 +133,7 @@ public class NextMovePlayer {
     int modes = 0;
     if (gameType != null) modes++;
     if (gameId != null) modes++;
-    if (trackedUserString != null) modes++;
+    if (trackedUser != null) modes++;
     if (modes < 1) {
       throw new CmdLineException(parser, "One of -j, -n or -t have to be set.");
     }
@@ -142,7 +156,7 @@ public class NextMovePlayer {
       return new RandomPlayer();
     }
     if (playerString.equals("smart")) {
-      return new RandomPlayer();
+      return new SmartPlayer();
     }
     throw new CmdLineException(parser, "Wrong player type (-p). Try 'random' or 'smart'.");
   }
@@ -153,6 +167,7 @@ public class NextMovePlayer {
     } catch (InterruptedException ex) {
       Thread.currentThread().interrupt();
     }
+    Output.outSingle(".");
   }
 
   public static void main(String[] args) {

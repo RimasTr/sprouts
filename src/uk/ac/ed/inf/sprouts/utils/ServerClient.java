@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONObject;
@@ -87,6 +88,16 @@ public class ServerClient {
     parameters.put("me", me ? "y" : "n");
     parameters.put("resign", resign ? "y" : "n");
     return sendPost(parameters);
+  }
+
+  public List<String> getGames(String targetUser) {
+    Map<String, String> parameters = new HashMap<String, String>();
+    parameters.put("action", "getGames");
+    parameters.put("targetUser", targetUser);
+    Map<String, Object> response = sendPost(parameters);
+    @SuppressWarnings("unchecked")
+    List<String> list = (List<String>) response.get("games");
+    return list;
   }
 
   private Map<String, Object> sendPost(Map<String, String> parameters) {
