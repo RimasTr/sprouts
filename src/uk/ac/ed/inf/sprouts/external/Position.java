@@ -217,7 +217,8 @@ public class Position implements Serializable {
       return null;
     }
     if (possibleRegions.size() > 1) {
-      Output.debug("Warning, might be ambiguos");
+      Output.debug("RegionVertex", "Warning, might be ambiguos");
+      // Actually it doesn't matter in which region the move is going to be made in these cases.
     }
     return possibleRegions.get(0);
   }

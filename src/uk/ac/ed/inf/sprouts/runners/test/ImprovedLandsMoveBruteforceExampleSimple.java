@@ -1,11 +1,8 @@
 package uk.ac.ed.inf.sprouts.runners.test;
 
-import java.util.HashMap;
-
 import uk.ac.ed.inf.sprouts.bruteforcers.ImprovedLandsMoveBruteforcer;
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.utils.Output;
-import uk.ac.ed.inf.sprouts.utils.SavedPositionsHandler;
 
 public class ImprovedLandsMoveBruteforceExampleSimple {
 
@@ -40,7 +37,7 @@ public class ImprovedLandsMoveBruteforceExampleSimple {
     // game.makeMove("3(20@5)19![5,7]");
 
     long time = System.currentTimeMillis();
-    HashMap<String, Boolean> savedPositions = SavedPositionsHandler.getSavedPositions();
+    // HashMap<String, Boolean> savedPositions = SavedPositionsHandler.getSavedPositions();
     // ImprovedLandsMoveBruteforcer moveBruteforcer =
     // new ImprovedLandsMoveBruteforcer(game, 6);
     // MoveBruteforcer moveBruteforcer = new ImprovedLandsMoveBruteforcer(game, 6);

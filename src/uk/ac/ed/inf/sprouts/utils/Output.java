@@ -7,11 +7,20 @@ import uk.ac.ed.inf.sprouts.external.Move;
 
 public class Output {
 
-  private static final List<String> DEBUG_TAGS = Arrays.asList("GameInfo", "RegionVertex", "NewPosition");
-  //"RegionVertex", "NewPosition"
+  private static final List<String> DEBUG_TAGS = Arrays.asList("GameInfo");
+  // "GameInfo", "RegionVertex", "NewPosition", "ServerClient"
 
   public static void out(String string) {
     System.out.println(string);
+  }
+
+  public static void out() {
+    System.out.println();
+  }
+
+  public static void outSingle(String string) {
+    System.out.print(string);
+    System.out.flush();
   }
 
   public static void move(Move move) {

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import uk.ac.ed.inf.sprouts.external.AllMovesGenerator;
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.internal.ChildrenGenerator;
@@ -113,19 +112,19 @@ public class LandsMoveBruteforcer implements MoveBruteforcer {
     return new ChildrenGenerator(position).generateAllChildrenStrings();
   }
 
-  private HashMap<String, Move> getPossiblePositions(Game game) {
-    AllMovesGenerator allMovesGenerator = new AllMovesGenerator();
-    Set<Move> moves = allMovesGenerator.generateAllMoves(game.getPosition());
-    HashMap<String, Move> possiblePositions = new HashMap<String, Move>();
-    for (Move move : moves) {
-      Game clone = game.deepClone();
-      clone.makeMove(move);
-      InternalPosition internalPosition = InternalPosition.fromExternal(clone.getPosition());
-      String internalPositionString = internalPosition.toString();
-      possiblePositions.put(internalPositionString, move);
-    }
-    return possiblePositions;
-  }
+//  private HashMap<String, Move> getPossiblePositions(Game game) {
+//    AllMovesGenerator allMovesGenerator = new AllMovesGenerator();
+//    Set<Move> moves = allMovesGenerator.generateAllMoves(game.getPosition());
+//    HashMap<String, Move> possiblePositions = new HashMap<String, Move>();
+//    for (Move move : moves) {
+//      Game clone = game.deepClone();
+//      clone.makeMove(move);
+//      InternalPosition internalPosition = InternalPosition.fromExternal(clone.getPosition());
+//      String internalPositionString = internalPosition.toString();
+//      possiblePositions.put(internalPositionString, move);
+//    }
+//    return possiblePositions;
+//  }
 
   public HashMap<String, Boolean> getComputedPositions() {
     // TODO: maybe implement something for testing

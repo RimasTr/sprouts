@@ -30,7 +30,7 @@ public class Game implements Serializable {
   }
 
   public static Game fromString(String gameTypeString) {
-    Pattern pattern = Pattern.compile("(\\d+)([+-])");
+    Pattern pattern = Pattern.compile("(\\d+)([+-]).*");
     Matcher matcher = pattern.matcher(gameTypeString);
 
     if (matcher.matches()) {
