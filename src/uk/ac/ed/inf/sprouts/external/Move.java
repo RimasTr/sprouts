@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import uk.ac.ed.inf.sprouts.internal.InternalConstants;
 import uk.ac.ed.inf.sprouts.internal.VertexHelper;
-import uk.ac.ed.inf.sprouts.runners.old.Sprouts;
 import uk.ac.ed.inf.sprouts.utils.Output;
 
 import com.google.common.base.Function;
@@ -47,7 +47,7 @@ public class Move implements Comparable<Move>, Serializable {
 
   public static Move fromString(String moveString) {
     String regularExpression =
-        Sprouts.LETTERS_MODE
+        InternalConstants.LETTERS_MODE
             ? "(\\w+)(!)?\\((\\w+)(@(\\w+))?\\)(!)?(\\w+)(!)?(\\[(.*)\\])?"
             : "(\\d+)(!)?\\((\\d+)(@(\\d+))?\\)(!)?(\\d+)(!)?(\\[(.*)\\])?";
     Pattern pattern = Pattern.compile(regularExpression);
@@ -129,7 +129,7 @@ public class Move implements Comparable<Move>, Serializable {
     Function<Integer, String> toNotation = new Function<Integer, String>() {
       @Override
       public String apply(Integer vertex) {
-        if (!Sprouts.LETTERS_MODE) {
+        if (!InternalConstants.LETTERS_MODE) {
           return String.valueOf(vertex);
         }
         return String.valueOf(VertexHelper.getSimpleLetter(vertex));
@@ -153,7 +153,7 @@ public class Move implements Comparable<Move>, Serializable {
     List<Integer> vertices = new ArrayList<Integer>();
     if (verticesString != null) {
       String regularExpression =
-          Sprouts.LETTERS_MODE
+          InternalConstants.LETTERS_MODE
               ? "(((\\w+)|((\\w+)-(\\w+)))(,|$))"
               : "(((\\d+)|((\\d+)-(\\d+)))(,|$))";
       Pattern pattern = Pattern.compile(regularExpression);
@@ -178,7 +178,7 @@ public class Move implements Comparable<Move>, Serializable {
   }
 
   private static Integer parseVertex(String string) {
-    if (Sprouts.LETTERS_MODE) {
+    if (InternalConstants.LETTERS_MODE) {
       return (int) string.charAt(0) - (int) 'a' + 1;
     }
     return Integer.parseInt(string);

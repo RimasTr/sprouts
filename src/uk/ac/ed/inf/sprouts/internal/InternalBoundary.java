@@ -1,6 +1,7 @@
 package uk.ac.ed.inf.sprouts.internal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import uk.ac.ed.inf.sprouts.external.Boundary;
@@ -10,6 +11,8 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
 
   private static final long serialVersionUID = 7283921350025148014L;
 
+  private String abstractStringRepresentation;
+
   public static InternalBoundary fromExternal(Position position, Boundary boundary) {
     InternalBoundary internalBoundary = new InternalBoundary();
     for (int externalVertex : boundary) {
@@ -18,6 +21,7 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
         internalBoundary.add(vertex);
       }
     }
+    // internalBoundary.compile();
     return internalBoundary;
   }
 
@@ -26,6 +30,7 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
     for (int i = 0; i < string.length(); i++) {
       internalBoundary.add(new Vertex(string.charAt(i), internalBoundary));
     }
+    // internalBoundary.compile();
     return internalBoundary;
   }
 
@@ -37,33 +42,33 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
     return lives;
   }
 
-  @Override
-  public String toString() {
-    return toString(false);
+  public void compile() {
+    abstractStringRepresentation = toAbstractStringFull();
   }
 
   public String toAbstractString() {
-    return toString(true);
+    return abstractStringRepresentation;
   }
 
-  public String toString(boolean isAbstract) {
-    String result = "";
+  @Override
+  public String toString() {
+    char[] result = new char[this.size() + 1];
+    int i = 0;
     for (Vertex vertex : this) {
-      if (isAbstract) {
-        result += vertex.toAbstractString();
-      } else {
-        result += vertex;
-      }
+      result[i++] = vertex.getC();
     }
-    return result + InternalConstants.END_OF_BOUNDARY_CHAR;
+    result[i] = InternalConstants.END_OF_BOUNDARY_CHAR;
+    return new String(result);
   }
 
-  public String toString(int start) {
-    String result = "";
-    for (int i = 0; i < size(); i++) {
-      result += this.get((start + i) % size()).toAbstractString();
+  public String toAbstractStringFull() {
+    char[] result = new char[this.size() + 1];
+    int i = 0;
+    for (Vertex vertex : this) {
+      result[i++] = vertex.toAbstractChar();
     }
-    return result + InternalConstants.END_OF_BOUNDARY_CHAR;
+    result[i] = InternalConstants.END_OF_BOUNDARY_CHAR;
+    return new String(result);
   }
 
   @Override
@@ -81,25 +86,57 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
   }
 
   public void sort() {
-    // TODO: make more efficient
     if (size() < 2) {
       // Nothing to sort
       return;
     }
-    String minimalString = this.toString(0);
-    int minimalIndex = 0;
-    for (int i = 1; i < size(); i++) {
-      String current = this.toString(i);
-      if (current.compareTo(minimalString) < 0) {
-        minimalString = current;
-        minimalIndex = i;
+    int minimalIndex = computeBestRotationIndex();
+    Collections.rotate(this, minimalIndex);
+  }
+
+  @Override
+  public boolean remove(Object o) {
+    boolean b = super.remove(o);
+    // compile();
+    return b;
+  }
+
+  @Override
+  public Vertex remove(int index) {
+    Vertex v = super.remove(index);
+    // this.compile();
+    return v;
+  }
+
+  public int computeBestRotationIndex() {
+    // Uses Booth's algorithm
+    // From http://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation
+    String S = toAbstractString();
+    int n = S.length();
+    char[] s = (S + S).toCharArray();
+    int f[] = new int[2 * n];
+    for (int i = 0; i < 2 * n; i++) {
+      f[i] = -1;
+    }
+    int k = 0;
+    for (int j = 1; j < 2 * n; j++) {
+      int i = f[j - k - 1];
+      while (i != -1 && s[j] != s[k + i + 1]) {
+        if (s[j] < s[k + i + 1]) {
+          k = j - i - 1;
+        }
+        i = f[i];
+      }
+      if (i == -1 && s[j] != s[k + i + 1]) {
+        if (s[j] < s[k + i + 1]) {
+          k = j;
+        }
+        f[j - k] = -1;
+      } else {
+        f[j - k] = i + 1;
       }
     }
-    for (int i = 0; i < minimalIndex; i++) {
-      Vertex vertex = get(0);
-      remove(0);
-      add(vertex);
-    }
+    return k;
   }
 
   public static InternalBoundary joinTwoBoundaries(InternalBoundary fromBoundary,
@@ -118,6 +155,7 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
     if (needsEnd(fromBoundary)) {
       newBoundary.addAll(fromBoundary.subList(fromIndex, fromBoundary.size()));
     }
+    // newBoundary.compile();
     return newBoundary;
   }
 

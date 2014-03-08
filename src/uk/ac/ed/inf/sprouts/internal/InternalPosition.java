@@ -11,6 +11,7 @@ import uk.ac.ed.inf.sprouts.external.Position;
 import uk.ac.ed.inf.sprouts.external.Region;
 
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 
 public class InternalPosition extends ArrayList<InternalRegion> {
 
@@ -229,13 +230,15 @@ public class InternalPosition extends ArrayList<InternalRegion> {
   private void sort() {
     for (InternalRegion region : this) {
       region.sort();
-      String normalRepresentation = region.toString();
+      String normalRepresentation = region.compile();
       region.inverseOrientation();
       region.sort();
-      String reverseRepresentation = region.toString();
+      String reverseRepresentation = region.compile();
       if (normalRepresentation.compareTo(reverseRepresentation) < 0) {
+        // Reverse again. Should we save the position so we wouldn't have to sort 3 times?
         region.inverseOrientation();
         region.sort();
+        region.compile();
       }
     }
     Collections.sort(this);
@@ -251,12 +254,13 @@ public class InternalPosition extends ArrayList<InternalRegion> {
 
   @Override
   public String toString() {
-    String result = "";
-    for (InternalRegion region : this) {
-      result += region.toString();
-    }
-    result += getEndChar();
-    return result;
+    return Joiner.on("").join(this) + getEndChar();
+//    String result = "";
+//    for (InternalRegion region : this) {
+//      result += region.toString();
+//    }
+//    result += getEndChar();
+//    return result;
   }
 
   public boolean isLost() {

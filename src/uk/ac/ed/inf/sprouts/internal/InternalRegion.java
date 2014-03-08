@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import com.google.common.base.Joiner;
+
 import uk.ac.ed.inf.sprouts.external.Boundary;
 import uk.ac.ed.inf.sprouts.external.Position;
 import uk.ac.ed.inf.sprouts.external.Region;
@@ -16,6 +18,8 @@ public class InternalRegion extends ArrayList<InternalBoundary>
       Comparable<InternalRegion> {
 
   private static final long serialVersionUID = -183105657365459414L;
+
+  private String abstractStringRepresentation;
 
   public InternalRegion() {
     super();
@@ -63,16 +67,35 @@ public class InternalRegion extends ArrayList<InternalBoundary>
 
   @Override
   public String toString() {
-    String result = "";
+    return Joiner.on("").join(this) + InternalConstants.END_OF_REGION_CHAR;
+    // String result = "";
+    // for (InternalBoundary boundary : this) {
+    // result += boundary.toString();
+    // }
+    // return result + InternalConstants.END_OF_REGION_CHAR;
+  }
+
+  public String toAbstractString() {
+    return abstractStringRepresentation;
+  }
+
+  public String toAbstractStringFull() {
+    StringBuilder result = new StringBuilder();
     for (InternalBoundary boundary : this) {
-      result += boundary.toString();
+      result.append(boundary.toAbstractStringFull());
     }
-    return result + InternalConstants.END_OF_REGION_CHAR;
+    result.append(InternalConstants.END_OF_REGION_CHAR);
+    return result.toString();
+  }
+
+  public String compile() {
+    abstractStringRepresentation = toAbstractStringFull();
+    return abstractStringRepresentation;
   }
 
   @Override
   public int compareTo(InternalRegion o) {
-    return toString().compareTo(o.toString());
+    return toAbstractString().compareTo(o.toAbstractString());
   }
 
   public void deleteEmptyBoundaries() {
@@ -97,6 +120,7 @@ public class InternalRegion extends ArrayList<InternalBoundary>
 
   public void sort() {
     for (InternalBoundary boundary : this) {
+      boundary.compile();
       boundary.sort();
     }
     Collections.sort(this);

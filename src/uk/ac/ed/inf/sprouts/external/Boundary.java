@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import uk.ac.ed.inf.sprouts.internal.InternalConstants;
 import uk.ac.ed.inf.sprouts.internal.VertexHelper;
-import uk.ac.ed.inf.sprouts.runners.old.Sprouts;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
@@ -32,7 +32,7 @@ public class Boundary extends ArrayList<Integer> {
 
   @Override
   public String toString() {
-    if (!Sprouts.LETTERS_MODE) {
+    if (!InternalConstants.LETTERS_MODE) {
       return Joiner.on(" ").join(this) + ".";
     }
     List<Character> letters = Lists.transform(this, new Function<Integer, Character>() {

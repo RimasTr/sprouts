@@ -22,7 +22,7 @@ public class ServerClient {
 
   private String username;
 
-  private static final String SERVER_URL = "http://localhost:8090/api.php";
+  private static final String SERVER_URL = "http://sprouts.laisva.lt/api.php";
 
   public ServerClient() {
   }

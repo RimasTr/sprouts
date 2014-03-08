@@ -30,4 +30,6 @@ public class InternalConstants {
       TEMP_NEW);
   public static final ImmutableList<Character> ABSTRACT_CHARS = ImmutableList.of(CHAR_0, CHAR_1,
       CHAR_2);
+
+  public static final boolean LETTERS_MODE = false;
 }

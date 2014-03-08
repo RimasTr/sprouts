@@ -15,13 +15,12 @@ import uk.ac.ed.inf.sprouts.external.RandomMoveGenerator;
 import uk.ac.ed.inf.sprouts.internal.InternalPosition;
 import uk.ac.ed.inf.sprouts.utils.Output;
 
-public class Sprouts {
+public class SproutsOld {
 
   enum GamePlayingType {
     HUMAN_VS_HUMAN, HUMAN_VS_PC, PC_VS_PC, ALL_MOVES_RANDOM, ALL_MOVES
   }
 
-  public static final boolean LETTERS_MODE = false;
   private static final GamePlayingType GAME_TYPE = GamePlayingType.HUMAN_VS_PC;
   private static final String AUTO_GAME_TYPE = "3+";
   private static final Long SEED = null;

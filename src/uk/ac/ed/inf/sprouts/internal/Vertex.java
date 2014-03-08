@@ -23,6 +23,7 @@ public class Vertex {
   public void setC(char c) {
     this.c = c;
     this.i = (int) c;
+    // this.boundary.compile();
   }
 
   public InternalBoundary getBoundary() {
@@ -55,14 +56,14 @@ public class Vertex {
     return String.valueOf(c); // + "(" + boundary.get(0).getC() + ")";
   }
 
-  public String toAbstractString() {
+  public char toAbstractChar() {
     if (isAbstract()) {
-      return String.valueOf(c);
+      return c;
     }
     if (isUppercase()) {
-      return String.valueOf(InternalConstants.FIRST_UPPERCASE_LETTER);
+      return InternalConstants.FIRST_UPPERCASE_LETTER;
     }
-    return String.valueOf(InternalConstants.FIRST_LOWERCASE_LETTER);
+    return InternalConstants.FIRST_LOWERCASE_LETTER;
   }
 
   @Override

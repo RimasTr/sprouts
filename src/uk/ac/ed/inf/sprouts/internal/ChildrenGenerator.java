@@ -120,6 +120,7 @@ public class ChildrenGenerator {
           renameVertex(moveBoundary.get(move.getTo().getVertexIndex()).getC(),
               InternalConstants.TEMP_2, moveBoundary.size()));
     }
+    // moveBoundary.compile();
     // Remove current region/boundary
     moveRegion.remove(move.getFrom().getBoundaryIndex());
     partialPosition.remove(move.getRegionIndex());
@@ -144,10 +145,12 @@ public class ChildrenGenerator {
       if (moveBoundary.size() > 1) {
         firstBoundary.addAll(moveBoundary.subList(toId, moveBoundary.size()));
       }
+      // firstBoundary.compile();
 
       InternalBoundary secondBoundary = new InternalBoundary();
       secondBoundary.addAll(moveBoundary.subList(fromId, toId + 1));
       secondBoundary.add(new Vertex(InternalConstants.TEMP_NEW, firstBoundary));
+      // secondBoundary.compile();
 
       // Output.debug("First boundary: " + firstBoundary);
       // Output.debug("Second boundary: " + secondBoundary);
@@ -177,7 +180,6 @@ public class ChildrenGenerator {
             fromBoundary.size()));
     toBoundary.get(move.getTo().getVertexIndex()).setC(
         renameVertex(move.getTo().getVertex().getC(), InternalConstants.TEMP_2, toBoundary.size()));
-
     InternalBoundary newBoundary =
         InternalBoundary.joinTwoBoundaries(fromBoundary, toBoundary, move);
     region.remove(fromBoundary);
