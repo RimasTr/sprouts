@@ -16,9 +16,11 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
   public static InternalBoundary fromExternal(Position position, Boundary boundary) {
     InternalBoundary internalBoundary = new InternalBoundary();
     for (int externalVertex : boundary) {
-      Vertex vertex = Vertex.fromExternal(position, boundary, externalVertex, internalBoundary);
-      if (vertex != null) {
-        internalBoundary.add(vertex);
+      if (position.getLives().get(externalVertex) > 0) {
+        Vertex vertex = Vertex.fromExternal(position, boundary, externalVertex, internalBoundary);
+        if (vertex != null) {
+          internalBoundary.add(vertex);
+        }
       }
     }
     // internalBoundary.compile();
