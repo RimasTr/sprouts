@@ -8,7 +8,8 @@ import uk.ac.ed.inf.sprouts.utils.Output;
 public class MoveBruteforceExampleSimple {
 
   public static void main(String[] args) {
-    Game game = Game.fromString("3+");
+    Game game = Game.fromString("4+");
+//    game.makeMove("2(3)1");
 //    game.makeMove("3(6)4");
 //    game.makeMove("4(7)!6![5]");
 //    game.makeMove("1(8)1");

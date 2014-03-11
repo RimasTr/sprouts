@@ -38,6 +38,7 @@ public class SimpleMoveBruteforcer implements MoveBruteforcer {
   private Move winningMove;
   private HashMap<String, MoveResult> possiblePositions;
   private HashMap<String, Boolean> alreadyComputedPositions;
+  private int positions = 0;
 
   // TODO: remove
   private String pos = "2AB.}AB.}!";
@@ -55,10 +56,12 @@ public class SimpleMoveBruteforcer implements MoveBruteforcer {
       if (!isWin(possiblePositions.get(position).getGame(), position)) {
         winningMove = possiblePositions.get(position).getMove();
         Output.debug("Different positions: " + alreadyComputedPositions.size());
+        Output.debug("Checked positions: " + positions);
         return;
       }
     }
     Output.debug("Different positions: " + alreadyComputedPositions.size());
+    Output.debug("Checked positions: " + positions);
   }
 
   public boolean hasWinningMove() {
@@ -80,6 +83,7 @@ public class SimpleMoveBruteforcer implements MoveBruteforcer {
   }
 
   private boolean isWin(Game game, String currentPosition) {
+    positions++;
     if (currentPosition.length() <= 1) {
       return false;
     }
