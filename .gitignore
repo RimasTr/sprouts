@@ -1,3 +1,4 @@
 bin/*
 .attach*
-savedPositions*
+savedPositions*.txt
+*.txt

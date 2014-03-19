@@ -24,6 +24,10 @@ public class InternalBoundary extends ArrayList<Vertex> {
         }
       }
     }
+    // In case there's only one alive vertex:
+    if (boundary.size() > 1  && internalBoundary.size() == 1) {
+      internalBoundary.add(new Vertex(InternalConstants.CHAR_3, internalBoundary));
+    }
     // internalBoundary.compile();
     return internalBoundary;
   }

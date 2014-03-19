@@ -35,7 +35,7 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
   private int save = 0;
   private boolean computeOptimalMove = false;
 
-  private final int DEBUG_DEPTH = 4;
+  private final int DEBUG_DEPTH = 5;
 
   public ImprovedLandsMoveBruteforcer(Game game) {
     this.game = game;
@@ -63,6 +63,11 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
     this(game);
     this.save = save;
     this.computeOptimalMove = true;
+  }
+
+  public ImprovedLandsMoveBruteforcer(Game game, HashMap<String, Boolean> savedPositions, int save) {
+    this(game, savedPositions, true);
+    this.save = save;
   }
 
   public void quickCompute() {

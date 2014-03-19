@@ -4,6 +4,7 @@ import java.util.List;
 
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
+import uk.ac.ed.inf.sprouts.internal.InternalPosition;
 import uk.ac.ed.inf.sprouts.players.Player;
 import uk.ac.ed.inf.sprouts.utils.Output;
 
@@ -62,6 +63,7 @@ public class GameRunner {
     game.makeMove(move);
 
     Output.debug("NewPosition", "New position is: \n" + game.getPosition() + "\n");
+    Output.debug("NewPosition", "New position is: " + InternalPosition.fromExternal(game.getPosition()) + "\n");
     // Output.debug("Internal position is: \n"
     // + InternalPosition.fromExternal(game.getPosition()));
 

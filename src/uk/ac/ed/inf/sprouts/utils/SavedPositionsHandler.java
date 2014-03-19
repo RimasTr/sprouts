@@ -11,12 +11,13 @@ import java.util.Map.Entry;
 
 public class SavedPositionsHandler {
 
-  private static String FILENAME = "savedPositions.txt";
+  private static String FILENAME_LOAD = "savedPositions.txt";
+  private static String FILENAME_SAVE = "savedPositionsNew.txt";
   private static HashMap<String, Boolean> positions;
 
   public static void savePositionsToFile(HashMap<String, Boolean> savedPositions) {
     try {
-      BufferedWriter out = new BufferedWriter(new FileWriter(FILENAME));
+      BufferedWriter out = new BufferedWriter(new FileWriter(FILENAME_SAVE));
       for (Entry<String, Boolean> entry : savedPositions.entrySet()) {
         out.write(entry.getKey() + '\t' + (entry.getValue() ? '1' : '0') + '\n');
       }
@@ -34,7 +35,7 @@ public class SavedPositionsHandler {
     positions = new HashMap<String, Boolean>();
     BufferedReader in;
     try {
-      in = new BufferedReader(new FileReader(FILENAME));
+      in = new BufferedReader(new FileReader(FILENAME_LOAD));
       String line = in.readLine();
       while (line != null) {
         String s[] = line.split("\t");
