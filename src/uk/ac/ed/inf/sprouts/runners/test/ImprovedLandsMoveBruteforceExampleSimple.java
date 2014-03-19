@@ -42,7 +42,7 @@ public class ImprovedLandsMoveBruteforceExampleSimple {
     // new ImprovedLandsMoveBruteforcer(game, 6);
     // MoveBruteforcer moveBruteforcer = new ImprovedLandsMoveBruteforcer(game, 6);
     ImprovedLandsMoveBruteforcer moveBruteforcer =
-        new ImprovedLandsMoveBruteforcer(game);
+        new ImprovedLandsMoveBruteforcer(game, 6);
     moveBruteforcer.compute();
     if (moveBruteforcer.hasWinningMove()) {
       Output.debug("Winning move: " + moveBruteforcer.getWinningMove().toNotation());
