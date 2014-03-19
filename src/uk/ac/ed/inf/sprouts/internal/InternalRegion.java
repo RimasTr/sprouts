@@ -7,18 +7,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import com.google.common.base.Joiner;
-
 import uk.ac.ed.inf.sprouts.external.Boundary;
 import uk.ac.ed.inf.sprouts.external.Position;
 import uk.ac.ed.inf.sprouts.external.Region;
 
-public class InternalRegion extends ArrayList<InternalBoundary>
-    implements
-      Comparable<InternalRegion> {
+import com.google.common.base.Joiner;
+
+public class InternalRegion extends ArrayList<InternalBoundary> {
 
   private static final long serialVersionUID = -183105657365459414L;
 
+  private String stringRepresentation;
   private String abstractStringRepresentation;
 
   public InternalRegion() {
@@ -79,6 +78,10 @@ public class InternalRegion extends ArrayList<InternalBoundary>
     return abstractStringRepresentation;
   }
 
+  public String toNormalString() {
+    return stringRepresentation;
+  }
+
   public String toAbstractStringFull() {
     StringBuilder result = new StringBuilder();
     for (InternalBoundary boundary : this) {
@@ -88,14 +91,22 @@ public class InternalRegion extends ArrayList<InternalBoundary>
     return result.toString();
   }
 
-  public String compile() {
-    abstractStringRepresentation = toAbstractStringFull();
-    return abstractStringRepresentation;
+  public String toStringFull() {
+    StringBuilder result = new StringBuilder();
+    for (InternalBoundary boundary : this) {
+      result.append(boundary.toStringFull());
+    }
+    result.append(InternalConstants.END_OF_REGION_CHAR);
+    return result.toString();
   }
 
-  @Override
-  public int compareTo(InternalRegion o) {
-    return toAbstractString().compareTo(o.toAbstractString());
+  public String toString(boolean asAbstract) {
+    return asAbstract ? toAbstractString() : toNormalString();
+  }
+
+  public void compile() {
+    stringRepresentation = toStringFull();
+    abstractStringRepresentation = toAbstractStringFull();
   }
 
   public void deleteEmptyBoundaries() {
@@ -118,12 +129,15 @@ public class InternalRegion extends ArrayList<InternalBoundary>
     }
   }
 
-  public void sort() {
+  public void sort(boolean asAbstract) {
     for (InternalBoundary boundary : this) {
       boundary.compile();
-      boundary.sort();
+      boundary.sort(asAbstract);
+      boundary.compile();
     }
-    Collections.sort(this);
+    //System.out.println("Sorting: " + this + " " + asAbstract);
+    Collections.sort(this, new InternalBoundaryComparator(asAbstract));
+    //System.out.println("Sorted: " + this);
   }
 
   public void inverseOrientation() {

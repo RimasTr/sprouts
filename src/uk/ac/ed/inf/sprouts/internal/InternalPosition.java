@@ -72,18 +72,18 @@ public class InternalPosition extends ArrayList<InternalRegion> {
 
   // TODO: private
   public void optimize() {
-    // Output.debug("Before:    " + this);
+    //Output.debug("Before:    " + this);
     PositionMap map = getMap();
     detectAbstractVertices(map);
-    // Output.debug("After1:    " + this);
+    //Output.debug("After1:    " + this);
     deleteEmptyBoundariesAndRegions();
-    // Output.debug("After2:    " + this);
+    //Output.debug("After2:    " + this);
     // recompute map
     map = new PositionMap(getVertices());
     detectAbstractVertices(map);
-    // Output.debug("After3:    " + this);
+    //Output.debug("After3:    " + this);
     canonize();
-    // Output.debug("After4:    " + this);
+    //Output.debug("After4:    " + this);
   }
 
   private void detectAbstractVertices(PositionMap map) {
@@ -186,10 +186,15 @@ public class InternalPosition extends ArrayList<InternalRegion> {
   }
 
   private void canonize() {
-    sort();
+    //Output.debug("Before :    " + this);
+    sort(true);
+    //Output.debug("After 1:    " + this);
     renameLowercase();
+    //Output.debug("After 2:    " + this);
     renameUppercase();
-    sort();
+    //Output.debug("After 3:    " + this);
+    sort(false);
+    //Output.debug("Final  :    " + this);
   }
 
   private void renameLowercase() {
@@ -227,21 +232,30 @@ public class InternalPosition extends ArrayList<InternalRegion> {
     }
   }
 
-  private void sort() {
+  private void sort(boolean asAbstract) {
     for (InternalRegion region : this) {
-      region.sort();
-      String normalRepresentation = region.compile();
+      //Output.debug("After 1:    " + region.toStringFull());
+      region.sort(asAbstract);
+      //Output.debug("After 2:    " + region.toStringFull());
+      region.compile();
+      String normalRepresentation = region.toString(asAbstract);
       region.inverseOrientation();
-      region.sort();
-      String reverseRepresentation = region.compile();
+      //Output.debug("After 3:    " + region.toStringFull());
+      region.sort(asAbstract);
+      //Output.debug("After 4:    " + region.toStringFull());
+      region.compile();
+      String reverseRepresentation = region.toString(asAbstract);
       if (normalRepresentation.compareTo(reverseRepresentation) < 0) {
         // Reverse again. Should we save the position so we wouldn't have to sort 3 times?
         region.inverseOrientation();
-        region.sort();
+        //Output.debug("After 5:    " + region.toStringFull());
+        region.sort(asAbstract);
+        //Output.debug("After 6:    " + region.toStringFull());
         region.compile();
       }
+      //Output.debug("Final  :    " + region.toStringFull());
     }
-    Collections.sort(this);
+    Collections.sort(this, new InternalRegionComparator(asAbstract));
   }
 
   public PositionMap getMap() {
@@ -277,5 +291,10 @@ public class InternalPosition extends ArrayList<InternalRegion> {
     InternalPosition position = this.clone();
     position.optimize();
     return position;
+  }
+
+  public static void main(String[] args) {
+    InternalPosition pos = InternalPosition.fromString("0.A.}1aAa.BC.}BC.}!");
+    System.out.println(pos.toString());
   }
 }

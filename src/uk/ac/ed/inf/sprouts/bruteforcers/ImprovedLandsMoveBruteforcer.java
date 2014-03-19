@@ -148,8 +148,12 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
   }
 
   private boolean isWin(String currentPosition, int nimber, int depth) {
+    String d = "";
     if (depth < DEBUG_DEPTH) {
-      Output.debug("Calculating " + currentPosition + " " + nimber + " " + depth);
+      for (int i=0; i<depth; i++) {
+        d += "--";
+      }
+      Output.debug(d + "Calculating " + currentPosition + " " + nimber + " " + depth);
     }
     if (currentPosition.length() <= 1) {
       return nimber != 0;
@@ -186,7 +190,7 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
     }
     Set<String> possiblePositions = getPossibleInternalPositions(lands.get(0));
     if (depth < DEBUG_DEPTH) {
-      Output.debug("Possible: " + possiblePositions.size() + " " + possiblePositions);
+      Output.debug(d + "Possible: " + possiblePositions.size() + " " + possiblePositions);
     }
     // Output.debug("Children: " + possiblePositions);
     // First check already computed positions maybe?

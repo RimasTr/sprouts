@@ -7,11 +7,12 @@ import java.util.List;
 import uk.ac.ed.inf.sprouts.external.Boundary;
 import uk.ac.ed.inf.sprouts.external.Position;
 
-public class InternalBoundary extends ArrayList<Vertex> implements Comparable<InternalBoundary> {
+public class InternalBoundary extends ArrayList<Vertex> {
 
   private static final long serialVersionUID = 7283921350025148014L;
 
   private String abstractStringRepresentation;
+  private String stringRepresentation;
 
   public static InternalBoundary fromExternal(Position position, Boundary boundary) {
     InternalBoundary internalBoundary = new InternalBoundary();
@@ -45,6 +46,7 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
   }
 
   public void compile() {
+    stringRepresentation = toStringFull();
     abstractStringRepresentation = toAbstractStringFull();
   }
 
@@ -52,8 +54,19 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
     return abstractStringRepresentation;
   }
 
-  @Override
+  public String toNormalString() {
+    return stringRepresentation;
+  }
+
+  public String toString(boolean asAbstract) {
+    return asAbstract ? toAbstractString() : toNormalString();
+  }
+
   public String toString() {
+    return toStringFull();
+  }
+
+  public String toStringFull() {
     char[] result = new char[this.size() + 1];
     int i = 0;
     for (Vertex vertex : this) {
@@ -64,6 +77,8 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
   }
 
   public String toAbstractStringFull() {
+    // return toString();
+
     char[] result = new char[this.size() + 1];
     int i = 0;
     for (Vertex vertex : this) {
@@ -71,11 +86,7 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
     }
     result[i] = InternalConstants.END_OF_BOUNDARY_CHAR;
     return new String(result);
-  }
 
-  @Override
-  public int compareTo(InternalBoundary o) {
-    return toAbstractString().compareTo(o.toAbstractString());
   }
 
   public List<Vertex> getVertices() {
@@ -87,13 +98,14 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
     return distance == 1 || (distance == size() - 1);
   }
 
-  public void sort() {
+  public void sort(boolean asAbstract) {
     if (size() < 2) {
       // Nothing to sort
       return;
     }
-    int minimalIndex = computeBestRotationIndex();
-    Collections.rotate(this, minimalIndex);
+    int minimalIndex = computeBestRotationIndex(asAbstract);
+    Collections.rotate(this, -minimalIndex);
+    //System.out.println("AfterRotation: " + toStringFull());
   }
 
   @Override
@@ -110,12 +122,14 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
     return v;
   }
 
-  public int computeBestRotationIndex() {
+  public int computeBestRotationIndex(boolean asAbstract) {
     // Uses Booth's algorithm
     // From http://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation
-    String S = toAbstractString();
+    String S = asAbstract ? toAbstractString() : toNormalString();
+    S = S.substring(0, S.length()-1); // remove the dot
     int n = S.length();
     char[] s = (S + S).toCharArray();
+    //System.out.println("Best rotation of: " + String.valueOf(s));
     int f[] = new int[2 * n];
     for (int i = 0; i < 2 * n; i++) {
       f[i] = -1;
@@ -138,6 +152,7 @@ public class InternalBoundary extends ArrayList<Vertex> implements Comparable<In
         f[j - k] = i + 1;
       }
     }
+    //System.out.println(k);
     return k;
   }
 
