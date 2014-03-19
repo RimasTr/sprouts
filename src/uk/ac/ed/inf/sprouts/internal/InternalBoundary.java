@@ -16,16 +16,24 @@ public class InternalBoundary extends ArrayList<Vertex> {
 
   public static InternalBoundary fromExternal(Position position, Boundary boundary) {
     InternalBoundary internalBoundary = new InternalBoundary();
+    // Create a map:
+    List<Integer> map = new ArrayList<Integer>();
+    map.add(0);
+    int last = 0;
+    for (int v = 1; v <= position.getNumberOfVertices(); v++) {
+      // Give new numbers only to alive vertices:
+      map.add((position.getLives().get(v) > 0) ? ++last : 0);
+    }
     for (int externalVertex : boundary) {
       if (position.getLives().get(externalVertex) > 0) {
-        Vertex vertex = Vertex.fromExternal(position, boundary, externalVertex, internalBoundary);
+        Vertex vertex = Vertex.fromExternal(position, boundary, map.get(externalVertex), internalBoundary);
         if (vertex != null) {
           internalBoundary.add(vertex);
         }
       }
     }
     // In case there's only one alive vertex:
-    if (boundary.size() > 1  && internalBoundary.size() == 1) {
+    if (boundary.size() > 1 && internalBoundary.size() == 1) {
       internalBoundary.add(new Vertex(InternalConstants.CHAR_3, internalBoundary));
     }
     // internalBoundary.compile();
@@ -109,7 +117,7 @@ public class InternalBoundary extends ArrayList<Vertex> {
     }
     int minimalIndex = computeBestRotationIndex(asAbstract);
     Collections.rotate(this, -minimalIndex);
-    //System.out.println("AfterRotation: " + toStringFull());
+    // System.out.println("AfterRotation: " + toStringFull());
   }
 
   @Override
@@ -130,10 +138,10 @@ public class InternalBoundary extends ArrayList<Vertex> {
     // Uses Booth's algorithm
     // From http://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation
     String S = asAbstract ? toAbstractString() : toNormalString();
-    S = S.substring(0, S.length()-1); // remove the dot
+    S = S.substring(0, S.length() - 1); // remove the dot
     int n = S.length();
     char[] s = (S + S).toCharArray();
-    //System.out.println("Best rotation of: " + String.valueOf(s));
+    // System.out.println("Best rotation of: " + String.valueOf(s));
     int f[] = new int[2 * n];
     for (int i = 0; i < 2 * n; i++) {
       f[i] = -1;
@@ -156,7 +164,7 @@ public class InternalBoundary extends ArrayList<Vertex> {
         f[j - k] = i + 1;
       }
     }
-    //System.out.println(k);
+    // System.out.println(k);
     return k;
   }
 

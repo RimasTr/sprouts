@@ -7,7 +7,7 @@ import uk.ac.ed.inf.sprouts.runners.utils.GameRunner;
 
 public class Sprouts {
 
-  private static final String GAME_TYPE = "7+";
+  private static final String GAME_TYPE = "5+";
   // Possible Players: RandomPlayer, BruteforcePlayer, StrategyPlayer, UserPlayer
   private static final Player PLAYER1 = new BruteforcePlayer(true, true);
   private static final Player PLAYER2 = new RandomPlayer();

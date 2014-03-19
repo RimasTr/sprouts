@@ -35,7 +35,7 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
   private int save = 0;
   private boolean computeOptimalMove = false;
 
-  private final int DEBUG_DEPTH = 5;
+  private final int DEBUG_DEPTH = 0;
 
   public ImprovedLandsMoveBruteforcer(Game game) {
     this.game = game;
