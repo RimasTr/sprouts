@@ -6,6 +6,7 @@ import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.players.BruteforcePlayer;
 import uk.ac.ed.inf.sprouts.players.Player;
+import uk.ac.ed.inf.sprouts.utils.Output;
 
 public class OneMoveRunner {
 
@@ -32,6 +33,7 @@ public class OneMoveRunner {
     Move move = player.getMove(game);
 //    Output.move(move);
     game.makeMove(move);
+    Output.debug("NewPosition", "Position: " + game.getPosition());
 //    if (game.isOver()) {
 //      Output.debug("GameInfo", "Computer won!");
 //    }

@@ -62,7 +62,7 @@ public class Region extends ArrayList<Boundary> {
         containsSelf = true;
       }
     }
-    if (!containsSelf) {
+    if (containsSelf) {
       move.containsSelf();
     }
     return new Region(set);

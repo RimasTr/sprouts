@@ -8,7 +8,7 @@ import uk.ac.ed.inf.sprouts.utils.Output;
 
 public class PlayersEvaluator {
 
-  private static final String GAME_TYPE = "15+";
+  private static final String GAME_TYPE = "6+";
   // Possible Players: RandomPlayer, BruteforcePlayer, StrategyPlayer, UserPlayer
   private static final Player PLAYER1 = new SmartPlayer();
   private static final Player PLAYER2 = new RandomPlayer();

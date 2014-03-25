@@ -166,11 +166,11 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
     if (currentPosition.length() <= 1) {
       return nimber != 0;
     }
-    // if (!needsToComputeAll(depth)) {
-    if (alreadyComputedPositions.containsKey(currentPosition + nimber)) {
-      return alreadyComputedPositions.get(currentPosition + nimber);
+    if (!needsToComputeAll(depth)) {
+      if (alreadyComputedPositions.containsKey(currentPosition + nimber)) {
+        return alreadyComputedPositions.get(currentPosition + nimber);
+      }
     }
-    // }
     InternalPositionWithLands lands = InternalPositionWithLands.fromString(currentPosition);
     if (lands.size() > 1) {
       // TODO: maybe store combined result as well?

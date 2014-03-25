@@ -38,9 +38,8 @@ public class Position implements Serializable {
     return true;
   }
 
-  public void makeMove(Move move) {
-    // Output.debug("Making move: " + move);
-    move.invertBoundaries(); // TODO: kpš?
+  public void makeMove(Move oldMove) {
+    Move move = Move.fromString(oldMove.toNotation());
     if (move.getInvertedBoundaries()) {
       move.removeInversion();
     }
@@ -87,7 +86,7 @@ public class Position implements Serializable {
 
       // Output.debug("First boundary: " + firstBoundary);
       // Output.debug("Second boundary: " + secondBoundary);
-      if (needsInvertion(move)) {
+      if (!needsInvertion(move)) {
         firstRegion.add(firstBoundary);
         secondRegion.add(secondBoundary);
       } else {
@@ -114,7 +113,6 @@ public class Position implements Serializable {
     if (move.getFrom().equals(move.getTo())) {
       return !move.getContainsSelf();
     }
-    // return false;
     return move.getInvertedBoundaries();
   }
 
