@@ -11,6 +11,12 @@ import uk.ac.ed.inf.sprouts.utils.Output;
 
 import com.google.common.base.Joiner;
 
+/**
+ * Runs a number of games between two players and outputs statistics (including the number of
+ * survivors for each game).
+ * 
+ * @author Rimas
+ */
 public class PlayersEvaluator {
 
   private static final String GAME_TYPE = "4+";

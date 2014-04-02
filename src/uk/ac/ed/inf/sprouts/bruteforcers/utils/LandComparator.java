@@ -2,6 +2,11 @@ package uk.ac.ed.inf.sprouts.bruteforcers.utils;
 
 import java.util.Comparator;
 
+/**
+ * Compares two lands by their number of lives.
+ *
+ * @author Rimas
+ */
 public class LandComparator implements Comparator<String> {
 
   @Override

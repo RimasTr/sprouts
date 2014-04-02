@@ -1,7 +1,6 @@
 package uk.ac.ed.inf.sprouts.bruteforcers;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -14,9 +13,12 @@ import uk.ac.ed.inf.sprouts.internal.ChildrenGenerator;
 import uk.ac.ed.inf.sprouts.internal.InternalPosition;
 import uk.ac.ed.inf.sprouts.utils.Output;
 
+/**
+ * An old implementation of the brute-force search. Not used anymore.
+ * 
+ * @author Rimas
+ */
 public class ImprovedMoveBruteforcer implements MoveBruteforcer {
-
-  public static String DEBUG_POSITION = "ABC.}BC.}DE.FG.}DE.}FAG.}!--";
 
   private Game game;
   private Move winningMove;
@@ -72,11 +74,6 @@ public class ImprovedMoveBruteforcer implements MoveBruteforcer {
 
     Set<String> possiblePositions = getPossibleInternalPositions(currentPosition);
     // TODO: remove, debug
-    if (currentPosition.equals(DEBUG_POSITION)) {
-      ArrayList<String> list = new ArrayList<String>(possiblePositions);
-      Collections.sort(list);
-      Output.debug("Debug pos:  " + list);
-    }
     for (String position : possiblePositions) {
       if (!isWin(position)) {
         if (!checkIfMatches(currentPosition, true)) {

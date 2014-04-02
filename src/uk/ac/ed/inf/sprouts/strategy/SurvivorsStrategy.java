@@ -13,6 +13,11 @@ import uk.ac.ed.inf.sprouts.external.Region;
 import uk.ac.ed.inf.sprouts.internal.InternalPosition;
 import uk.ac.ed.inf.sprouts.utils.Output;
 
+/**
+ * Implements the survivors strategy.
+ *
+ * @author Rimas
+ */
 public class SurvivorsStrategy {
 
   private class MoveResult {
@@ -34,6 +39,7 @@ public class SurvivorsStrategy {
     }
   }
 
+  private static final double K = 0.62 / 3.0;
   private Game game;
   private Move optimalMove;
   private HashMap<String, MoveResult> possiblePositions;
@@ -53,7 +59,6 @@ public class SurvivorsStrategy {
   }
 
   private int getWantedNumberOfSurvivors() {
-    // double finalSurvivorsEstimate = game.getInitialSprouts() * 2.0 / 3.0;
     double finalSurvivorsEstimate = getFinalSurvivorsEstimate();
     double numberOfMovesEstimate = game.getInitialSprouts() * 3.0 - finalSurvivorsEstimate;
     double wantedNumberOfSurvivors;
@@ -71,7 +76,7 @@ public class SurvivorsStrategy {
     double estimate = 0;
     HashMap<Integer, Integer> lives = game.getPosition().getLives();
     for (Region region : game.getPosition().getRegions()) {
-      double regionEstimate = (2.0 / 9.0) * region.getLives(lives);
+      double regionEstimate = K * region.getLives(lives);
       estimate += (regionEstimate > 1.0 ? regionEstimate : 1.0);
     }
     return estimate;
@@ -97,7 +102,6 @@ public class SurvivorsStrategy {
 
   private int countSurvivors(Game game) {
     String position = InternalPosition.fromExternal(game.getPosition()).toString();
-    // TODO: make sure it's right
     return 3 * game.getInitialSprouts() - game.getNumberOfMoves() - getLives(position);
   }
 
@@ -118,11 +122,6 @@ public class SurvivorsStrategy {
       if (average > maxAverage) {
         optimalMove = possiblePositions.get(position).getMove();
       }
-      // return;
-      // if (!isOptimal(possiblePositions.get(position).getGame())) {
-      // optimalMove = possiblePositions.get(position).getMove();
-      // return;
-      // }
     }
   }
 
@@ -174,11 +173,6 @@ public class SurvivorsStrategy {
       }
       possiblePositions.put(internalPositionString, new MoveResult(move, clone));
     }
-    // Output.debug("All possible positions (" + possiblePositions.keySet().size() + ")");
-    // for (String positionString : possiblePositions.keySet()) {
-    // Output.debug(positionString + "\t\t"
-    // + possiblePositions.get(positionString).getMove().toNotation());
-    // }
     return possiblePositions;
   }
 

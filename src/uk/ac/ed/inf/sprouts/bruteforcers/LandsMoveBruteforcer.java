@@ -14,6 +14,12 @@ import uk.ac.ed.inf.sprouts.internal.InternalPosition;
 import uk.ac.ed.inf.sprouts.internal.InternalPositionWithLands;
 import uk.ac.ed.inf.sprouts.utils.Output;
 
+
+/**
+ * An old implementation of the brute-force search. Not used anymore.
+ * 
+ * @author Rimas
+ */
 public class LandsMoveBruteforcer implements MoveBruteforcer {
 
   public static String DEBUG_POSITION = "ABC.}BC.}DE.FG.}DE.}FAG.}!--";
@@ -30,17 +36,17 @@ public class LandsMoveBruteforcer implements MoveBruteforcer {
   public void compute() {
     alreadyComputedPositions = new HashMap<String, Integer>();
     isWin(InternalPosition.fromExternal(game.getPosition()).toString());
-//    possiblePositions = getPossiblePositions(game);
-//    Output.debug("Possible moves: " + possiblePositions.size());
-//    for (String position : possiblePositions.keySet()) {
-//      Output.debug("Checking " + possiblePositions.get(position).toNotation());
-//      if (!isWin(position)) {
-//        winningMove = possiblePositions.get(position);
-//        Output.debug("Different positions: " + alreadyComputedPositions.size());
-//        return;
-//      }
-//    }
-//    Output.debug("Different positions: " + alreadyComputedPositions.size());
+    // possiblePositions = getPossiblePositions(game);
+    // Output.debug("Possible moves: " + possiblePositions.size());
+    // for (String position : possiblePositions.keySet()) {
+    // Output.debug("Checking " + possiblePositions.get(position).toNotation());
+    // if (!isWin(position)) {
+    // winningMove = possiblePositions.get(position);
+    // Output.debug("Different positions: " + alreadyComputedPositions.size());
+    // return;
+    // }
+    // }
+    // Output.debug("Different positions: " + alreadyComputedPositions.size());
   }
 
   public boolean hasWinningMove() {
@@ -68,7 +74,7 @@ public class LandsMoveBruteforcer implements MoveBruteforcer {
   }
 
   private int computeNimber(String currentPosition) {
-    //Output.debug("Calculating " + currentPosition);
+    // Output.debug("Calculating " + currentPosition);
     if (currentPosition.length() <= 1) {
       return 0;
     }
@@ -78,7 +84,7 @@ public class LandsMoveBruteforcer implements MoveBruteforcer {
     InternalPositionWithLands lands = InternalPositionWithLands.fromString(currentPosition);
     if (lands.size() > 1) {
       // TODO: maybe store combined result as well?
-      //Output.debug("Splitting " + currentPosition + " --------- ");
+      // Output.debug("Splitting " + currentPosition + " --------- ");
       return computeNimberOfSeveralLands(lands);
     }
     // Else only one land
@@ -91,7 +97,7 @@ public class LandsMoveBruteforcer implements MoveBruteforcer {
     while (nimbers.contains(result)) {
       result++;
     }
-    //Output.debug("Nimber of " + currentPosition + " is " + result);
+    // Output.debug("Nimber of " + currentPosition + " is " + result);
     alreadyComputedPositions.put(currentPosition, result);
     return result;
   }
@@ -99,12 +105,12 @@ public class LandsMoveBruteforcer implements MoveBruteforcer {
   private int computeNimberOfSeveralLands(InternalPositionWithLands lands) {
     int result = 0;
     for (InternalPosition land : lands) {
-      //Output.debug("computing " + land.toString());
+      // Output.debug("computing " + land.toString());
       int nimber = computeNimber(land.toString());
       Output.debug("of " + land.toString() + " is " + nimber);
       result = result ^ nimber;
     }
-    //Output.debug("Total: " + result);
+    // Output.debug("Total: " + result);
     return result;
   }
 
@@ -112,19 +118,19 @@ public class LandsMoveBruteforcer implements MoveBruteforcer {
     return new ChildrenGenerator(position).generateAllChildrenStrings();
   }
 
-//  private HashMap<String, Move> getPossiblePositions(Game game) {
-//    AllMovesGenerator allMovesGenerator = new AllMovesGenerator();
-//    Set<Move> moves = allMovesGenerator.generateAllMoves(game.getPosition());
-//    HashMap<String, Move> possiblePositions = new HashMap<String, Move>();
-//    for (Move move : moves) {
-//      Game clone = game.deepClone();
-//      clone.makeMove(move);
-//      InternalPosition internalPosition = InternalPosition.fromExternal(clone.getPosition());
-//      String internalPositionString = internalPosition.toString();
-//      possiblePositions.put(internalPositionString, move);
-//    }
-//    return possiblePositions;
-//  }
+  // private HashMap<String, Move> getPossiblePositions(Game game) {
+  // AllMovesGenerator allMovesGenerator = new AllMovesGenerator();
+  // Set<Move> moves = allMovesGenerator.generateAllMoves(game.getPosition());
+  // HashMap<String, Move> possiblePositions = new HashMap<String, Move>();
+  // for (Move move : moves) {
+  // Game clone = game.deepClone();
+  // clone.makeMove(move);
+  // InternalPosition internalPosition = InternalPosition.fromExternal(clone.getPosition());
+  // String internalPositionString = internalPosition.toString();
+  // possiblePositions.put(internalPositionString, move);
+  // }
+  // return possiblePositions;
+  // }
 
   public HashMap<String, Boolean> getComputedPositions() {
     // TODO: maybe implement something for testing

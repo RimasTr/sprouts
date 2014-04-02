@@ -8,6 +8,11 @@ import java.util.List;
 
 import com.google.common.base.Joiner;
 
+/**
+ * Represents a region of the external representation.
+ *
+ * @author Rimas
+ */
 public class Region extends ArrayList<Boundary> {
 
   private static final long serialVersionUID = 2093789352359011100L;

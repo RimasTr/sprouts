@@ -6,6 +6,11 @@ import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.utils.Output;
 
+/**
+ * Reads the moves from the standard input.
+ *
+ * @author Rimas
+ */
 public class UserPlayer implements Player {
 
   @Override

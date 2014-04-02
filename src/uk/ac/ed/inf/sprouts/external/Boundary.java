@@ -12,6 +12,11 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
+/**
+ * Represents a boundary of the external representation.
+ *
+ * @author Rimas
+ */
 public class Boundary extends ArrayList<Integer> {
 
   private static final long serialVersionUID = 3388951717137457680L;

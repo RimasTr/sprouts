@@ -9,6 +9,11 @@ import java.util.Random;
 
 import uk.ac.ed.inf.sprouts.utils.Output;
 
+/**
+ * Computes a random move from all possible children of the given position.
+ *
+ * @author Rimas
+ */
 public class RandomMoveGenerator {
 
   class Vertex {

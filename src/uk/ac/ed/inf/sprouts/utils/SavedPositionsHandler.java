@@ -28,6 +28,7 @@ public class SavedPositionsHandler {
       out.flush();
       out.close();
     } catch (IOException e) {
+      Output.error("Could not save the positions to the file.");
       e.printStackTrace();
     }
   }
@@ -44,18 +45,16 @@ public class SavedPositionsHandler {
       String line = in.readLine();
       while (line != null) {
         String s[] = line.split("\t");
-        // Output.debug(s[0] + " - " + s[1]);
-        // Output.debug("" + s[1].equals("1"));
         positions.put(s[0], (s[1].equals("1")));
         line = in.readLine();
       }
       in.close();
       return positions;
     } catch (FileNotFoundException e) {
-      // TODO Auto-generated catch block
+      Output.error("Could not find a file to load the positions from.");
       e.printStackTrace();
     } catch (IOException e) {
-      // TODO Auto-generated catch block
+      Output.error("Could not load the positions.");
       e.printStackTrace();
     }
     return null;

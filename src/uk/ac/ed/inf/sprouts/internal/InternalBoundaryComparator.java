@@ -2,6 +2,11 @@ package uk.ac.ed.inf.sprouts.internal;
 
 import java.util.Comparator;
 
+/**
+ * Compares two boundaries in either normal or abstract way.
+ * 
+ * @author Rimas
+ */
 public class InternalBoundaryComparator implements Comparator<InternalBoundary> {
 
   private final boolean compareAsAbstract;

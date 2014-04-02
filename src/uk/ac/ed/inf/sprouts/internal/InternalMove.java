@@ -1,5 +1,11 @@
 package uk.ac.ed.inf.sprouts.internal;
 
+/**
+ * Represents a move in the internal representation. Does not contain a list of enclosed vertices.
+ * They are added during the children generating phase.
+ * 
+ * @author Rimas
+ */
 public class InternalMove {
 
   private final VertexInfo from;

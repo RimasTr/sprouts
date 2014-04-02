@@ -5,11 +5,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import uk.ac.ed.inf.sprouts.bruteforcers.ImprovedMoveBruteforcer;
-import uk.ac.ed.inf.sprouts.utils.Output;
-
 import com.google.common.collect.Collections2;
 
+/**
+ * Generates all possible children of a given internal position.
+ *
+ * @author Rimas
+ */
 public class ChildrenGenerator {
 
   private final InternalPosition position;
@@ -21,13 +23,7 @@ public class ChildrenGenerator {
   public Set<InternalPosition> generateAllChildren() {
     HashSet<InternalPosition> children = new HashSet<InternalPosition>();
     List<InternalMove> moves = generateInternalMoves();
-    // TODO: remove
-    String posString = position.toString();
     for (InternalMove move : moves) {
-      if (posString.equals(ImprovedMoveBruteforcer.DEBUG_POSITION)) {
-        Output.debug("Move :" + move);
-        Output.debug("Positions :" + generateAllPossiblePositionsAfter(move));
-      }
       children.addAll(generateAllPossiblePositionsAfter(move));
     }
     return children;
@@ -72,7 +68,7 @@ public class ChildrenGenerator {
         for (int vertexIndex = 0; vertexIndex < boundary.size(); vertexIndex++) {
           Vertex vertex = boundary.get(vertexIndex);
           if (vertex.getLives() >= 3) {
-            // zero
+            // A zero
             if (++foundZeros > 2) {
               // Already have 2 zeros in this region, don't add more
               continue;
@@ -91,8 +87,6 @@ public class ChildrenGenerator {
     if (move.inTheSameBoundary()) {
       List<InternalPosition> positionsAfterMove = getPositionsAfterMove(move);
       positions.addAll(positionsAfterMove);
-      // Output.debug("Move: " + move);
-      // Output.debug("Position: " + positionsAfterMove);
     } else {
       positions.add(getPositionAfterMove(move));
     }
@@ -161,7 +155,6 @@ public class ChildrenGenerator {
       newPosition.add(firstRegion);
       newPosition.add(secondRegion);
       positions.add(newPosition.recreate());
-      // positions.add(newPosition);
     }
     return positions;
   }
@@ -185,9 +178,6 @@ public class ChildrenGenerator {
     region.remove(fromBoundary);
     region.remove(toBoundary);
     region.add(newBoundary);
-    // if (position.toString().equals("0.A.}0.A.}!")) {
-    // return newPosition;
-    // }
     return newPosition.recreate();
   }
 

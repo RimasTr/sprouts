@@ -8,6 +8,11 @@ import uk.ac.ed.inf.sprouts.internal.InternalPosition;
 import uk.ac.ed.inf.sprouts.players.Player;
 import uk.ac.ed.inf.sprouts.utils.Output;
 
+/**
+ * Simulates the game between two players.
+ *
+ * @author Rimas
+ */
 public class GameRunner {
 
   private final Game game;

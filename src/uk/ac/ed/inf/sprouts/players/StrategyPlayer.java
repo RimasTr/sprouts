@@ -4,6 +4,11 @@ import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.strategy.SurvivorsStrategy;
 
+/**
+ * Uses survivors strategy to compute the move.
+ *
+ * @author Rimas
+ */
 public class StrategyPlayer implements Player {
 
   @Override

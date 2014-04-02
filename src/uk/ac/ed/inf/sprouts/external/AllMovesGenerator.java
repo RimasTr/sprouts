@@ -6,6 +6,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Generates all possible move for the external representation.
+ *
+ * @author Rimas
+ */
 public class AllMovesGenerator {
 
   class Vertex {
@@ -90,7 +95,7 @@ public class AllMovesGenerator {
             // Need to use @ to specify region.
             regionVertex = getRegionVertex(to, from, position, region);
             if (regionVertex != null && regionVertex.equals(from.getNumber())) {
-              throw new RuntimeException("Blah");
+              throw new RuntimeException("Impossible to specify @-spot");
             }
             // }
             Set<List<Integer>> allBoundaryVerticesCombinations =

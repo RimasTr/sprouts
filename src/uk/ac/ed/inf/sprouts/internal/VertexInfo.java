@@ -1,5 +1,10 @@
 package uk.ac.ed.inf.sprouts.internal;
 
+/**
+ * A vertex with its location (as a region, boundary, and position in the boundary).
+ *
+ * @author Rimas
+ */
 public class VertexInfo {
 
   private final Vertex vertex;

@@ -13,6 +13,12 @@ import uk.ac.ed.inf.sprouts.external.Region;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 
+/**
+ * Represents a position (or a land) in the internal representation. Handles conversion from the
+ * external position to the internal one.
+ * 
+ * @author Rimas
+ */
 public class InternalPosition extends ArrayList<InternalRegion> {
 
   private static final long serialVersionUID = 2586045556331715946L;
@@ -39,7 +45,6 @@ public class InternalPosition extends ArrayList<InternalRegion> {
       InternalRegion internalRegion = InternalRegion.fromExternal(position, region);
       internalPosition.add(internalRegion);
     }
-    // Output.debug("Original position:\n" + internalPosition);
     internalPosition.optimize();
     return internalPosition;
   }
@@ -70,30 +75,20 @@ public class InternalPosition extends ArrayList<InternalRegion> {
     return result;
   }
 
-  // TODO: private
   public void optimize() {
-    // Output.debug("Before:    " + this);
     PositionMap map = getMap();
     detectAbstractVertices(map);
-    // Output.debug("After1:    " + this);
     deleteEmptyBoundariesAndRegions();
-    // Output.debug("After2:    " + this);
     // recompute map
     map = new PositionMap(getVertices());
     detectAbstractVertices(map);
-    // Output.debug("After3:    " + this);
     canonize();
-    // Output.debug("After4:    " + this);
   }
 
   private void detectAbstractVertices(PositionMap map) {
     List<Vertex> removedVertices = new ArrayList<Vertex>();
     for (Vertex vertex : map.keySet()) {
       List<Vertex> occurrences = map.get(vertex);
-      // if (vertex.getC() == 'a') {
-      // Output.debug("Vertex: " + vertex.getC());
-      // Output.debug("Occurences: " + occurrences);
-      // }
       if (vertex.getC() == InternalConstants.CHAR_3) {
         for (Vertex v : occurrences) {
           removedVertices.add(v);
@@ -186,15 +181,10 @@ public class InternalPosition extends ArrayList<InternalRegion> {
   }
 
   private void canonize() {
-    // Output.debug("Before :    " + this);
     sort(true);
-    // Output.debug("After 1:    " + this);
     renameLowercase();
-    // Output.debug("After 2:    " + this);
     renameUppercase();
-    // Output.debug("After 3:    " + this);
     sort(false);
-    // Output.debug("Final  :    " + this);
   }
 
   private void renameLowercase() {
@@ -234,26 +224,19 @@ public class InternalPosition extends ArrayList<InternalRegion> {
 
   private void sort(boolean asAbstract) {
     for (InternalRegion region : this) {
-      // Output.debug("After 1:    " + region.toStringFull());
       region.sort(asAbstract);
-      // Output.debug("After 2:    " + region.toStringFull());
       region.compile();
       String normalRepresentation = region.toString(asAbstract);
       region.inverseOrientation();
-      // Output.debug("After 3:    " + region.toStringFull());
       region.sort(asAbstract);
-      // Output.debug("After 4:    " + region.toStringFull());
       region.compile();
       String reverseRepresentation = region.toString(asAbstract);
       if (normalRepresentation.compareTo(reverseRepresentation) < 0) {
         // Reverse again. Should we save the position so we wouldn't have to sort 3 times?
         region.inverseOrientation();
-        // Output.debug("After 5:    " + region.toStringFull());
         region.sort(asAbstract);
-        // Output.debug("After 6:    " + region.toStringFull());
         region.compile();
       }
-      // Output.debug("Final  :    " + region.toStringFull());
     }
     Collections.sort(this, new InternalRegionComparator(asAbstract));
   }
@@ -269,12 +252,6 @@ public class InternalPosition extends ArrayList<InternalRegion> {
   @Override
   public String toString() {
     return Joiner.on("").join(this) + getEndChar();
-    // String result = "";
-    // for (InternalRegion region : this) {
-    // result += region.toString();
-    // }
-    // result += getEndChar();
-    // return result;
   }
 
   public boolean isLost() {

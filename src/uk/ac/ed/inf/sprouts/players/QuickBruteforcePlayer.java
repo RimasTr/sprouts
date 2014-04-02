@@ -7,6 +7,11 @@ import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.utils.SavedPositionsHandler;
 
+/**
+ * Check if we have already computed the winning move for this position.
+ *
+ * @author Rimas
+ */
 public class QuickBruteforcePlayer implements Player {
 
   @Override

@@ -2,6 +2,11 @@ package uk.ac.ed.inf.sprouts.internal;
 
 import java.util.Comparator;
 
+/**
+ * Compares two internal region in either normal or an abstract way.
+ *
+ * @author Rimas
+ */
 public class InternalRegionComparator implements Comparator<InternalRegion> {
 
   private final boolean compareAsAbstract;

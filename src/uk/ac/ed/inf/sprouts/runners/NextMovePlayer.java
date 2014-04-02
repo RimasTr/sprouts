@@ -15,7 +15,12 @@ import uk.ac.ed.inf.sprouts.runners.utils.OneMoveRunner;
 import uk.ac.ed.inf.sprouts.utils.Output;
 import uk.ac.ed.inf.sprouts.utils.ServerClient;
 
-
+/**
+ * The main runner of the application. Supports three game types: new game (-n), join game (-j) and
+ * tracking of the player (-t).
+ * 
+ * @author Rimas
+ */
 public class NextMovePlayer {
 
   @Option(name = "-p", usage = "Set player type.\nE.g. '-p random', '-p smart'.", metaVar = "<playerType>")

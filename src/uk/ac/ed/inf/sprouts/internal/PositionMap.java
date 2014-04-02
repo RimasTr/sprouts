@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Keeps track of which vertex is in which boundary. Helps in the conversion to the internal
+ * representation.
+ * 
+ * @author Rimas
+ */
 public class PositionMap extends HashMap<Vertex, List<Vertex>> {
 
   private static final long serialVersionUID = 4994616576185757612L;

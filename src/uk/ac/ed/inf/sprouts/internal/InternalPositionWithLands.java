@@ -14,6 +14,11 @@ import com.google.common.base.Function;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
+/**
+ * A set of independent internal positions (lands).
+ *
+ * @author Rimas
+ */
 public class InternalPositionWithLands extends ArrayList<InternalPosition> {
 
   private static final long serialVersionUID = -7575398053641141623L;

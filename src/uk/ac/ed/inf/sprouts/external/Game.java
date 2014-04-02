@@ -13,6 +13,12 @@ import java.util.regex.Pattern;
 
 import uk.ac.ed.inf.sprouts.utils.Output;
 
+/**
+ * Contains information about the game in the external representation. Has number of initial
+ * sprouts, a list of the moves that have been made, and the final position.
+ * 
+ * @author Rimas
+ */
 public class Game implements Serializable {
 
   private static final long serialVersionUID = 8360779598976895710L;
@@ -34,9 +40,6 @@ public class Game implements Serializable {
     Matcher matcher = pattern.matcher(gameTypeString);
 
     if (matcher.matches()) {
-      // Output.debug("Matches: ");
-      // for (int i = 1; i <= matcher.groupCount(); i++)
-      // Output.debug(i + ": " + matcher.group(i));
       Integer initialSprouts = Integer.parseInt(matcher.group(1));
       GameType gameType = GameType.fromSymbol(matcher.group(2));
       return new Game(initialSprouts, gameType);

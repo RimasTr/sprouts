@@ -7,6 +7,11 @@ import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.utils.SavedPositionsHandler;
 
+/**
+ * The main brute-force search strategy player. Uses ImprovedLandsMoveBruteforcer.
+ *
+ * @author Rimas
+ */
 public class BruteforcePlayer implements Player {
 
   private boolean useSavedPositions;

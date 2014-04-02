@@ -13,6 +13,11 @@ import uk.ac.ed.inf.sprouts.external.Region;
 
 import com.google.common.base.Joiner;
 
+/**
+ * Represents a region in the internal representation.
+ *
+ * @author Rimas
+ */
 public class InternalRegion extends ArrayList<InternalBoundary> {
 
   private static final long serialVersionUID = -183105657365459414L;
@@ -67,11 +72,6 @@ public class InternalRegion extends ArrayList<InternalBoundary> {
   @Override
   public String toString() {
     return Joiner.on("").join(this) + InternalConstants.END_OF_REGION_CHAR;
-    // String result = "";
-    // for (InternalBoundary boundary : this) {
-    // result += boundary.toString();
-    // }
-    // return result + InternalConstants.END_OF_REGION_CHAR;
   }
 
   public String toAbstractString() {
@@ -135,9 +135,7 @@ public class InternalRegion extends ArrayList<InternalBoundary> {
       boundary.sort(asAbstract);
       boundary.compile();
     }
-    //System.out.println("Sorting: " + this + " " + asAbstract);
     Collections.sort(this, new InternalBoundaryComparator(asAbstract));
-    //System.out.println("Sorted: " + this);
   }
 
   public void inverseOrientation() {

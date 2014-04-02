@@ -18,6 +18,11 @@ import org.json.simple.parser.ParseException;
 
 import com.google.common.base.Joiner;
 
+/**
+ * Handles all communications between the client and the server.
+ * 
+ * @author Rimas
+ */
 public class ServerClient {
 
   private String username;

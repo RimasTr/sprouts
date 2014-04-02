@@ -7,6 +7,11 @@ import java.util.List;
 import uk.ac.ed.inf.sprouts.external.Boundary;
 import uk.ac.ed.inf.sprouts.external.Position;
 
+/**
+ * Represents a boundary in the internal representation.
+ *
+ * @author Rimas
+ */
 public class InternalBoundary extends ArrayList<Vertex> {
 
   private static final long serialVersionUID = 7283921350025148014L;

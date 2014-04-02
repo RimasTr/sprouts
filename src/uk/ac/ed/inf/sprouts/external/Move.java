@@ -14,6 +14,11 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
+/**
+ * Handles a move for the external representation.
+ *
+ * @author Rimas
+ */
 public class Move implements Comparable<Move>, Serializable {
 
   private static final long serialVersionUID = -5014845674738051746L;
@@ -54,10 +59,6 @@ public class Move implements Comparable<Move>, Serializable {
     Matcher matcher = pattern.matcher(moveString);
 
     if (matcher.matches()) {
-      // Output.debug("Matches: ");
-      // for (int i = 1; i <= matcher.groupCount(); i++)
-      // Output.debug(i + ": " + matcher.group(i));
-
       Integer from = parseVertex(matcher.group(1));
       Boolean invertedFrom = matcher.group(2) != null;
       Integer to = parseVertex(matcher.group(7));
@@ -119,10 +120,6 @@ public class Move implements Comparable<Move>, Serializable {
   @Override
   public String toString() {
     return toNotation();
-//    return "Move [from=" + from + ", invertedFrom=" + invertedFrom + ", to=" + to + ", invertedTo="
-//        + invertedTo + ", createdVertex=" + createdVertex + ", regionVertex=" + regionVertex
-//        + ", boundariesVertices=" + boundariesVertices + ", invertedBoundaries="
-//        + invertedBoundaries + "]";
   }
 
   public String toNotation() {
@@ -168,10 +165,6 @@ public class Move implements Comparable<Move>, Serializable {
             vertices.add(i);
           }
         }
-
-        // Output.debug("Matches: ");
-        // for (int i = 1; i <= matcher.groupCount(); i++)
-        // Output.debug(i + ": " + matcher.group(i));
       }
     };
     return vertices;

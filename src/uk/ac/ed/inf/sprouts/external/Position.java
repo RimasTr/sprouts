@@ -9,6 +9,11 @@ import uk.ac.ed.inf.sprouts.utils.Output;
 
 import com.google.common.base.Joiner;
 
+/**
+ * Represents a position in the external representation.
+ *
+ * @author Rimas
+ */
 public class Position implements Serializable {
 
   private static final long serialVersionUID = 2071824388766229559L;

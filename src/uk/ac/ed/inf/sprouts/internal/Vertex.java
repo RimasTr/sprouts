@@ -3,6 +3,11 @@ package uk.ac.ed.inf.sprouts.internal;
 import uk.ac.ed.inf.sprouts.external.Boundary;
 import uk.ac.ed.inf.sprouts.external.Position;
 
+/**
+ * Represents a particular instance of the spot in the internal representation.
+ *
+ * @author Rimas
+ */
 public class Vertex {
 
   private final InternalBoundary boundary;
@@ -23,7 +28,6 @@ public class Vertex {
   public void setC(char c) {
     this.c = c;
     this.i = (int) c;
-    // this.boundary.compile();
   }
 
   public InternalBoundary getBoundary() {

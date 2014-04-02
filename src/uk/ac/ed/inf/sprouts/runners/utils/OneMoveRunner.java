@@ -8,6 +8,11 @@ import uk.ac.ed.inf.sprouts.players.BruteforcePlayer;
 import uk.ac.ed.inf.sprouts.players.Player;
 import uk.ac.ed.inf.sprouts.utils.Output;
 
+/**
+ * Computes the next move for the given game from the given player.
+ *
+ * @author Rimas
+ */
 public class OneMoveRunner {
 
   private final Game game;
@@ -31,7 +36,6 @@ public class OneMoveRunner {
     }
 
     Move move = player.getMove(game);
-//    Output.move(move);
     game.makeMove(move);
     Output.debug("NewPosition", "Position: " + game.getPosition());
 //    if (game.isOver()) {

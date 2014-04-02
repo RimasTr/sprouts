@@ -20,21 +20,29 @@ import uk.ac.ed.inf.sprouts.utils.SavedPositionsHandler;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
+/**
+ * The main brute-force search algorithm used in the application. Takes advantage of splitting
+ * positions into lands and uses nimbers to compute the outcomes.
+ * 
+ * @author Rimas
+ */
 public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
 
-  public static String DEBUG_POSITION = "ABCD.}CBAD.}!";
-
+  // The position that is being analysed:
   private Game game;
+  // The move that leads to winning position:
   private Move winningMove;
+  // The move that leads to optimal position (in case winning move doesn't exist):
   private Move optimalMove;
-  private String optimalPosition;
-  private double bestOptimalMoveRatio = 2.0; // more than 1
-  private HashMap<String, Move> possiblePositions;
-  private HashMap<String, Boolean> alreadyComputedPositions;
-  private HashMap<String, Boolean> savedPositions;
-  private int save = 0;
+  private String optimalPosition; // To be able to recover optimal move
+  private double bestOptimalMoveRatio = 2.0; // Initial value has to be more than 1
+  private HashMap<String, Move> possiblePositions; // Children of the position
+  private HashMap<String, Boolean> alreadyComputedPositions; // Hashed positions
+  private HashMap<String, Boolean> savedPositions; // If we're going to save anything to a text file
+  private int save = 0; // How many layers of the search-tree will be saved in the text file
   private boolean computeOptimalMove = false;
 
+  // Layers of search tree for which more output should be generated:
   private final int DEBUG_DEPTH = 0;
 
   public ImprovedLandsMoveBruteforcer(Game game) {
@@ -70,6 +78,9 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
     this.save = save;
   }
 
+  /**
+   * Check if we have the result in already computed positions list.
+   */
   public void quickCompute() {
     if (possiblePositions == null) {
       possiblePositions = getPossiblePositions(game);
@@ -84,22 +95,23 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
   }
 
   public void compute() {
+    // Get the possible children:
     if (possiblePositions == null) {
       possiblePositions = getPossiblePositions(game);
     }
     Output.debug("Debug", "Possible moves: " + possiblePositions.size());
-    int total = possiblePositions.size();
-    int i = 0;
-    // Output.debug("Possible moves: " + possiblePositions);
+
+    // Check all children until a winning move is found:
     for (String position : possiblePositions.keySet()) {
-      Output.debug("Debug", "Checking " + possiblePositions.get(position).toNotation() + " " + (++i) + "/"
-          + total);
+      Output.debug("Debug", "Checking " + possiblePositions.get(position).toNotation());
       if (!isWin(position, 0, 0)) {
         winningMove = possiblePositions.get(position);
         finish();
         return;
       }
     }
+
+    // If no winning move was found, compute an optimal move:
     if (!hasWinningMove()) {
       computeOptimalMove();
     }
@@ -110,8 +122,6 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
     if (optimalPosition != null) {
       Output.debug("Debug", "Optimal ratio: " + bestOptimalMoveRatio);
       optimalMove = possiblePositions.get(optimalPosition);
-      // Output.debug("Optimal position: " + optimalPosition);
-      // Output.debug("Optimal move: " + optimalMove);
     }
   }
 
@@ -174,7 +184,6 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
     InternalPositionWithLands lands = InternalPositionWithLands.fromString(currentPosition);
     if (lands.size() > 1) {
       // TODO: maybe store combined result as well?
-      // Output.debug("Splitting " + currentPosition + " --------- ");
       List<String> landStrings =
           Lists.newArrayList(Iterables.transform(lands, InternalPosition.toString));
       Collections.sort(landStrings, new LandComparator());
@@ -186,7 +195,6 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
     for (int i = 0; i < nimber; i++) {
       if (!isWin(currentPosition, i, depth + 1)) {
         savePosition(currentPosition, nimber, true, depth);
-        // Output.debug(currentPosition + "\ttrue 1");
         result = true;
         if (depth >= save) {
           return result;
@@ -202,13 +210,11 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
     }
     int total = possiblePositions.size();
     int i = 0;
-    // Output.debug("Children: " + possiblePositions);
     // First check already computed positions maybe?
     if (!needsToComputeAll(depth)) {
       for (String position : possiblePositions) {
         if (alreadyComputedPositions.containsKey(position + nimber)
             && !alreadyComputedPositions.get(position + nimber)) {
-          // Output.debug(currentPosition + "\ttrue 2");
           savePosition(currentPosition, nimber, true, depth);
           return true;
         }
@@ -223,7 +229,6 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
         Output.debug("Debug", d + "--" + (++i) + "/" + total);
       }
       if (!isWin(position, nimber, depth + 1)) {
-        // Output.debug(currentPosition + "\ttrue 3");
         savePosition(currentPosition, nimber, true, depth);
         result = true;
         if (!needsToComputeAll(depth)) {
@@ -234,14 +239,12 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
     }
     if (depth == 0 && computeOptimalMove) {
       double currentRatio = 1.0 * winningPositions / totalPossiblePositions;
-      // Output.debug("Current ration: " + currentRatio);
       if (currentRatio < bestOptimalMoveRatio) {
         optimalPosition = currentPosition;
         bestOptimalMoveRatio = currentRatio;
       }
     }
     savePosition(currentPosition, nimber, result, depth);
-    // Output.debug(currentPosition + "\tfalse");
     return result;
   }
 
@@ -252,12 +255,9 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
   private int computeNimberOfSeveralLands(List<String> list, int depth) {
     int result = 0;
     for (String land : list) {
-      // Output.debug("computing " + land.toString());
       int nimber = computeNimber(land, depth);
-      // Output.debug("of " + land.toString() + " is " + nimber);
       result = result ^ nimber;
     }
-    // Output.debug("Total: " + result);
     return result;
   }
 

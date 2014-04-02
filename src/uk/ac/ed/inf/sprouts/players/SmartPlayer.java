@@ -4,6 +4,11 @@ import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.external.Move;
 import uk.ac.ed.inf.sprouts.utils.Output;
 
+/**
+ * A combination of the brute-force search, survivors strategy and random player.
+ *
+ * @author Rimas
+ */
 public class SmartPlayer implements Player {
 
   private static final int NUMBER_OF_LIVES_TO_BE_RANDOM = 10 * 3;

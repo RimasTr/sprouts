@@ -8,6 +8,11 @@ import uk.ac.ed.inf.sprouts.players.UserPlayer;
 import uk.ac.ed.inf.sprouts.runners.utils.GameRunner;
 import uk.ac.ed.inf.sprouts.utils.Output;
 
+/**
+ * Runs one game between a user and a computer.
+ *
+ * @author Rimas
+ */
 public class Runner {
 
   // Possible Players: RandomPlayer, BruteforcePlayer, StrategyPlayer, UserPlayer
