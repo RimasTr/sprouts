@@ -87,12 +87,12 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
     if (possiblePositions == null) {
       possiblePositions = getPossiblePositions(game);
     }
-    Output.debug("Possible moves: " + possiblePositions.size());
+    Output.debug("Debug", "Possible moves: " + possiblePositions.size());
     int total = possiblePositions.size();
     int i = 0;
     // Output.debug("Possible moves: " + possiblePositions);
     for (String position : possiblePositions.keySet()) {
-      Output.debug("Checking " + possiblePositions.get(position).toNotation() + " " + (++i) + "/"
+      Output.debug("Debug", "Checking " + possiblePositions.get(position).toNotation() + " " + (++i) + "/"
           + total);
       if (!isWin(position, 0, 0)) {
         winningMove = possiblePositions.get(position);
@@ -108,7 +108,7 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
 
   private void computeOptimalMove() {
     if (optimalPosition != null) {
-      Output.debug("Optimal ratio: " + bestOptimalMoveRatio);
+      Output.debug("Debug", "Optimal ratio: " + bestOptimalMoveRatio);
       optimalMove = possiblePositions.get(optimalPosition);
       // Output.debug("Optimal position: " + optimalPosition);
       // Output.debug("Optimal move: " + optimalMove);
@@ -116,13 +116,13 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
   }
 
   private void finish() {
-    Output.debug("Different positions: " + alreadyComputedPositions.size());
+    Output.debug("NewPosition", "Different positions: " + alreadyComputedPositions.size());
     if (save > 0) {
-      Output.debug("Saved positions: " + savedPositions.size());
+      Output.debug("Debug", "Saved positions: " + savedPositions.size());
       SavedPositionsHandler.savePositionsToFile(savedPositions);
     }
     if (hasWinningMove()) {
-      Output.debug("Winning position!");
+      Output.debug("Debug", "Winning position!");
     }
   }
 
@@ -161,7 +161,7 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
       for (int i = 0; i < depth; i++) {
         d += "--";
       }
-      Output.debug(d + "Calculating " + currentPosition + " " + nimber + " " + depth);
+      Output.debug("Debug", d + "Calculating " + currentPosition + " " + nimber + " " + depth);
     }
     if (currentPosition.length() <= 1) {
       return nimber != 0;
@@ -198,7 +198,7 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
     }
     Set<String> possiblePositions = getPossibleInternalPositions(lands.get(0));
     if (depth < DEBUG_DEPTH) {
-      Output.debug(d + "Possible: " + possiblePositions.size() + " " + possiblePositions);
+      Output.debug("Debug", d + "Possible: " + possiblePositions.size() + " " + possiblePositions);
     }
     int total = possiblePositions.size();
     int i = 0;
@@ -220,7 +220,7 @@ public class ImprovedLandsMoveBruteforcer implements MoveBruteforcer {
     result = false;
     for (String position : possiblePositions) {
       if (depth < DEBUG_DEPTH - 1) {
-        Output.debug(d + "--" + (++i) + "/" + total);
+        Output.debug("Debug", d + "--" + (++i) + "/" + total);
       }
       if (!isWin(position, nimber, depth + 1)) {
         // Output.debug(currentPosition + "\ttrue 3");

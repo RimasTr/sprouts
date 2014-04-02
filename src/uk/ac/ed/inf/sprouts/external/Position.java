@@ -56,7 +56,6 @@ public class Position implements Serializable {
     if (fromBoundary.equals(toBoundary)) {
       // Output.debug("Move in the same boundary: " + fromBoundary);
       region.remove(fromBoundary);
-      // TODO: handle inversion
       Region firstRegion = region.getRegionWithVertices(move);
 
       Region secondRegion = new Region();
@@ -163,7 +162,6 @@ public class Position implements Serializable {
       return possibleRegions.get(0);
     }
     Output.debug("RegionVertex", "More than one");
-    // TODO: better if structure
     if (move.getRegionVertex() != null) {
       // Region vertex must also be in the same region:
       possibleRegions.retainAll(findRegionsWithVertex(move.getRegionVertex()));

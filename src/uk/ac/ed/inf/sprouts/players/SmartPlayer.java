@@ -23,11 +23,11 @@ public class SmartPlayer implements Player {
     } else {
       player = new StrategyPlayer();
     }
-    Output.debug("Using " + player.getClass().getSimpleName());
+    Output.debug("Debug", "Using " + player.getClass().getSimpleName());
     Move move = player.getMove(game);
     if (move == null) {
       // QuickBruterforce didn't work
-      Output.debug("Backing off to strategy");
+      Output.debug("Debug", "Backing off to strategy");
       move = new StrategyPlayer().getMove(game);
     }
     return move;

@@ -3,7 +3,6 @@ package uk.ac.ed.inf.sprouts.runners.test;
 import uk.ac.ed.inf.sprouts.bruteforcers.ImprovedLandsMoveBruteforcer;
 import uk.ac.ed.inf.sprouts.external.Game;
 import uk.ac.ed.inf.sprouts.utils.Output;
-import uk.ac.ed.inf.sprouts.utils.SavedPositionsHandler;
 
 public class ImprovedLandsMoveBruteforceExampleSimple {
 
@@ -18,7 +17,7 @@ public class ImprovedLandsMoveBruteforceExampleSimple {
     // new ImprovedLandsMoveBruteforcer(game, 6);
     // MoveBruteforcer moveBruteforcer = new ImprovedLandsMoveBruteforcer(game, 6);
     ImprovedLandsMoveBruteforcer moveBruteforcer =
-        new ImprovedLandsMoveBruteforcer(game, SavedPositionsHandler.getSavedPositions());
+        new ImprovedLandsMoveBruteforcer(game);
     moveBruteforcer.compute();
     if (moveBruteforcer.hasWinningMove()) {
       Output.debug("Winning move: " + moveBruteforcer.getWinningMove().toNotation());

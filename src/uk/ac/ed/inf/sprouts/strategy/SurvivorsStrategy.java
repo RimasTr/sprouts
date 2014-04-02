@@ -104,9 +104,9 @@ public class SurvivorsStrategy {
   public void compute() {
     possiblePositions = getPossiblePositions(game);
     double maxAverage = -99999999;
-    Output.debug("Possible moves: " + possiblePositions.size());
+    Output.debug("Debug", "Possible moves: " + possiblePositions.size());
     for (String position : possiblePositions.keySet()) {
-      Output.debug("Checking " + possiblePositions.get(position).getMove().toNotation());
+      Output.debug("Debug", "Checking " + possiblePositions.get(position).getMove().toNotation());
       HashMap<String, MoveResult> possibleChildPositions =
           getPossiblePositions(possiblePositions.get(position).getGame());
       double average;
@@ -133,11 +133,6 @@ public class SurvivorsStrategy {
     }
     return sum * 1.0 / possibleChildPositions.values().size();
   }
-
-  // private boolean isOptimal(Game gameAfterMove) {
-  // // TODO: make sure it works
-  // return (needsMoreSurvivors == (countSurvivors(gameAfterMove) > countSurvivors(game)));
-  // }
 
   public boolean hasOptimalMove() {
     return optimalMove != null;
@@ -166,7 +161,7 @@ public class SurvivorsStrategy {
     Set<Move> moves = allMovesGenerator.generateAllMoves(game.getPosition());
     HashMap<String, MoveResult> possiblePositions = new HashMap<String, MoveResult>();
     if (debug) {
-      Output.debug("All moves (" + moves.size() + ")");
+      Output.debug("Debug", "All moves (" + moves.size() + ")");
     }
     for (Move move : moves) {
       Game clone = game.deepClone();
@@ -174,8 +169,8 @@ public class SurvivorsStrategy {
       InternalPosition internalPosition = InternalPosition.fromExternal(clone.getPosition());
       String internalPositionString = internalPosition.toString();
       if (debug) {
-        Output.debug(move.toNotation() + " -> " + internalPositionString);
-        Output.debug("" + clone.getPosition());
+        Output.debug("Debug", move.toNotation() + " -> " + internalPositionString);
+        Output.debug("Debug", "" + clone.getPosition());
       }
       possiblePositions.put(internalPositionString, new MoveResult(move, clone));
     }

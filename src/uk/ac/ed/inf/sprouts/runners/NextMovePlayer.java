@@ -39,6 +39,9 @@ public class NextMovePlayer {
   @Option(name = "-k", usage = "Keep playing after the game is over.\nE.g. '-k'.")
   private boolean keepPlaying = false;
 
+  @Option(name = "-v", usage = "Enable verbose mode, i.e. more output.\nE.g. '-v'.")
+  private boolean verbose = false;
+
   private Player player;
   private CmdLineParser parser;
 
@@ -120,6 +123,9 @@ public class NextMovePlayer {
       checkPlayModes();
       checkRefresh();
       player = getPlayer();
+      if (verbose) {
+        Output.enableDebug();
+      }
     } catch (CmdLineException e) {
       System.err.println(e.getMessage());
       System.err.println("java " + this.getClass().getSimpleName() + " [options...]");

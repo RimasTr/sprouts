@@ -189,7 +189,6 @@ public class InternalBoundary extends ArrayList<Vertex> {
   }
 
   private static boolean needsEnd(InternalBoundary boundary) {
-    // TODO: does it really work?
     return boundary.size() > 1 || (boundary.size() == 1 && boundary.get(0).isUppercase());
   }
 }

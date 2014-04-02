@@ -24,8 +24,7 @@ public class ServerClient {
 
   private static final String SERVER_URL = "http://sprouts.laisva.lt/api.php";
 
-  public ServerClient() {
-  }
+  public ServerClient() {}
 
   public ServerClient(String username) {
     this.username = username;
@@ -101,7 +100,6 @@ public class ServerClient {
   }
 
   private Map<String, Object> sendPost(Map<String, String> parameters) {
-
     try {
 
       if (username != null) {
@@ -113,7 +111,6 @@ public class ServerClient {
 
       URL serverUrl = new URL(SERVER_URL);
       HttpURLConnection con = (HttpURLConnection) serverUrl.openConnection();
-
       // Send POST request
       con.setRequestMethod("POST");
       con.setDoOutput(true);

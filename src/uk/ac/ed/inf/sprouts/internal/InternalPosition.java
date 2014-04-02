@@ -72,18 +72,18 @@ public class InternalPosition extends ArrayList<InternalRegion> {
 
   // TODO: private
   public void optimize() {
-    //Output.debug("Before:    " + this);
+    // Output.debug("Before:    " + this);
     PositionMap map = getMap();
     detectAbstractVertices(map);
-    //Output.debug("After1:    " + this);
+    // Output.debug("After1:    " + this);
     deleteEmptyBoundariesAndRegions();
-    //Output.debug("After2:    " + this);
+    // Output.debug("After2:    " + this);
     // recompute map
     map = new PositionMap(getVertices());
     detectAbstractVertices(map);
-    //Output.debug("After3:    " + this);
+    // Output.debug("After3:    " + this);
     canonize();
-    //Output.debug("After4:    " + this);
+    // Output.debug("After4:    " + this);
   }
 
   private void detectAbstractVertices(PositionMap map) {
@@ -186,15 +186,15 @@ public class InternalPosition extends ArrayList<InternalRegion> {
   }
 
   private void canonize() {
-    //Output.debug("Before :    " + this);
+    // Output.debug("Before :    " + this);
     sort(true);
-    //Output.debug("After 1:    " + this);
+    // Output.debug("After 1:    " + this);
     renameLowercase();
-    //Output.debug("After 2:    " + this);
+    // Output.debug("After 2:    " + this);
     renameUppercase();
-    //Output.debug("After 3:    " + this);
+    // Output.debug("After 3:    " + this);
     sort(false);
-    //Output.debug("Final  :    " + this);
+    // Output.debug("Final  :    " + this);
   }
 
   private void renameLowercase() {
@@ -234,26 +234,26 @@ public class InternalPosition extends ArrayList<InternalRegion> {
 
   private void sort(boolean asAbstract) {
     for (InternalRegion region : this) {
-      //Output.debug("After 1:    " + region.toStringFull());
+      // Output.debug("After 1:    " + region.toStringFull());
       region.sort(asAbstract);
-      //Output.debug("After 2:    " + region.toStringFull());
+      // Output.debug("After 2:    " + region.toStringFull());
       region.compile();
       String normalRepresentation = region.toString(asAbstract);
       region.inverseOrientation();
-      //Output.debug("After 3:    " + region.toStringFull());
+      // Output.debug("After 3:    " + region.toStringFull());
       region.sort(asAbstract);
-      //Output.debug("After 4:    " + region.toStringFull());
+      // Output.debug("After 4:    " + region.toStringFull());
       region.compile();
       String reverseRepresentation = region.toString(asAbstract);
       if (normalRepresentation.compareTo(reverseRepresentation) < 0) {
         // Reverse again. Should we save the position so we wouldn't have to sort 3 times?
         region.inverseOrientation();
-        //Output.debug("After 5:    " + region.toStringFull());
+        // Output.debug("After 5:    " + region.toStringFull());
         region.sort(asAbstract);
-        //Output.debug("After 6:    " + region.toStringFull());
+        // Output.debug("After 6:    " + region.toStringFull());
         region.compile();
       }
-      //Output.debug("Final  :    " + region.toStringFull());
+      // Output.debug("Final  :    " + region.toStringFull());
     }
     Collections.sort(this, new InternalRegionComparator(asAbstract));
   }
@@ -269,12 +269,12 @@ public class InternalPosition extends ArrayList<InternalRegion> {
   @Override
   public String toString() {
     return Joiner.on("").join(this) + getEndChar();
-//    String result = "";
-//    for (InternalRegion region : this) {
-//      result += region.toString();
-//    }
-//    result += getEndChar();
-//    return result;
+    // String result = "";
+    // for (InternalRegion region : this) {
+    // result += region.toString();
+    // }
+    // result += getEndChar();
+    // return result;
   }
 
   public boolean isLost() {
@@ -294,7 +294,7 @@ public class InternalPosition extends ArrayList<InternalRegion> {
   }
 
   public static void main(String[] args) {
-    InternalPosition pos = InternalPosition.fromString("0.A.}1aAa.BC.}BC.}!");
+    InternalPosition pos = InternalPosition.fromString("12.}EO.0.}k2k1.EO.}!");
     System.out.println(pos.toString());
   }
 }

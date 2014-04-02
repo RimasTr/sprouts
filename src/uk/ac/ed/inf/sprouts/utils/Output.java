@@ -1,5 +1,6 @@
 package uk.ac.ed.inf.sprouts.utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -7,8 +8,8 @@ import uk.ac.ed.inf.sprouts.external.Move;
 
 public class Output {
 
-  private static final List<String> DEBUG_TAGS = Arrays.asList("GameInfo");
-  // "GameInfo", "RegionVertex", "NewPosition", "ServerClient"
+  private static List<String> DEBUG_TAGS = new ArrayList<String>(Arrays.asList("GameInfo"));
+  // "GameInfo", "RegionVertex", "NewPosition", "ServerClient", "Debug"
 
   public static void out(String string) {
     System.out.println(string);
@@ -47,5 +48,9 @@ public class Output {
     if (DEBUG_TAGS.contains(tag)) {
       debug("(" + tag + ") " + string);
     }
+  }
+
+  public static void enableDebug() {
+    DEBUG_TAGS.add("Debug");
   }
 }
